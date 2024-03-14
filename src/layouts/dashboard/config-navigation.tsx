@@ -44,43 +44,28 @@ const ICONS = {
 // ----------------------------------------------------------------------
 
 export function useNavData() {
-  const data = useMemo(
+  return useMemo(
     () => [
       // OVERVIEW
       // ----------------------------------------------------------------------
       {
-        subheader: 'overview v5.6.0',
+        subheader: 'Меню',
         items: [
-          { title: 'one', path: paths.dashboard.root, icon: ICONS.dashboard },
-          { title: 'two', path: paths.dashboard.two, icon: ICONS.ecommerce },
+          { title: 'Входящие', path: paths.dashboard.inbox, icon: ICONS.dashboard },
+          { title: 'Исходящие', path: paths.dashboard.outbox, icon: ICONS.ecommerce },
           {
-            title: 'three',
-            path: paths.dashboard.three,
+            title: 'Черновики',
+            path: paths.dashboard.drafts,
             icon: ICONS.analytics,
           },
-        ],
-      },
-
-      // MANAGEMENT
-      // ----------------------------------------------------------------------
-      {
-        subheader: 'management',
-        items: [
           {
-            title: 'user',
-            path: paths.dashboard.group.root,
-            icon: ICONS.user,
-            children: [
-              { title: 'four', path: paths.dashboard.group.root },
-              { title: 'five', path: paths.dashboard.group.five },
-              { title: 'six', path: paths.dashboard.group.six },
-            ],
+            title: 'Замещение',
+            path: paths.dashboard.replacement,
+            icon: ICONS.dashboard,
           },
         ],
       },
     ],
     []
   );
-
-  return data;
 }

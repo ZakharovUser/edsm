@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect, useCallback, PropsWithChildren } from 'react';
 
 import { paths } from 'src/routes/paths';
 import { useRouter, useSearchParams } from 'src/routes/hooks';
@@ -9,11 +9,7 @@ import { useAuthContext } from '../hooks';
 
 // ----------------------------------------------------------------------
 
-type Props = {
-  children: React.ReactNode;
-};
-
-export default function GuestGuard({ children }: Props) {
+export default function GuestGuard({ children }: PropsWithChildren) {
   const { loading } = useAuthContext();
 
   return <>{loading ? <SplashScreen /> : <Container>{children}</Container>}</>;
@@ -21,12 +17,12 @@ export default function GuestGuard({ children }: Props) {
 
 // ----------------------------------------------------------------------
 
-function Container({ children }: Props) {
+function Container({ children }: PropsWithChildren) {
   const router = useRouter();
 
   const searchParams = useSearchParams();
 
-  const returnTo = searchParams.get('returnTo') || paths.dashboard.root;
+  const returnTo = searchParams.get('returnTo') || paths.dashboard.inbox;
 
   const { authenticated } = useAuthContext();
 

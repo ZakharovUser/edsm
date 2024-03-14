@@ -2,13 +2,18 @@
 
 const ROOTS = {
   AUTH: '/auth',
-  DASHBOARD: '/dashboard',
 };
 
 // ----------------------------------------------------------------------
 
+export const PAGES_PATHS = {
+  INBOX: 'inbox',
+  OUTBOX: 'outbox',
+  DRAFTS: 'drafts',
+  REPLACEMENT: 'replacement',
+};
+
 export const paths = {
-  minimalUI: 'https://mui.com/store/items/minimal-dashboard/',
   // AUTH
   auth: {
     jwt: {
@@ -18,14 +23,9 @@ export const paths = {
   },
   // DASHBOARD
   dashboard: {
-    root: ROOTS.DASHBOARD,
-    one: `${ROOTS.DASHBOARD}/one`,
-    two: `${ROOTS.DASHBOARD}/two`,
-    three: `${ROOTS.DASHBOARD}/three`,
-    group: {
-      root: `${ROOTS.DASHBOARD}/group`,
-      five: `${ROOTS.DASHBOARD}/group/five`,
-      six: `${ROOTS.DASHBOARD}/group/six`,
-    },
+    inbox: `/${PAGES_PATHS.INBOX}`,
+    outbox: `/${PAGES_PATHS.OUTBOX}`,
+    drafts: `/${PAGES_PATHS.DRAFTS}`,
+    replacement: `/${PAGES_PATHS.REPLACEMENT}`,
   },
 };
