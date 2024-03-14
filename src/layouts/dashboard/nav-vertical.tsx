@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
+import Typography from '@mui/material/Typography';
 
 import { usePathname } from 'src/routes/hooks';
 
@@ -14,7 +15,6 @@ import Scrollbar from 'src/components/scrollbar';
 import { NavSectionVertical } from 'src/components/nav-section';
 
 import { NAV } from '../config-layout';
-import NavUpgrade from '../common/nav-upgrade';
 import { useNavData } from './config-navigation';
 import NavToggleButton from '../common/nav-toggle-button';
 
@@ -52,7 +52,17 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
         },
       }}
     >
-      <Logo sx={{ mt: 3, ml: 4, mb: 1 }} />
+      <Stack flexDirection="row" alignItems="center">
+        <Logo sx={{ mt: 3, ml: 4, mb: 1 }} />
+        <Typography
+          variant="h6"
+          component="h1"
+          sx={{ ml: 2, mb: -2 }}
+          color={(theme) => theme.palette.primary.main}
+        >
+          Документы
+        </Typography>
+      </Stack>
 
       <NavSectionVertical
         data={navData}
@@ -62,8 +72,6 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       />
 
       <Box sx={{ flexGrow: 1 }} />
-
-      <NavUpgrade />
     </Scrollbar>
   );
 
