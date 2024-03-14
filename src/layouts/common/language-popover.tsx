@@ -4,9 +4,9 @@ import { useCallback } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 
-import Iconify from 'src/components/iconify';
-import { varHover } from 'src/components/animate';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import Iconify from 'components/iconify';
+import { varHover } from 'components/animate';
+import CustomPopover, { usePopover } from 'components/custom-popover';
 
 // ----------------------------------------------------------------------
 

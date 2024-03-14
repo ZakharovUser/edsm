@@ -1,13 +1,13 @@
+import { bgGradient } from 'theme/css';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { alpha, useTheme } from '@mui/material/styles';
 
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useResponsive } from 'hooks/use-responsive';
 
-import { bgGradient } from 'src/theme/css';
-
-import Logo from 'src/components/logo';
+import Logo from 'components/logo';
 
 // ----------------------------------------------------------------------
 

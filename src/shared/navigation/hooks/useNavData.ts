@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 
-import { paths } from 'src/routes/paths';
+import { paths } from 'routes/paths';
 
-import { ICONS } from 'src/shared/icons/config';
-import { NAVIGATION_CONFIG } from 'src/shared/navigation/config';
+import { ICONS } from 'shared/icons/config';
+import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
 export function useNavData() {
   return useMemo(

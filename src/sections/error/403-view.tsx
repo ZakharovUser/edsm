@@ -1,13 +1,12 @@
 import { m } from 'framer-motion';
+import { ForbiddenIllustration } from 'assets/illustrations';
 
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import { RouterLink } from 'src/routes/components';
+import { RouterLink } from 'routes/components';
 
-import { ForbiddenIllustration } from 'src/assets/illustrations';
-
-import { varBounce, MotionContainer } from 'src/components/animate';
+import { varBounce, MotionContainer } from 'components/animate';
 
 // ----------------------------------------------------------------------
 

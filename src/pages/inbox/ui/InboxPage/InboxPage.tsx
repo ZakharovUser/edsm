@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 
-import { NAVIGATION_CONFIG } from 'src/shared/navigation/config';
+import { InboxView } from 'sections/inbox';
 
-import { InboxView } from 'src/sections/inbox';
+import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
 // ----------------------------------------------------------------------
 

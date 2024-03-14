@@ -3,9 +3,9 @@ import { alpha } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { NAVIGATION_CONFIG } from 'src/shared/navigation/config';
+import { useSettingsContext } from 'components/settings';
 
-import { useSettingsContext } from 'src/components/settings';
+import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
 // ----------------------------------------------------------------------
 

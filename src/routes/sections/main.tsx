@@ -1,11 +1,10 @@
 import { lazy } from 'react';
 import { Outlet } from 'react-router-dom';
-
-import CompactLayout from 'src/layouts/compact';
+import CompactLayout from 'layouts/compact';
 
 // ----------------------------------------------------------------------
 
-const Page404 = lazy(() => import('src/pages/404'));
+const Page404 = lazy(() => import('pages/404'));
 
 // ----------------------------------------------------------------------
 

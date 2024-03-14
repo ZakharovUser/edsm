@@ -1,13 +1,14 @@
+import { hideScroll } from 'theme/css';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
-import { useMockedUser } from 'src/hooks/use-mocked-user';
+import { useMockedUser } from 'hooks/use-mocked-user';
 
-import { hideScroll } from 'src/theme/css';
-import { useNavData } from 'src/shared/navigation/hooks';
+import Logo from 'components/logo';
+import { NavSectionMini } from 'components/nav-section';
 
-import Logo from 'src/components/logo';
-import { NavSectionMini } from 'src/components/nav-section';
+import { useNavData } from 'shared/navigation/hooks';
 
 import { NAV } from '../config-layout';
 import NavToggleButton from '../common/nav-toggle-button';

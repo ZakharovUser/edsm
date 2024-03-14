@@ -1,19 +1,19 @@
 /* eslint-disable perfectionist/sort-imports */
-import 'src/global.css';
+import 'global.css';
 
 // ----------------------------------------------------------------------
 
-import Router from 'src/routes/sections';
+import Router from 'routes/sections';
 
-import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
+import { useScrollToTop } from 'hooks/use-scroll-to-top';
 
-import ThemeProvider from 'src/theme';
+import ThemeProvider from 'theme';
 
-import ProgressBar from 'src/components/progress-bar';
-import { MotionLazy } from 'src/components/animate/motion-lazy';
-import { SettingsDrawer, SettingsProvider } from 'src/components/settings';
+import ProgressBar from 'components/progress-bar';
+import { MotionLazy } from 'components/animate/motion-lazy';
+import { SettingsDrawer, SettingsProvider } from 'components/settings';
 
-import { AuthProvider } from 'src/auth/context/jwt';
+import { AuthProvider } from 'auth/context/jwt';
 
 // ----------------------------------------------------------------------
 

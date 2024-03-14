@@ -1,3 +1,5 @@
+import { paper } from 'theme/css';
+
 import Stack from '@mui/material/Stack';
 import Badge from '@mui/material/Badge';
 import Divider from '@mui/material/Divider';
@@ -7,10 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
 
-import { paper } from 'src/theme/css';
+import Iconify from 'components/iconify';
+import Scrollbar from 'components/scrollbar';
 
-import Iconify from '../../iconify';
-import Scrollbar from '../../scrollbar';
 import BaseOptions from './base-option';
 import LayoutOptions from './layout-options';
 import PresetsOptions from './presets-options';

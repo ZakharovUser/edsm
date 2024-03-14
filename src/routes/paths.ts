@@ -1,4 +1,4 @@
-import { NAVIGATION_CONFIG } from 'src/shared/navigation/config';
+import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
 // ----------------------------------------------------------------------
 

@@ -3,8 +3,8 @@ import { useRef, useState, useEffect, useCallback } from 'react';
 import Stack from '@mui/material/Stack';
 import Popover from '@mui/material/Popover';
 
-import { usePathname } from 'src/routes/hooks';
-import { useActiveLink } from 'src/routes/hooks/use-active-link';
+import { usePathname } from 'routes/hooks';
+import { useActiveLink } from 'routes/hooks/use-active-link';
 
 import NavItem from './nav-item';
 import { NavListProps, NavSubListProps } from '../types';

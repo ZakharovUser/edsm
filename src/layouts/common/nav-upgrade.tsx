@@ -3,9 +3,9 @@ import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
-import { useMockedUser } from 'src/hooks/use-mocked-user';
+import { useMockedUser } from 'hooks/use-mocked-user';
 
-import Label from 'src/components/label';
+import Label from 'components/label';
 
 // ----------------------------------------------------------------------
 

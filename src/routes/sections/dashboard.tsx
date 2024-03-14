@@ -1,18 +1,18 @@
 import { lazy, Suspense } from 'react';
+import { AuthGuard } from 'auth/guard';
 import { Outlet } from 'react-router-dom';
+import DashboardLayout from 'layouts/dashboard';
 
-import { AuthGuard } from 'src/auth/guard';
-import DashboardLayout from 'src/layouts/dashboard';
-import { NAVIGATION_CONFIG } from 'src/shared/navigation/config';
+import { LoadingScreen } from 'components/loading-screen';
 
-import { LoadingScreen } from 'src/components/loading-screen';
+import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
 // ----------------------------------------------------------------------
 
-const InboxPage = lazy(() => import('src/pages/inbox/ui'));
-const PageTwo = lazy(() => import('src/pages/dashboard/two'));
-const PageThree = lazy(() => import('src/pages/dashboard/three'));
-const PageFour = lazy(() => import('src/pages/dashboard/four'));
+const InboxPage = lazy(() => import('pages/inbox/ui'));
+const PageTwo = lazy(() => import('pages/dashboard/two'));
+const PageThree = lazy(() => import('pages/dashboard/three'));
+const PageFour = lazy(() => import('pages/dashboard/four'));
 
 // ----------------------------------------------------------------------
 

@@ -11,21 +11,21 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Dialog, { dialogClasses } from '@mui/material/Dialog';
 
-import { useRouter } from 'src/routes/hooks';
+import { useRouter } from 'routes/hooks';
 
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useResponsive } from 'src/hooks/use-responsive';
-import { useEventListener } from 'src/hooks/use-event-listener';
+import { useBoolean } from 'hooks/use-boolean';
+import { useResponsive } from 'hooks/use-responsive';
+import { useEventListener } from 'hooks/use-event-listener';
 
-import { useNavData } from 'src/shared/navigation/hooks';
+import Label from 'components/label';
+import Iconify from 'components/iconify';
+import Scrollbar from 'components/scrollbar';
+import SearchNotFound from 'components/search-not-found';
 
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
-import SearchNotFound from 'src/components/search-not-found';
+import { useNavData } from 'shared/navigation/hooks';
 
 import ResultItem from './result-item';
-import { applyFilter, groupedData, getAllItems } from './utils';
+import { applyFilter, getAllItems, groupedData } from './utils';
 
 // ----------------------------------------------------------------------
 

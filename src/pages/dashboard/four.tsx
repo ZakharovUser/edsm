@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 
-import FourView from 'src/sections/four/view';
+import FourView from 'sections/four/view';
 
 // ----------------------------------------------------------------------
 
