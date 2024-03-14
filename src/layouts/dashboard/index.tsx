@@ -28,18 +28,12 @@ export default function DashboardLayout({ children }: Props) {
 
   const isMini = settings.themeLayout === 'mini';
 
-  const renderNavMini = <NavMini />;
-
-  const renderHorizontal = <NavHorizontal />;
-
-  const renderNavVertical = <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />;
-
   if (isHorizontal) {
     return (
       <>
         <Header onOpenNav={nav.onTrue} />
 
-        {lgUp ? renderHorizontal : renderNavVertical}
+        {lgUp ? <NavHorizontal /> : <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />}
 
         <Main>{children}</Main>
       </>
@@ -58,7 +52,7 @@ export default function DashboardLayout({ children }: Props) {
             flexDirection: { xs: 'column', lg: 'row' },
           }}
         >
-          {lgUp ? renderNavMini : renderNavVertical}
+          {lgUp ? <NavMini /> : <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />}
 
           <Main>{children}</Main>
         </Box>
@@ -77,8 +71,7 @@ export default function DashboardLayout({ children }: Props) {
           flexDirection: { xs: 'column', lg: 'row' },
         }}
       >
-        {renderNavVertical}
-
+        <NavVertical openNav={nav.value} onCloseNav={nav.onFalse} />
         <Main>{children}</Main>
       </Box>
     </>
