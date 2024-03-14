@@ -3,16 +3,18 @@ import { alpha } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
+import { NAVIGATION_CONFIG } from 'src/shared/navigation/config';
+
 import { useSettingsContext } from 'src/components/settings';
 
 // ----------------------------------------------------------------------
 
-export default function OneView() {
+export function InboxView() {
   const settings = useSettingsContext();
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
-      <Typography variant="h4"> Page One </Typography>
+      <Typography variant="h4"> {NAVIGATION_CONFIG.INBOX.title} </Typography>
 
       <Box
         sx={{
