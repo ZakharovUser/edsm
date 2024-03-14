@@ -10,12 +10,13 @@ import { usePathname } from 'src/routes/hooks';
 import { useResponsive } from 'src/hooks/use-responsive';
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 
+import { useNavData } from 'src/shared/navigation/hooks';
+
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
 import { NavSectionVertical } from 'src/components/nav-section';
 
 import { NAV } from '../config-layout';
-import { useNavData } from './config-navigation';
 import NavToggleButton from '../common/nav-toggle-button';
 
 // ----------------------------------------------------------------------

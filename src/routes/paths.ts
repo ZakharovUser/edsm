@@ -1,3 +1,5 @@
+import { NAVIGATION_CONFIG } from 'src/shared/navigation/config';
+
 // ----------------------------------------------------------------------
 
 const ROOTS = {
@@ -5,13 +7,6 @@ const ROOTS = {
 };
 
 // ----------------------------------------------------------------------
-
-export const PAGES_PATHS = {
-  INBOX: 'inbox',
-  OUTBOX: 'outbox',
-  DRAFTS: 'drafts',
-  REPLACEMENT: 'replacement',
-};
 
 export const paths = {
   // AUTH
@@ -23,9 +18,9 @@ export const paths = {
   },
   // DASHBOARD
   dashboard: {
-    inbox: `/${PAGES_PATHS.INBOX}`,
-    outbox: `/${PAGES_PATHS.OUTBOX}`,
-    drafts: `/${PAGES_PATHS.DRAFTS}`,
-    replacement: `/${PAGES_PATHS.REPLACEMENT}`,
+    inbox: `/${NAVIGATION_CONFIG.INBOX.path}`,
+    outbox: `/${NAVIGATION_CONFIG.OUTBOX.path}`,
+    drafts: `/${NAVIGATION_CONFIG.DRAFTS.path}`,
+    replacement: `/${NAVIGATION_CONFIG.REPLACEMENT.path}`,
   },
 };
