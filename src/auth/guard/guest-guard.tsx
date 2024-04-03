@@ -1,6 +1,5 @@
 import { useEffect, useCallback, PropsWithChildren } from 'react';
 
-import { paths } from 'routes/paths';
 import { useRouter, useSearchParams } from 'routes/hooks';
 
 import { SplashScreen } from 'components/loading-screen';
@@ -22,7 +21,7 @@ function Container({ children }: PropsWithChildren) {
 
   const searchParams = useSearchParams();
 
-  const returnTo = searchParams.get('returnTo') || paths.dashboard.inbox;
+  const returnTo = searchParams.get('returnTo') || '/';
 
   const { authenticated } = useAuthContext();
 

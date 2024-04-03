@@ -56,6 +56,16 @@ export type JWTContextType = CanRemove & {
   logout: () => Promise<void>;
 };
 
+export type SessionContextType = CanRemove & {
+  user: AuthUserType;
+  method: string;
+  loading: boolean;
+  authenticated: boolean;
+  unauthenticated: boolean;
+  logout: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+};
+
 export type FirebaseContextType = CanRemove & {
   user: AuthUserType;
   method: string;
