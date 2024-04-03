@@ -12,6 +12,10 @@ axiosInstance.interceptors.response.use(
 
 export default axiosInstance;
 
+// -----------------------------------------------------------------------------------------------------------------
+
+export const httpClient = axios.create({ baseURL: 'http://91.226.234.195:1337' });
+
 // ----------------------------------------------------------------------
 
 export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
@@ -32,6 +36,12 @@ export const endpoints = {
     me: '/api/auth/me',
     login: '/api/auth/login',
     register: '/api/auth/register',
+  },
+  crossAuth: {
+    session: '/api/edm/session',
+    token: '/api/edm/csrf',
+    user: '/api/edm/whoami',
+    login: '/admin/login',
   },
   mail: {
     list: '/api/mail/list',
