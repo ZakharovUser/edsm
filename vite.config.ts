@@ -18,8 +18,15 @@ export default defineConfig({
   ],
   server: {
     port: 8081,
+    proxy: {
+      '/api': {
+        target: 'http://91.226.234.195:1337',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
   preview: {
-    port: 8081,
+    port: 8082,
   },
 });
