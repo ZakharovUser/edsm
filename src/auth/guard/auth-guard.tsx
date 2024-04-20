@@ -11,6 +11,7 @@ import { useAuthContext } from '../hooks';
 
 const loginPaths: Record<string, string> = {
   jwt: paths.auth.jwt.login,
+  session: paths.auth.session.login,
 };
 
 // ----------------------------------------------------------------------

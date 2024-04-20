@@ -3,18 +3,27 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 // ----------------------------------------------------------------------
 
-const axiosInstance = axios.create({ baseURL: HOST_API });
+export const CSRFTokenHeader = 'X-Csrftoken';
+
+// -----------------------------------------------------------------------------------------------------------------
+
+export const axiosInstance = axios.create({ baseURL: HOST_API });
 
 axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
 );
 
-export default axiosInstance;
-
 // -----------------------------------------------------------------------------------------------------------------
 
-export const httpClient = axios.create({ baseURL: 'http://91.226.234.195:1337' });
+export const httpClient = axios.create({
+  withCredentials: true,
+});
+
+httpClient.interceptors.response.use(
+  (res) => res,
+  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
+);
 
 // ----------------------------------------------------------------------
 
@@ -38,10 +47,11 @@ export const endpoints = {
     register: '/api/auth/register',
   },
   crossAuth: {
-    session: '/api/edm/session',
-    token: '/api/edm/csrf',
-    user: '/api/edm/whoami',
-    login: '/admin/login',
+    session: '/api/edm/session/',
+    token: '/api/edm/csrf/',
+    user: '/api/edm/whoami/',
+    login: '/api/edm/login/',
+    logout: '/api/edm/logout/',
   },
   mail: {
     list: '/api/mail/list',

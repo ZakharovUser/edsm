@@ -13,7 +13,7 @@ import ProgressBar from 'components/progress-bar';
 import { MotionLazy } from 'components/animate/motion-lazy';
 import { SettingsDrawer, SettingsProvider } from 'components/settings';
 
-import { AuthProvider } from 'auth/context/jwt';
+import { AuthProvider } from 'auth/context/session';
 
 // ----------------------------------------------------------------------
 

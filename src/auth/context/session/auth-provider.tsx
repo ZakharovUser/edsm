@@ -4,6 +4,7 @@ import { AuthUserType, ActionMapType, AuthStateType, SessionContextType } from '
 import { endpoints, httpClient } from 'utils/axios';
 
 import { AuthContext } from './auth-context';
+import { getUser, getToken, postLogin } from './api';
 
 enum Methods {
   INITIAL = 'INITIAL',
@@ -14,10 +15,10 @@ enum Methods {
 type Payload = {
   [Methods.INITIAL]: {
     user: AuthUserType;
-    token?: string;
   };
   [Methods.LOGIN]: {
     user: AuthUserType;
+    token?: string;
   };
   [Methods.LOGOUT]: undefined;
 };
@@ -42,6 +43,7 @@ const reducer = (state: AuthStateType, action: ActionsType) => {
       return {
         ...state,
         user: action.payload.user,
+        token: action.payload.token,
       };
     case Methods.LOGOUT:
       return {
@@ -53,32 +55,13 @@ const reducer = (state: AuthStateType, action: ActionsType) => {
   }
 };
 
-const CSRFToken = 'X-CSRFToken';
-
-const getSession = async () => {
-  const { data } = await httpClient.get(endpoints.crossAuth.session, { withCredentials: true });
-
-  return data;
-};
-
-const getUser = async () => {
-  const { data } = await httpClient.get(endpoints.crossAuth.user, { withCredentials: true });
-
-  return data;
-};
-
-const getCSRF = async () => {
-  const { headers } = await httpClient.get(endpoints.crossAuth.token, { withCredentials: true });
-
-  // @ts-ignore
-  return headers.get?.(CSRFToken);
-};
-
 export function AuthProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const initialize = useCallback(async () => {
-    const { isAuthenticated } = await getSession();
+    const { isAuthenticated } = await httpClient
+      .get(endpoints.crossAuth.session)
+      .then(({ data }) => data);
 
     if (isAuthenticated) {
       const user = await getUser();
@@ -88,11 +71,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
         payload: { user },
       });
     } else {
-      const token = await getCSRF();
-
       dispatch({
         type: Methods.INITIAL,
-        payload: { user: null, token },
+        payload: { user: null },
       });
     }
   }, []);
@@ -102,28 +83,29 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }, [initialize]);
 
   // LOGIN
-  const login = useCallback(async (email: string, password: string) => {
-    const data = {
-      email,
+  const login = useCallback(async (username: string, password: string) => {
+    const token = await getToken();
+
+    const res = await postLogin({
+      token,
+      username,
       password,
-    };
-
-    const res = await httpClient.post(endpoints.crossAuth.login, data, {
-      withCredentials: true,
     });
 
-    const { user } = res.data;
+    if (res.status === 200) {
+      const user = await getUser();
 
-    dispatch({
-      type: Methods.LOGIN,
-      payload: {
-        user,
-      },
-    });
+      dispatch({
+        type: Methods.LOGIN,
+        payload: { user, token },
+      });
+    }
   }, []);
 
   // LOGOUT
   const logout = useCallback(async () => {
+    await httpClient.get(endpoints.crossAuth.logout);
+
     dispatch({ type: Methods.LOGOUT });
   }, []);
 

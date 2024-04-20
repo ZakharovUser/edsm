@@ -1,4 +1,5 @@
 import { bgGradient } from 'theme/css';
+import { PropsWithChildren } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -17,37 +18,15 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function AuthClassicLayout({ children, image, title }: Props) {
+interface SectionProps {
+  title?: string;
+  image?: string;
+}
+
+const Section = ({ image, title }: SectionProps) => {
   const theme = useTheme();
 
-  const mdUp = useResponsive('up', 'md');
-
-  const renderLogo = (
-    <Logo
-      sx={{
-        zIndex: 9,
-        position: 'absolute',
-        m: { xs: 2, md: 5 },
-      }}
-    />
-  );
-
-  const renderContent = (
-    <Stack
-      sx={{
-        width: 1,
-        mx: 'auto',
-        maxWidth: 480,
-        px: { xs: 2, md: 8 },
-        pt: { xs: 15, md: 20 },
-        pb: { xs: 15, md: 0 },
-      }}
-    >
-      {children}
-    </Stack>
-  );
-
-  const renderSection = (
+  return (
     <Stack
       flexGrow={1}
       spacing={10}
@@ -81,6 +60,25 @@ export default function AuthClassicLayout({ children, image, title }: Props) {
       />
     </Stack>
   );
+};
+
+const Content = ({ children }: PropsWithChildren) => (
+  <Stack
+    sx={{
+      width: 1,
+      mx: 'auto',
+      maxWidth: 480,
+      px: { xs: 2, md: 8 },
+      pt: { xs: 15, md: 20 },
+      pb: { xs: 15, md: 0 },
+    }}
+  >
+    {children}
+  </Stack>
+);
+
+export default function AuthClassicLayout({ children, ...props }: Props) {
+  const mdUp = useResponsive('up', 'md');
 
   return (
     <Stack
@@ -90,11 +88,17 @@ export default function AuthClassicLayout({ children, image, title }: Props) {
         minHeight: '100vh',
       }}
     >
-      {renderLogo}
+      <Logo
+        sx={{
+          zIndex: 9,
+          position: 'absolute',
+          m: { xs: 2, md: 5 },
+        }}
+      />
 
-      {mdUp && renderSection}
+      {mdUp && <Section {...props} />}
 
-      {renderContent}
+      <Content>{children}</Content>
     </Stack>
   );
 }
