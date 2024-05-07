@@ -1,49 +1,40 @@
-import { _mock, _contacts } from '_mock';
+import { _inbox_rows } from '_mock';
 
+import { Chip } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 import { useSettingsContext } from 'components/settings';
 
 import { NAVIGATION_CONFIG } from 'shared/navigation/config';
+import { Cols, Author, Importance } from 'shared/data-grid/types';
 
 import styles from './inbox.module.css';
 
 // ----------------------------------------------------------------------
 
-type Author = (typeof _contacts)[number];
-
-type RowDef = {
-  id: number;
-  name: string;
-  rule: string;
-  author: Author;
-  importance: 'Обычно' | 'Важно';
-  department: string;
-  receipt_date: Date;
-  creation_date: Date;
-  completion_date: Date;
-};
-
-type Rows = RowDef[];
-
-type Cols = (Omit<GridColDef, 'field'> & {
-  field: keyof RowDef;
-})[];
-
 const columns: Cols = [
   {
     field: 'id',
-    headerName: '№ задачи',
+    headerName: '№',
+    flex: 0.3,
     sortable: false,
     filterable: false,
+    headerAlign: 'center',
   },
   {
+    flex: 0.5,
     field: 'importance',
     headerName: 'Важность',
+    renderCell: (params) => {
+      const label: Importance = params.value;
+      const color = label === 'Обычно' ? 'primary' : 'error';
+
+      return <Chip label={label} color={color} size="small" variant="outlined" />;
+    },
   },
   {
     field: 'name',
@@ -56,6 +47,7 @@ const columns: Cols = [
   {
     field: 'rule',
     headerName: 'Регламент',
+    flex: 0.5,
   },
   {
     field: 'author',
@@ -80,76 +72,22 @@ const columns: Cols = [
   {
     field: 'department',
     headerName: 'Учреждение',
+    flex: 0.5,
   },
   {
     field: 'completion_date',
     headerName: 'Дата выполнения',
+    flex: 0.5,
   },
   {
     field: 'receipt_date',
     headerName: 'Дата поступления',
+    flex: 0.5,
   },
   {
     field: 'creation_date',
     headerName: 'Дата создания',
-  },
-];
-
-const demo_rows: Rows = [
-  {
-    id: 1,
-    name: _mock.postTitle(0),
-    rule: 'Правило 1',
-    author: _contacts[0],
-    importance: 'Обычно',
-    department: 'Отдел 1',
-    receipt_date: new Date('2024-01-01'),
-    creation_date: new Date('2024-01-02'),
-    completion_date: new Date('2024-01-03'),
-  },
-  {
-    id: 2,
-    name: _mock.postTitle(3),
-    rule: 'Правило 2',
-    author: _contacts[3],
-    importance: 'Важно',
-    department: 'Отдел 2',
-    receipt_date: new Date('2024-01-04'),
-    creation_date: new Date('2024-01-05'),
-    completion_date: new Date('2024-01-06'),
-  },
-  {
-    id: 3,
-    name: _mock.postTitle(6),
-    rule: 'Правило 3',
-    author: _contacts[6],
-    importance: 'Обычно',
-    department: 'Отдел 3',
-    receipt_date: new Date('2024-01-07'),
-    creation_date: new Date('2024-01-08'),
-    completion_date: new Date('2024-01-09'),
-  },
-  {
-    id: 4,
-    name: _mock.postTitle(2),
-    rule: 'Правило 4',
-    author: _contacts[2],
-    importance: 'Важно',
-    department: 'Отдел 4',
-    receipt_date: new Date('2024-01-10'),
-    creation_date: new Date('2024-01-11'),
-    completion_date: new Date('2024-01-12'),
-  },
-  {
-    id: 5,
-    name: _mock.postTitle(9),
-    rule: 'Правило 5',
-    author: _contacts[9],
-    importance: 'Обычно',
-    department: 'Отдел 5',
-    receipt_date: new Date('2024-01-13'),
-    creation_date: new Date('2024-01-14'),
-    completion_date: new Date('2024-01-15'),
+    flex: 0.5,
   },
 ];
 
@@ -167,7 +105,7 @@ export function InboxView() {
         disableColumnMenu
         checkboxSelection
         columns={columns}
-        rows={demo_rows}
+        rows={_inbox_rows}
         disableRowSelectionOnClick
         slots={{
           toolbar: GridToolbar,
