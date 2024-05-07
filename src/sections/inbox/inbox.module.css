@@ -1,0 +1,7 @@
+.avatarName {
+  min-width: 0;
+  flex-basis: calc(100% - 32px - 8px);
+  overflow: hidden;
+  text-wrap: nowrap;
+  text-overflow: ellipsis
+}
