@@ -12,8 +12,8 @@ import { useResponsive } from 'hooks/use-responsive';
 import Logo from 'components/logo';
 import SvgColor from 'components/svg-color';
 import { useSettingsContext } from 'components/settings';
+import CreateTaskButton from 'components/create-task-button';
 
-import Searchbar from '../common/searchbar';
 import { NAV, HEADER } from '../config-layout';
 import SettingsButton from '../common/settings-button';
 import AccountPopover from '../common/account-popover';
@@ -76,15 +76,17 @@ export default function Header({ onOpenNav }: Props) {
           px: { lg: 5 },
         }}
       >
-        {lgUp && isNavHorizontal && <Logo sx={{ mr: 2.5 }} />}
+        {lgUp && isNavHorizontal && <Logo sx={{ mr: 4 }} />}
 
         {!lgUp && (
-          <IconButton onClick={onOpenNav}>
+          <IconButton onClick={onOpenNav} sx={{ mr: 2 }}>
             <SvgColor src="/assets/icons/navbar/ic_menu_item.svg" />
           </IconButton>
         )}
 
-        <Searchbar />
+        <CreateTaskButton />
+
+        {/* <Searchbar /> */}
 
         <Stack
           flexGrow={1}
