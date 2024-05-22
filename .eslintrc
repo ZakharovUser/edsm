@@ -8,6 +8,7 @@
     "perfectionist",
     "unused-imports",
     "@typescript-eslint",
+    "@tanstack/query",
     "prettier"
   ],
   "extends": [
@@ -160,6 +161,9 @@
           "src/**"
         ]
       }
-    ]
+    ],
+    "@tanstack/query/exhaustive-deps": "error",
+    "@tanstack/query/no-rest-destructuring": "warn",
+    "@tanstack/query/stable-query-client": "error"
   }
 }
