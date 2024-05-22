@@ -1,4 +1,5 @@
 import { bgBlur } from 'theme/css';
+import { CreateTask } from 'features/create-task/ui';
 
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
@@ -12,7 +13,6 @@ import { useResponsive } from 'hooks/use-responsive';
 import Logo from 'components/logo';
 import SvgColor from 'components/svg-color';
 import { useSettingsContext } from 'components/settings';
-import CreateTaskButton from 'components/create-task-button';
 
 import { NAV, HEADER } from '../config-layout';
 import SettingsButton from '../common/settings-button';
@@ -84,7 +84,7 @@ export default function Header({ onOpenNav }: Props) {
           </IconButton>
         )}
 
-        <CreateTaskButton />
+        <CreateTask />
 
         {/* <Searchbar /> */}
 
