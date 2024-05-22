@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { Form, Input, Select, FormInstance } from 'antd';
 
+import { SelectUserGroups } from './select-user-groups';
+
 // -----------------------------------------------------------------------------------------------------------------
 
 const importance_options = [
@@ -69,6 +71,9 @@ export function CreateTaskForm({ onInitForm }: Props) {
         rules={[{ required: true, message: 'Выберите источник финансирования' }]}
       >
         <Select />
+      </Form.Item>
+      <Form.Item name="notify" label="Уведомлять">
+        <SelectUserGroups />
       </Form.Item>
     </Form>
   );
