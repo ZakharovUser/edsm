@@ -30,6 +30,7 @@
     "@mui/material": "^5.14.12",
     "@mui/utils": "^5.15.14",
     "@mui/x-data-grid": "^6.19.6",
+    "antd": "^5.17.3",
     "autosuggest-highlight": "^3.3.4",
     "axios": "^1.5.1",
     "date-fns": "^2.30.0",
