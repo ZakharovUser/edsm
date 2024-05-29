@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
-import { Form, Input, Select, FormInstance } from 'antd';
+import { Form, Input, FormInstance } from 'antd';
+
+import { Select } from 'shared/select';
 
 import { SelectUserGroups } from './select-user-groups';
+import { SelectFinancingSources } from './select-financing-sources';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -39,8 +42,12 @@ export function CreateTaskForm({ onInitForm }: Props) {
 
   return (
     <Form initialValues={initial} form={form} autoComplete="off" layout="vertical">
-      <Form.Item label="Важность" name="importance" rules={[{ required: true }]}>
-        <Select options={importance_options} dropdownStyle={{ zIndex: 1500 }} />
+      <Form.Item
+        label="Важность"
+        name="importance"
+        rules={[{ required: true, message: 'Выберите важность задачи' }]}
+      >
+        <Select options={importance_options} />
       </Form.Item>
       {isImportant && (
         <Form.Item
@@ -48,7 +55,7 @@ export function CreateTaskForm({ onInitForm }: Props) {
           name="importance_cause"
           rules={[{ required: true, message: 'Выберите причину' }]}
         >
-          <Select options={importance_cause_options} dropdownStyle={{ zIndex: 1500 }} />
+          <Select options={importance_cause_options} />
         </Form.Item>
       )}
       <Form.Item
@@ -70,7 +77,7 @@ export function CreateTaskForm({ onInitForm }: Props) {
         label="Источник финансирования"
         rules={[{ required: true, message: 'Выберите источник финансирования' }]}
       >
-        <Select />
+        <SelectFinancingSources />
       </Form.Item>
       <Form.Item name="notify" label="Уведомлять">
         <SelectUserGroups />
