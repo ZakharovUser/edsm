@@ -3,6 +3,8 @@ import { TreeSelect, TreeSelectProps } from 'antd';
 import { useUserGroups } from 'entites/contacts/hooks';
 import { ContactGroupModel } from 'entites/contacts/models';
 
+// -----------------------------------------------------------------------------------------------------------------
+
 export function SelectUserGroups() {
   const { data, isError, isPending } = useUserGroups();
 
@@ -20,6 +22,8 @@ export function SelectUserGroups() {
     />
   );
 }
+
+// -----------------------------------------------------------------------------------------------------------------
 
 type OptionsType = TreeSelectProps['treeData'];
 
