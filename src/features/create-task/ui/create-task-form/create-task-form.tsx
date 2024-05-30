@@ -65,7 +65,7 @@ export function CreateTaskForm({ onInitForm }: Props) {
         label="Наименование (короткое)"
         rules={[{ required: true, message: 'Введите короткое наименование' }]}
       >
-        <Input maxLength={40} />
+        <Input maxLength={40} showCount />
       </Form.Item>
       <Form.Item
         name="name_full"
