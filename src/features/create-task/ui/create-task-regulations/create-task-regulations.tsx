@@ -1,25 +1,71 @@
-import { useState } from 'react';
+import { useMemo, useState, ReactNode } from 'react';
 
 import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 
-interface Props {}
+import { TabPanel } from 'shared/tab-panel';
 
-function a11yProps(index: number) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
-  };
+// -----------------------------------------------------------------------------------------------------------------
+
+interface Props {
+  name: string;
+  tabs: Array<{ label: string; panel: ReactNode }>;
 }
 
-export function CreateTaskRegulations(props: Props) {
-  const [value, setValue] = useState(0);
+// -----------------------------------------------------------------------------------------------------------------
 
-  const onChange = (_: unknown, newValue: number) => setValue(newValue);
+export function CreateTaskRegulations({ tabs: controls, name }: Props) {
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const onChange = (_: unknown, newValue: number) => setTabIndex(newValue);
+
+  const [tabs, panels] = useMemo(
+    () =>
+      controls.reduce(
+        (elements: [JSX.Element[], JSX.Element[]], control, index) => {
+          const tab = <Tab label={control.label} {...a11yProps(name, index)} />;
+
+          const panel = (
+            <TabPanel index={index} value={tabIndex} name={name}>
+              {control.panel}
+            </TabPanel>
+          );
+
+          elements[0].push(tab);
+          elements[1].push(panel);
+
+          return elements;
+        },
+        [[], []]
+      ),
+    [controls, name, tabIndex]
+  );
 
   return (
-    <Tabs variant="scrollable" onChange={onChange}>
-      <Tab label="Закупка ТРУ" {...a11yProps(0)} />
-    </Tabs>
+    <>
+      <Tabs
+        value={tabIndex}
+        onChange={onChange}
+        sx={{
+          borderBottom: 1,
+          borderColor: 'divider',
+          position: 'sticky',
+          top: 0,
+          zIndex: 1450,
+          bgcolor: (theme) => theme.palette.background.paper,
+        }}
+      >
+        {tabs}
+      </Tabs>
+      <Box sx={{ mt: 3 }}>{panels}</Box>
+    </>
   );
+}
+
+function a11yProps(name: string, index: number) {
+  return {
+    id: `${name}-tab-${index}`,
+    'aria-controls': `${name}-tabpanel-${index}`,
+  };
 }
