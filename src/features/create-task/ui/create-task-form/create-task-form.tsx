@@ -3,6 +3,7 @@ import { Form, Input, FormInstance } from 'antd';
 
 import { Select } from 'shared/select';
 
+import { SelectFiles } from './select-files';
 import { SelectUserGroups } from './select-user-groups';
 import { SelectFinancingSources } from './select-financing-sources';
 
@@ -65,7 +66,7 @@ export function CreateTaskForm({ onInitForm }: Props) {
         label="Наименование (короткое)"
         rules={[{ required: true, message: 'Введите короткое наименование' }]}
       >
-        <Input maxLength={40} />
+        <Input maxLength={40} showCount />
       </Form.Item>
       <Form.Item
         name="name_full"
@@ -83,6 +84,9 @@ export function CreateTaskForm({ onInitForm }: Props) {
       </Form.Item>
       <Form.Item name="notify" label="Уведомлять">
         <SelectUserGroups />
+      </Form.Item>
+      <Form.Item name="files">
+        <SelectFiles />
       </Form.Item>
     </Form>
   );
