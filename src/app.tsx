@@ -8,7 +8,7 @@ import Router from 'routes/sections';
 
 import { useScrollToTop } from 'hooks/use-scroll-to-top';
 
-import ThemeProvider from 'theme';
+import { MuiThemeProvider } from 'theme';
 
 import ProgressBar from 'components/progress-bar';
 import { MotionLazy } from 'components/animate/motion-lazy';
@@ -36,13 +36,13 @@ export default function App() {
             themeStretch: false,
           }}
         >
-          <ThemeProvider>
+          <MuiThemeProvider>
             <MotionLazy>
               <SettingsDrawer />
               <ProgressBar />
               <Router />
             </MotionLazy>
-          </ThemeProvider>
+          </MuiThemeProvider>
         </SettingsProvider>
       </AuthProvider>
     </QueryClientProvider>
