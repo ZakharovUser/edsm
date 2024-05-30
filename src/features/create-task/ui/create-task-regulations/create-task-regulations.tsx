@@ -10,7 +10,7 @@ import { TabPanel } from 'shared/tab-panel';
 
 interface Props {
   name: string;
-  tabs: Array<{ label: string; panel: ReactNode }>;
+  tabs: Array<{ id: number; label: string; panel: ReactNode }>;
 }
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -24,10 +24,21 @@ export function CreateTaskRegulations({ tabs: controls, name }: Props) {
     () =>
       controls.reduce(
         (elements: [JSX.Element[], JSX.Element[]], control, index) => {
-          const tab = <Tab label={control.label} {...a11yProps(name, index)} />;
+          const tab = (
+            <Tab
+              label={control.label}
+              {...a11yProps(name, index)}
+              key={`${name}-tab-${control.id}`}
+            />
+          );
 
           const panel = (
-            <TabPanel index={index} value={tabIndex} name={name}>
+            <TabPanel
+              name={name}
+              index={index}
+              value={tabIndex}
+              key={`${name}-tap-panel-${control.id}`}
+            >
               {control.panel}
             </TabPanel>
           );

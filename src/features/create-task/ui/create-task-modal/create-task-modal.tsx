@@ -32,7 +32,11 @@ export function CreateTaskModal({ open, onClose }: Props) {
         <CreateTaskRegulations
           name="regulations"
           tabs={[
-            { label: 'Закупта ТРУ', panel: <CreateTaskForm onInitForm={(f) => setForm(f)} /> },
+            {
+              id: 100,
+              label: 'Закупта ТРУ',
+              panel: <CreateTaskForm onInitForm={(f) => setForm(f)} />,
+            },
           ]}
         />
       </DialogContent>
