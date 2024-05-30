@@ -5,7 +5,7 @@ const { Dragger } = Upload;
 
 export function SelectFiles() {
   return (
-    <Dragger multiple>
+    <Dragger multiple withCredentials action="/api/edm/attachments/">
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>
