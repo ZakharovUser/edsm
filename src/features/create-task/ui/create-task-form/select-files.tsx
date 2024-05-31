@@ -1,11 +1,11 @@
-import { Upload } from 'antd';
+import { Upload, UploadProps } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 
 const { Dragger } = Upload;
 
-export function SelectFiles() {
+export function SelectFiles(props: UploadProps) {
   return (
-    <Dragger multiple withCredentials action="/api/edm/attachments/">
+    <Dragger {...props} multiple withCredentials action="/api/edm/attachments/">
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>

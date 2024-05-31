@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Form, Input, FormInstance } from 'antd';
+import { UploadFile, UploadChangeParam } from 'antd/es/upload/interface';
 
 import { Select } from 'shared/select';
 
@@ -30,7 +31,17 @@ interface Props {
   onInitForm(form: FormInstance): void;
 }
 
+interface Attachment {
+  uuid: string;
+}
+
 // -----------------------------------------------------------------------------------------------------------------
+
+const normFile = (event: UploadChangeParam<UploadFile<Attachment>>) =>
+  event.fileList.map(({ response, ...file }) => ({
+    ...file,
+    ...response,
+  }));
 
 export function CreateTaskForm({ onInitForm }: Props) {
   const [form] = Form.useForm();
@@ -92,7 +103,7 @@ export function CreateTaskForm({ onInitForm }: Props) {
       <Form.Item name="notify" label="Уведомлять">
         <SelectUserGroups />
       </Form.Item>
-      <Form.Item name="files">
+      <Form.Item name="files" valuePropName="fileList" getValueFromEvent={normFile}>
         <SelectFiles />
       </Form.Item>
     </Form>
