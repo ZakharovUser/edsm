@@ -5,12 +5,12 @@ import { Select, SelectProps } from 'shared/select';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export function SelectFinancingSources() {
+export function SelectFinancingSources(props: SelectProps) {
   const { data } = useFinancingSources();
 
   const options = parseOptions(data);
 
-  return <Select options={options} />;
+  return <Select {...props} options={options} />;
 }
 
 // -----------------------------------------------------------------------------------------------------------------

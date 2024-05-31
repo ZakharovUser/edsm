@@ -5,13 +5,14 @@ import { ContactGroupModel } from 'entites/contacts/models';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export function SelectUserGroups() {
+export function SelectUserGroups(props: TreeSelectProps) {
   const { data, isError, isPending } = useUserGroups();
 
   const treeData = useMemo(() => parseUserGroups(data), [data]);
 
   return (
     <TreeSelect
+      {...props}
       allowClear
       treeCheckable
       loading={isPending}
