@@ -44,7 +44,14 @@ export function CreateTaskForm({ onInitForm }: Props) {
   const isImportant = importanceValue === 'important';
 
   return (
-    <Form initialValues={initial} form={form} autoComplete="off" layout="vertical">
+    <Form
+      form={form}
+      initialValues={initial}
+      layout="vertical"
+      autoComplete="off"
+      name="create-task"
+      action="/api/edm/task"
+    >
       <Form.Item
         label="Важность"
         name="importance"
