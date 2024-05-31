@@ -11,18 +11,19 @@ import { SelectFinancingSources } from './select-financing-sources';
 // -----------------------------------------------------------------------------------------------------------------
 
 const importance_options = [
-  { label: 'Обычно', value: 'usually' },
-  { label: 'Важно', value: 'important' },
+  { label: 'Обычно', value: 'ordinary' },
+  { label: 'Важно', value: 'very_important' },
 ];
 
 const importance_cause_options = [
-  { label: 'Аварийная ситуация', value: 'emergency' },
-  { label: 'Ошибка планирования', value: 'planning_error' },
-  { label: 'Позднее доведение лимитов', value: 'late_finished_limits' },
+  { label: 'Аварийная ситуация', value: 'alarm' },
+  { label: 'Ошибка планирования', value: 'error' },
+  { label: 'Позднее доведение лимитов', value: 'lost_time' },
 ];
 
 const initial = {
-  importance: 'usually',
+  importance: 'ordinary',
+  route: 'Закупка ТРУ',
 };
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -63,6 +64,9 @@ export function CreateTaskForm({ onInitForm }: Props) {
       name="create-task"
       action="/api/edm/task"
     >
+      <Form.Item name="route" label="Регламент">
+        <Input readOnly hidden />
+      </Form.Item>
       <Form.Item
         label="Важность"
         name="importance"
@@ -73,28 +77,28 @@ export function CreateTaskForm({ onInitForm }: Props) {
       {isImportant && (
         <Form.Item
           label="Причина"
-          name="importance_cause"
+          name="reason"
           rules={[{ required: true, message: 'Выберите причину' }]}
         >
           <Select options={importance_cause_options} />
         </Form.Item>
       )}
       <Form.Item
-        name="name_short"
+        name="short_name"
         label="Наименование (короткое)"
         rules={[{ required: true, message: 'Введите короткое наименование' }]}
       >
         <Input maxLength={40} showCount />
       </Form.Item>
       <Form.Item
-        name="name_full"
+        name="full_name"
         label="Наименование (полное)"
         rules={[{ required: true, message: 'Введите полное наименование' }]}
       >
         <Input />
       </Form.Item>
       <Form.Item
-        name="source_financing"
+        name="finance_source"
         label="Источник финансирования"
         rules={[{ required: true, message: 'Выберите источник финансирования' }]}
       >
