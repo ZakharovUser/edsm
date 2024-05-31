@@ -25,6 +25,10 @@ export function CreateTaskModal({ open, onClose }: Props) {
     onClose();
   };
 
+  const handleSubmit = () => {
+    form?.submit();
+  };
+
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
       <DialogTitle>Создание задачи</DialogTitle>
@@ -44,7 +48,7 @@ export function CreateTaskModal({ open, onClose }: Props) {
         <Button autoFocus onClick={handleClose}>
           Отменить
         </Button>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={handleSubmit}>
           Создать
         </Button>
       </DialogActions>
