@@ -23,7 +23,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export function MuiThemeProvider({ children }: Props) {
+export function ThemeProviderMui({ children }: Props) {
   const settings = useSettingsContext();
 
   const presets = createPresets(settings.themeColorPresets);

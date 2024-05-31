@@ -1,1 +1,2 @@
-export { MuiThemeProvider } from './mui-theme-provider';
+export { ThemeProviderMui } from './theme-provider-mui';
+export { ThemeProviderAntd } from './theme-provider-antd';
