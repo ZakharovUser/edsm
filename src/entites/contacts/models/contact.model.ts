@@ -1,4 +1,5 @@
 export interface ContactModel {
+  id: number;
   email: string;
   rank: string;
   username: string;

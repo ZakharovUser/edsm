@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { FormInstance } from 'antd';
 
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
@@ -18,19 +17,10 @@ interface Props {
 // -----------------------------------------------------------------------------------------------------------------
 
 export function CreateTaskModal({ open, onClose }: Props) {
-  const [form, setForm] = useState<null | FormInstance>(null);
-
-  const handleClose = () => {
-    form?.resetFields();
-    onClose();
-  };
-
-  const handleSubmit = () => {
-    form?.submit();
-  };
+  const [formId, setFormId] = useState<string | undefined>();
 
   return (
-    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>Создание задачи</DialogTitle>
       <DialogContent>
         <CreateTaskRegulations
@@ -39,16 +29,16 @@ export function CreateTaskModal({ open, onClose }: Props) {
             {
               id: 100,
               label: 'Закупта ТРУ',
-              panel: <CreateTaskForm onInitForm={(f) => setForm(f)} />,
+              panel: <CreateTaskForm getFormId={setFormId} />,
             },
           ]}
         />
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleClose}>
+        <Button form={formId} type="reset" autoFocus onClick={onClose}>
           Отменить
         </Button>
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
+        <Button form={formId} type="submit" variant="contained" color="primary">
           Создать
         </Button>
       </DialogActions>

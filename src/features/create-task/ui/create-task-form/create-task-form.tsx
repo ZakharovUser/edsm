@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
-import { Form, Input, FormInstance } from 'antd';
+import { Form, Input } from 'antd';
 import { UploadFile, UploadChangeParam } from 'antd/es/upload/interface';
+
+import { httpClient } from 'utils/axios';
 
 import { Select } from 'shared/select';
 
@@ -22,33 +24,79 @@ const importance_cause_options = [
 ];
 
 const initial = {
+  id: 'purchase-TRU-form',
   importance: 'usually',
 };
 
 // -----------------------------------------------------------------------------------------------------------------
 
 interface Props {
-  onInitForm(form: FormInstance): void;
+  getFormId(id: string): void;
 }
 
 interface Attachment {
   uuid: string;
 }
 
+type FormValues = Partial<{
+  id: string;
+  notify: string[];
+  name_full: string;
+  name_short: string;
+  importance: string;
+  importance_cause: string;
+  source_financing: number;
+  files: UploadFile<Attachment>[];
+}>;
+
 // -----------------------------------------------------------------------------------------------------------------
 
-const normFile = (event: UploadChangeParam<UploadFile<Attachment>>) =>
-  event.fileList.map(({ response, ...file }) => ({
+function getFiles(event: UploadChangeParam<UploadFile<Attachment>>) {
+  return event.fileList.map(({ response, ...file }) => ({
     ...file,
     ...response,
   }));
+}
 
-export function CreateTaskForm({ onInitForm }: Props) {
-  const [form] = Form.useForm();
+function formatNotifiers(notifiers: string[]) {
+  return notifiers.reduce(
+    (notifications: Array<{ type: string; value: string | number }>, value) => {
+      const notifier = value.match(/^[^:]+/);
+
+      if (!notifier) return notifications;
+
+      const groupId = parseInt(notifier[0], 10);
+
+      if (groupId) {
+        notifications.push({ type: 'group', value: groupId });
+      } else {
+        notifications.push({ type: 'user', value: notifier[0] });
+      }
+
+      return notifications;
+    },
+    []
+  );
+}
+
+async function createTask(values: any) {
+  return httpClient.post('/api/edm/task/', values);
+}
+
+// -----------------------------------------------------------------------------------------------------------------
+
+export function CreateTaskForm({ getFormId }: Props) {
+  const [form] = Form.useForm<FormValues>();
 
   useEffect(() => {
-    onInitForm(form);
-  }, [form, onInitForm]);
+    getFormId(initial.id);
+  }, [form, getFormId]);
+
+  const submit = () => {
+    const { notify, ...values } = form.getFieldsValue();
+
+    createTask({ ...values, notify: notify && formatNotifiers(notify) });
+  };
 
   const importanceValue = Form.useWatch('importance', form);
 
@@ -57,12 +105,16 @@ export function CreateTaskForm({ onInitForm }: Props) {
   return (
     <Form
       form={form}
-      initialValues={initial}
+      id={initial.id}
+      name={initial.id}
       layout="vertical"
       autoComplete="off"
-      name="create-task"
-      action="/api/edm/task"
+      initialValues={initial}
+      onFinish={submit}
     >
+      <Form.Item name="id" hidden>
+        <Input readOnly />
+      </Form.Item>
       <Form.Item
         label="Важность"
         name="importance"
@@ -103,7 +155,7 @@ export function CreateTaskForm({ onInitForm }: Props) {
       <Form.Item name="notify" label="Уведомлять">
         <SelectUserGroups />
       </Form.Item>
-      <Form.Item name="files" valuePropName="fileList" getValueFromEvent={normFile}>
+      <Form.Item name="files" valuePropName="fileList" getValueFromEvent={getFiles}>
         <SelectFiles />
       </Form.Item>
     </Form>
