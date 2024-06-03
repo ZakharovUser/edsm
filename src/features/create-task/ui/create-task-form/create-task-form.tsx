@@ -4,7 +4,7 @@ import { UploadFile, UploadChangeParam } from 'antd/es/upload/interface';
 
 import { httpClient } from 'utils/axios';
 
-import { Select } from 'shared/select';
+import { Select, SelectProps } from 'shared/select';
 
 import { SelectFiles } from './select-files';
 import { SelectUserGroups } from './select-user-groups';
@@ -15,44 +15,39 @@ import { SelectFinancingSources } from './select-financing-sources';
 const importance_options = [
   { label: 'Обычно', value: 'ordinary' },
   { label: 'Важно', value: 'very_important' },
-];
+] as const;
 
 const importance_cause_options = [
   { label: 'Аварийная ситуация', value: 'alarm' },
   { label: 'Ошибка планирования', value: 'error' },
   { label: 'Позднее доведение лимитов', value: 'lost_time' },
-];
-
-const initial = {
-  importance: 'ordinary',
-  route: 'Закупка ТРУ',
-  id: 'purchase-TRU-form',
-};
-
-// -----------------------------------------------------------------------------------------------------------------
-
-interface Props {
-  getFormId(id: string): void;
-}
+] as const;
 
 interface Attachment {
   uuid: string;
 }
 
+type MapOptionType<O extends Readonly<Array<{ label: string; value: string }>>> =
+  O[number]['value'];
+
 type FormValues = Partial<{
-  id: string;
+  route: string;
   notify: string[];
-  name_full: string;
-  name_short: string;
-  importance: string;
-  importance_cause: string;
-  source_financing: number;
-  files: UploadFile<Attachment>[];
+  full_name: string;
+  short_name: string;
+  finance_source: number;
+  documents: UploadFile<Attachment>[];
+  importance: MapOptionType<typeof importance_options>;
+  reason: MapOptionType<typeof importance_cause_options>;
 }>;
+
+interface Props {
+  getFormId(id: string): void;
+}
 
 // -----------------------------------------------------------------------------------------------------------------
 
-function getFiles(event: UploadChangeParam<UploadFile<Attachment>>) {
+function formatFiles(event: UploadChangeParam<UploadFile<Attachment>>) {
   return event.fileList.map(({ response, ...file }) => ({
     ...file,
     ...response,
@@ -86,80 +81,87 @@ async function createTask(values: any) {
 
 // -----------------------------------------------------------------------------------------------------------------
 
+const config: Record<keyof FormValues, { label?: string; name: keyof FormValues }> = {
+  documents: { name: 'documents' },
+  route: { label: 'Регламент', name: 'route' },
+  reason: { label: 'Причина', name: 'reason' },
+  notify: { label: 'Уведомлять', name: 'notify' },
+  importance: { label: 'Важность', name: 'importance' },
+  full_name: { label: 'Наименование (полное)', name: 'full_name' },
+  short_name: { label: 'Наименование (короткое)', name: 'short_name' },
+  finance_source: { label: 'Источник финансирования', name: 'finance_source' },
+};
+
+const initial: FormValues = {
+  importance: 'ordinary',
+  route: 'tru',
+};
+
+// -----------------------------------------------------------------------------------------------------------------
+
 export function CreateTaskForm({ getFormId }: Props) {
   const [form] = Form.useForm<FormValues>();
 
   useEffect(() => {
-    getFormId(initial.id);
-  }, [form, getFormId]);
+    getFormId(initial.route!);
+  }, [getFormId]);
 
   const submit = () => {
     const { notify, ...values } = form.getFieldsValue();
 
-    createTask({ ...values, notify: notify && formatNotifiers(notify) });
+    createTask({ ...values, notified_user_and_group: notify && formatNotifiers(notify) });
   };
 
   const importanceValue = Form.useWatch('importance', form);
 
-  const isImportant = importanceValue === 'important';
+  const isImportant = importanceValue === 'very_important';
 
   return (
     <Form
       form={form}
-      id={initial.id}
-      name={initial.id}
+      id={initial.route}
+      name={initial.route}
       layout="vertical"
       autoComplete="off"
       initialValues={initial}
       onFinish={submit}
     >
-      <Form.Item name="route" label="Регламент">
-        <Input readOnly hidden />
-      </Form.Item>
-      <Form.Item name="id" hidden>
+      <Form.Item {...config.route} hidden>
         <Input readOnly />
       </Form.Item>
       <Form.Item
-        label="Важность"
-        name="importance"
+        {...config.importance}
         rules={[{ required: true, message: 'Выберите важность задачи' }]}
       >
-        <Select options={importance_options} />
+        <Select options={importance_options as unknown as SelectProps['options']} />
       </Form.Item>
       {isImportant && (
-        <Form.Item
-          label="Причина"
-          name="reason"
-          rules={[{ required: true, message: 'Выберите причину' }]}
-        >
-          <Select options={importance_cause_options} />
+        <Form.Item {...config.reason} rules={[{ required: true, message: 'Выберите причину' }]}>
+          <Select options={importance_cause_options as unknown as SelectProps['options']} />
         </Form.Item>
       )}
       <Form.Item
-        name="short_name"
-        label="Наименование (короткое)"
+        {...config.short_name}
         rules={[{ required: true, message: 'Введите короткое наименование' }]}
       >
         <Input maxLength={40} showCount />
       </Form.Item>
       <Form.Item
-        name="full_name"
-        label="Наименование (полное)"
+        {...config.full_name}
         rules={[{ required: true, message: 'Введите полное наименование' }]}
       >
         <Input />
       </Form.Item>
       <Form.Item
-        name="finance_source"
-        label="Источник финансирования"
+        {...config.finance_source}
         rules={[{ required: true, message: 'Выберите источник финансирования' }]}
       >
         <SelectFinancingSources />
       </Form.Item>
-      <Form.Item name="notify" label="Уведомлять">
+      <Form.Item {...config.notify}>
         <SelectUserGroups />
       </Form.Item>
-      <Form.Item name="files" valuePropName="fileList" getValueFromEvent={getFiles}>
+      <Form.Item {...config.documents} valuePropName="fileList" getValueFromEvent={formatFiles}>
         <SelectFiles />
       </Form.Item>
     </Form>
