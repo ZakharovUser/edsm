@@ -14,7 +14,7 @@ export function InboxView() {
   const { data, isLoading } = useGetInbox();
   const settings = useSettingsContext();
 
-  const inbox_rows = useMemo(() => data?.map(convertTaskToRow), [data]);
+  const inbox_rows = useMemo(() => data?.map(convertTaskToRow).reverse(), [data]);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
