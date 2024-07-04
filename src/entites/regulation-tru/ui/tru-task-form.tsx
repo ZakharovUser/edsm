@@ -23,18 +23,18 @@ interface Props {
 
 type Options<T> = Array<{
   label: string;
-  name: T;
+  value: T;
 }>;
 
 const importance_options: Options<keyof typeof TaskImportance> = [
-  { label: 'Обычно', name: 'ordinary' },
-  { label: 'Важно', name: 'very_important' },
+  { label: 'Обычно', value: 'ordinary' },
+  { label: 'Важно', value: 'very_important' },
 ];
 
 const importance_cause_options: Options<keyof typeof TaskReason> = [
-  { label: 'Аварийная ситуация', name: 'alarm' },
-  { label: 'Ошибка планирования', name: 'error' },
-  { label: 'Позднее доведение лимитов', name: 'lost_time' },
+  { label: 'Аварийная ситуация', value: 'alarm' },
+  { label: 'Ошибка планирования', value: 'error' },
+  { label: 'Позднее доведение лимитов', value: 'lost_time' },
 ];
 
 type FormValues = Partial<
