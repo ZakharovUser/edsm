@@ -1,9 +1,9 @@
+import { useSettingsContext } from 'components/settings';
+
 import Box from '@mui/material/Box';
 import { alpha } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-
-import { useSettingsContext } from 'components/settings';
 
 // ----------------------------------------------------------------------
 

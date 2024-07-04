@@ -1,9 +1,12 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
+import Iconify from 'components/iconify';
 import { useForm } from 'react-hook-form';
 import { useAuthContext } from 'auth/hooks';
+import { useBoolean } from 'hooks/use-boolean';
 import { PATH_AFTER_LOGIN } from 'config-global';
 import { yupResolver } from '@hookform/resolvers/yup';
+import FormProvider, { RHFTextField } from 'components/hook-form';
 
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
@@ -16,11 +19,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { paths } from 'routes/paths';
 import { RouterLink } from 'routes/components';
 import { useRouter, useSearchParams } from 'routes/hooks';
-
-import { useBoolean } from 'hooks/use-boolean';
-
-import Iconify from 'components/iconify';
-import FormProvider, { RHFTextField } from 'components/hook-form';
 
 // ----------------------------------------------------------------------
 

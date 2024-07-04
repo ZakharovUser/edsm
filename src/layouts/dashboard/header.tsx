@@ -1,5 +1,9 @@
 import { bgBlur } from 'theme/css';
-import { CreateTask } from 'features/create-task/ui';
+import Logo from 'components/logo';
+import SvgColor from 'components/svg-color';
+import { useOffSetTop } from 'hooks/use-off-set-top';
+import { useResponsive } from 'hooks/use-responsive';
+import { useSettingsContext } from 'components/settings';
 
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
@@ -7,12 +11,7 @@ import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 
-import { useOffSetTop } from 'hooks/use-off-set-top';
-import { useResponsive } from 'hooks/use-responsive';
-
-import Logo from 'components/logo';
-import SvgColor from 'components/svg-color';
-import { useSettingsContext } from 'components/settings';
+import { CreateTask } from 'features/create-task/ui';
 
 import { NAV, HEADER } from '../config-layout';
 import SettingsButton from '../common/settings-button';

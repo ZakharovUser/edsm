@@ -1,3 +1,6 @@
+import Label from 'components/label';
+import FileThumbnail from 'components/file-thumbnail';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -8,9 +11,6 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 
 import { fToNow } from 'utils/format-time';
-
-import Label from 'components/label';
-import FileThumbnail from 'components/file-thumbnail';
 
 // ----------------------------------------------------------------------
 

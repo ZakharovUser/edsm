@@ -1,11 +1,10 @@
+import Label from 'components/label';
+import { useMockedUser } from 'hooks/use-mocked-user';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-
-import { useMockedUser } from 'hooks/use-mocked-user';
-
-import Label from 'components/label';
 
 // ----------------------------------------------------------------------
 

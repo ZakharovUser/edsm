@@ -6,8 +6,9 @@ import Popover from '@mui/material/Popover';
 import { usePathname } from 'routes/hooks';
 import { useActiveLink } from 'routes/hooks/use-active-link';
 
-import NavItem from './nav-item';
 import { NavListProps, NavSubListProps } from '../types';
+
+import NavItem from './nav-item';
 
 // ----------------------------------------------------------------------
 

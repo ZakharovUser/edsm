@@ -1,14 +1,21 @@
 import { useEffect } from 'react';
-import { Form, Input } from 'antd';
-import { UploadFile, UploadChangeParam } from 'antd/es/upload/interface';
-
-import { httpClient } from 'utils/axios';
+import { Form, Input, UploadFile } from 'antd';
 
 import { Select, SelectProps } from 'shared/select';
+import { Attachment } from 'shared/attachments/model';
+
+import { formatFiles, formatNotifiers } from '../helpers';
 
 import { SelectFiles } from './select-files';
 import { SelectUserGroups } from './select-user-groups';
 import { SelectFinancingSources } from './select-financing-sources';
+
+// -----------------------------------------------------------------------------------------------------------------
+
+interface Props {
+  getFormId(id: string): void;
+  onSubmit(values: unknown): void;
+}
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -23,10 +30,6 @@ const importance_cause_options = [
   { label: 'Позднее доведение лимитов', value: 'lost_time' },
 ] as const;
 
-interface Attachment {
-  uuid: string;
-}
-
 type MapOptionType<O extends Readonly<Array<{ label: string; value: string }>>> =
   O[number]['value'];
 
@@ -40,46 +43,6 @@ type FormValues = Partial<{
   importance: MapOptionType<typeof importance_options>;
   reason: MapOptionType<typeof importance_cause_options>;
 }>;
-
-interface Props {
-  getFormId(id: string): void;
-}
-
-// -----------------------------------------------------------------------------------------------------------------
-
-function formatFiles(event: UploadChangeParam<UploadFile<Attachment>>) {
-  return event.fileList.map(({ response, ...file }) => ({
-    ...file,
-    ...response,
-  }));
-}
-
-function formatNotifiers(notifiers: string[]) {
-  return notifiers.reduce(
-    (notifications: Array<{ type: string; value: string | number }>, value) => {
-      const notifier = value.match(/^[^:]+/);
-
-      if (!notifier) return notifications;
-
-      const groupId = parseInt(notifier[0], 10);
-
-      if (groupId) {
-        notifications.push({ type: 'group', value: groupId });
-      } else {
-        notifications.push({ type: 'user', value: notifier[0] });
-      }
-
-      return notifications;
-    },
-    []
-  );
-}
-
-async function createTask(values: any) {
-  return httpClient.post('/api/edm/task/', values);
-}
-
-// -----------------------------------------------------------------------------------------------------------------
 
 const config: Record<keyof FormValues, { label?: string; name: keyof FormValues }> = {
   documents: { name: 'documents' },
@@ -99,7 +62,7 @@ const initial: FormValues = {
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export function CreateTaskForm({ getFormId }: Props) {
+export function TruTaskForm({ getFormId, onSubmit }: Props) {
   const [form] = Form.useForm<FormValues>();
 
   useEffect(() => {
@@ -109,7 +72,7 @@ export function CreateTaskForm({ getFormId }: Props) {
   const submit = () => {
     const { notify, ...values } = form.getFieldsValue();
 
-    createTask({ ...values, notified_user_and_group: notify && formatNotifiers(notify) });
+    onSubmit({ ...values, notified_user_and_group: notify && formatNotifiers(notify) });
   };
 
   const importanceValue = Form.useWatch('importance', form);

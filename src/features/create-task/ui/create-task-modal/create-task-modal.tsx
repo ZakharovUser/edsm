@@ -4,7 +4,10 @@ import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import { DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
-import { CreateTaskForm } from '../create-task-form/create-task-form';
+import { createTask } from 'features/create-task/api';
+
+import { TruTaskForm } from 'entites/regulation-tru/ui';
+
 import { CreateTaskRegulations } from '../create-task-regulations/create-task-regulations';
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -29,7 +32,7 @@ export function CreateTaskModal({ open, onClose }: Props) {
             {
               id: 100,
               label: 'Закупта ТРУ',
-              panel: <CreateTaskForm getFormId={setFormId} />,
+              panel: <TruTaskForm getFormId={setFormId} onSubmit={createTask} />,
             },
           ]}
         />

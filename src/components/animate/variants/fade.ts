@@ -1,4 +1,5 @@
 import { VariantsType } from '../types';
+
 import { varTranExit, varTranEnter } from './transition';
 
 // ----------------------------------------------------------------------

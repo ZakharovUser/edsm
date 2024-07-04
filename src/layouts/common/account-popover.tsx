@@ -1,5 +1,8 @@
 import { m } from 'framer-motion';
 import { useAuthContext } from 'auth/hooks';
+import { varHover } from 'components/animate';
+import { useMockedUser } from 'hooks/use-mocked-user';
+import CustomPopover, { usePopover } from 'components/custom-popover';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -11,11 +14,6 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
 import { useRouter } from 'routes/hooks';
-
-import { useMockedUser } from 'hooks/use-mocked-user';
-
-import { varHover } from 'components/animate';
-import CustomPopover, { usePopover } from 'components/custom-popover';
 
 // ----------------------------------------------------------------------
 

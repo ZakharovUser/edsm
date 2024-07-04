@@ -1,11 +1,9 @@
 import { PropsWithChildren } from 'react';
-
-import Box from '@mui/material/Box';
-
 import { useBoolean } from 'hooks/use-boolean';
 import { useResponsive } from 'hooks/use-responsive';
-
 import { useSettingsContext } from 'components/settings';
+
+import Box from '@mui/material/Box';
 
 import Main from './main';
 import Header from './header';

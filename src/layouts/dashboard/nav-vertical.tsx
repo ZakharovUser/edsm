@@ -1,4 +1,9 @@
 import { useEffect } from 'react';
+import Logo from 'components/logo';
+import Scrollbar from 'components/scrollbar';
+import { useResponsive } from 'hooks/use-responsive';
+import { useMockedUser } from 'hooks/use-mocked-user';
+import { NavSectionVertical } from 'components/nav-section';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -6,13 +11,6 @@ import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
 
 import { usePathname } from 'routes/hooks';
-
-import { useResponsive } from 'hooks/use-responsive';
-import { useMockedUser } from 'hooks/use-mocked-user';
-
-import Logo from 'components/logo';
-import Scrollbar from 'components/scrollbar';
-import { NavSectionVertical } from 'components/nav-section';
 
 import { useNavData } from 'shared/navigation/hooks';
 

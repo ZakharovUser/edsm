@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 import merge from 'lodash/merge';
+import { useSettingsContext } from 'components/settings';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeOptions, ThemeProvider } from '@mui/material/styles';
-
-import { useSettingsContext } from 'components/settings';
 
 // system
 import { palette } from './palette';

@@ -4,8 +4,9 @@ import Stack from '@mui/material/Stack';
 import Collapse from '@mui/material/Collapse';
 import ListSubheader from '@mui/material/ListSubheader';
 
-import NavList from './nav-list';
 import { NavProps, NavGroupProps } from '../types';
+
+import NavList from './nav-list';
 
 // ----------------------------------------------------------------------
 

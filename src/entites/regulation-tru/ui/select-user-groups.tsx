@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { TreeSelect, TreeSelectProps } from 'antd';
+
 import { useUserGroups } from 'entites/contacts/hooks';
 import { ContactGroupModel } from 'entites/contacts/models';
 

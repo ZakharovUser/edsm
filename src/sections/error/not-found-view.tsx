@@ -1,12 +1,11 @@
 import { m } from 'framer-motion';
 import { PageNotFoundIllustration } from 'assets/illustrations';
+import { varBounce, MotionContainer } from 'components/animate';
 
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import { RouterLink } from 'routes/components';
-
-import { varBounce, MotionContainer } from 'components/animate';
 
 // ----------------------------------------------------------------------
 

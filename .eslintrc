@@ -132,17 +132,14 @@
           ],
           "custom-mui",
           "custom-routes",
-          "custom-hooks",
           "custom-utils",
-          "internal",
-          "custom-components",
           "custom-sections",
+          "custom-features",
+          "custom-entites",
           "custom-shared",
-          [
-            "parent",
-            "sibling",
-            "index"
-          ],
+          "parent",
+          "sibling",
+          "index",
           "object",
           "unknown"
         ],
@@ -150,9 +147,9 @@
           "value": {
             "custom-mui": "@mui/**",
             "custom-routes": "routes/**",
-            "custom-hooks": "hooks/**",
+            "custom-entites": "entites/**",
             "custom-utils": "utils/**",
-            "custom-components": "components/**",
+            "custom-features": "features/**",
             "custom-sections": "sections/**",
             "custom-shared": "shared/**"
           }

@@ -1,14 +1,12 @@
+import Logo from 'components/logo';
 import { bgGradient } from 'theme/css';
 import { PropsWithChildren } from 'react';
+import { useResponsive } from 'hooks/use-responsive';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { alpha, useTheme } from '@mui/material/styles';
-
-import { useResponsive } from 'hooks/use-responsive';
-
-import Logo from 'components/logo';
 
 // ----------------------------------------------------------------------
 

@@ -1,4 +1,6 @@
 import { paper } from 'theme/css';
+import Iconify from 'components/iconify';
+import Scrollbar from 'components/scrollbar';
 
 import Stack from '@mui/material/Stack';
 import Badge from '@mui/material/Badge';
@@ -9,14 +11,12 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
 
-import Iconify from 'components/iconify';
-import Scrollbar from 'components/scrollbar';
+import { useSettingsContext } from '../context';
 
 import BaseOptions from './base-option';
 import LayoutOptions from './layout-options';
 import PresetsOptions from './presets-options';
 import StretchOptions from './stretch-options';
-import { useSettingsContext } from '../context';
 import FullScreenOption from './fullscreen-option';
 
 // ----------------------------------------------------------------------

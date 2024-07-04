@@ -1,4 +1,6 @@
 import { bgBlur } from 'theme/css';
+import Logo from 'components/logo';
+import { useOffSetTop } from 'hooks/use-off-set-top';
 
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
@@ -6,11 +8,8 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 
-import { useOffSetTop } from 'hooks/use-off-set-top';
-
-import Logo from 'components/logo';
-
 import { HEADER } from '../config-layout';
+
 import HeaderShadow from './header-shadow';
 import SettingsButton from './settings-button';
 

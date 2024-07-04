@@ -1,6 +1,12 @@
 import { m } from 'framer-motion';
+import Label from 'components/label';
 import { _notifications } from '_mock';
+import Iconify from 'components/iconify';
+import Scrollbar from 'components/scrollbar';
 import { useState, useCallback } from 'react';
+import { varHover } from 'components/animate';
+import { useBoolean } from 'hooks/use-boolean';
+import { useResponsive } from 'hooks/use-responsive';
 
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -14,14 +20,6 @@ import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-
-import { useBoolean } from 'hooks/use-boolean';
-import { useResponsive } from 'hooks/use-responsive';
-
-import Label from 'components/label';
-import Iconify from 'components/iconify';
-import Scrollbar from 'components/scrollbar';
-import { varHover } from 'components/animate';
 
 import NotificationItem from './notification-item';
 

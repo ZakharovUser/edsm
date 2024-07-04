@@ -1,14 +1,12 @@
 import { memo } from 'react';
 import { bgBlur } from 'theme/css';
+import Scrollbar from 'components/scrollbar';
+import { useMockedUser } from 'hooks/use-mocked-user';
+import { NavSectionHorizontal } from 'components/nav-section';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
-
-import { useMockedUser } from 'hooks/use-mocked-user';
-
-import Scrollbar from 'components/scrollbar';
-import { NavSectionHorizontal } from 'components/nav-section';
 
 import { useNavData } from 'shared/navigation/hooks';
 

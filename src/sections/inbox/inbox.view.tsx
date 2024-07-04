@@ -1,9 +1,8 @@
 import { _inbox_rows } from '_mock';
+import { useSettingsContext } from 'components/settings';
 
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-
-import { useSettingsContext } from 'components/settings';
 
 import { DataGrid } from 'shared/data-grid/ui';
 import { NAVIGATION_CONFIG } from 'shared/navigation/config';

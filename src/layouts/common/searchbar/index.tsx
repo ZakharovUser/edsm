@@ -1,6 +1,13 @@
+import Label from 'components/label';
+import Iconify from 'components/iconify';
+import Scrollbar from 'components/scrollbar';
+import { useBoolean } from 'hooks/use-boolean';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 import { memo, useState, useCallback } from 'react';
+import { useResponsive } from 'hooks/use-responsive';
+import SearchNotFound from 'components/search-not-found';
+import { useEventListener } from 'hooks/use-event-listener';
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -12,15 +19,6 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Dialog, { dialogClasses } from '@mui/material/Dialog';
 
 import { useRouter } from 'routes/hooks';
-
-import { useBoolean } from 'hooks/use-boolean';
-import { useResponsive } from 'hooks/use-responsive';
-import { useEventListener } from 'hooks/use-event-listener';
-
-import Label from 'components/label';
-import Iconify from 'components/iconify';
-import Scrollbar from 'components/scrollbar';
-import SearchNotFound from 'components/search-not-found';
 
 import { useNavData } from 'shared/navigation/hooks';
 

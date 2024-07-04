@@ -1,8 +1,7 @@
+import { SplashScreen } from 'components/loading-screen';
 import { useEffect, useCallback, PropsWithChildren } from 'react';
 
 import { useRouter, useSearchParams } from 'routes/hooks';
-
-import { SplashScreen } from 'components/loading-screen';
 
 import { useAuthContext } from '../hooks';
 

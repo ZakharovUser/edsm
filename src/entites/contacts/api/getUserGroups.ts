@@ -1,6 +1,6 @@
-import { ContactGroupModel } from 'entites/contacts/models';
-
 import { httpClient } from 'utils/axios';
+
+import { ContactGroupModel } from 'entites/contacts/models';
 
 interface Response {
   rows: ContactGroupModel[];

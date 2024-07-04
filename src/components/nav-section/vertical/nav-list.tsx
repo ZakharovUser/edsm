@@ -5,8 +5,9 @@ import Collapse from '@mui/material/Collapse';
 import { usePathname } from 'routes/hooks';
 import { useActiveLink } from 'routes/hooks/use-active-link';
 
-import NavItem from './nav-item';
 import { NavListProps, NavSubListProps } from '../types';
+
+import NavItem from './nav-item';
 
 // ----------------------------------------------------------------------
 

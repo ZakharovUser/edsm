@@ -1,9 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
+import { SplashScreen } from 'components/loading-screen';
 
 import { paths } from 'routes/paths';
 import { useRouter } from 'routes/hooks';
-
-import { SplashScreen } from 'components/loading-screen';
 
 import { useAuthContext } from '../hooks';
 

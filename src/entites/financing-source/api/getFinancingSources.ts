@@ -1,6 +1,6 @@
-import { FinancingSourceModel } from 'entites/financing-source/models';
-
 import { httpClient } from 'utils/axios';
+
+import { FinancingSourceModel } from 'entites/financing-source/models';
 
 interface Response {
   rows: FinancingSourceModel[];
