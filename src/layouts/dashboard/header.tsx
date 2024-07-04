@@ -10,6 +10,9 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+
+import { useTitle } from 'routes/hooks';
 
 import { CreateTask } from 'features/create-task/ui';
 
@@ -26,6 +29,8 @@ type Props = {
 };
 
 export default function Header({ onOpenNav }: Props) {
+  const header = useTitle();
+
   const theme = useTheme();
 
   const settings = useSettingsContext();
@@ -81,6 +86,12 @@ export default function Header({ onOpenNav }: Props) {
           <IconButton onClick={onOpenNav} sx={{ mr: 2 }}>
             <SvgColor src="/assets/icons/navbar/ic_menu_item.svg" />
           </IconButton>
+        )}
+
+        {header && (
+          <Typography variant="h5" sx={{ mr: 4 }}>
+            {header}
+          </Typography>
         )}
 
         <CreateTask />
