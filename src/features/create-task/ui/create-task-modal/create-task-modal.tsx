@@ -5,9 +5,10 @@ import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import { DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
-import { createTask } from 'features/create-task/api';
-
 import { TruTaskForm } from 'entites/regulation-tru/ui';
+
+import { useCreateTaskQuery } from 'shared/task/hooks';
+import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
 import { CreateTaskRegulations } from '../create-task-regulations/create-task-regulations';
 
@@ -18,17 +19,21 @@ interface Props {
   onClose: VoidFunction;
 }
 
-// -----------------------------------------------------------------------------------------------------------------
-
 export function CreateTaskModal({ open, onClose }: Props) {
   const navigate = useNavigate();
 
+  const { mutate, isPending } = useCreateTaskQuery();
+
   const [formId, setFormId] = useState<string | undefined>();
 
-  const onSubmit = async (values: unknown) =>
-    createTask(values)
-      .then(onClose)
-      .then(() => navigate('/inbox'));
+  const onSubmit = async (values: unknown) => {
+    mutate(values, {
+      onSuccess: () => {
+        onClose();
+        navigate(`/${NAVIGATION_CONFIG.INBOX.path}`);
+      },
+    });
+  };
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -46,10 +51,16 @@ export function CreateTaskModal({ open, onClose }: Props) {
         />
       </DialogContent>
       <DialogActions>
-        <Button form={formId} type="reset" autoFocus onClick={onClose}>
+        <Button form={formId} type="reset" autoFocus onClick={onClose} disabled={isPending}>
           Отменить
         </Button>
-        <Button form={formId} type="submit" variant="contained" color="primary">
+        <Button
+          form={formId}
+          type="submit"
+          color="primary"
+          variant="contained"
+          disabled={isPending}
+        >
           Создать
         </Button>
       </DialogActions>
