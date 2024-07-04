@@ -1,1 +1,1 @@
-export { type Attachment } from './attachment.type';
+export type { Attachment, UploadAttachment } from './attachment.type';

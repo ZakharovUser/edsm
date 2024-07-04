@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { Form, Input, UploadFile } from 'antd';
 
-import { Select, SelectProps } from 'shared/select';
-import { Attachment } from 'shared/attachments/model';
+import { Select } from 'shared/select';
+import { UploadAttachment } from 'shared/attachments/model';
+import { Task, TaskReason, TaskImportance } from 'shared/task/model';
 
 import { formatFiles, formatNotifiers } from '../helpers';
 
@@ -20,30 +21,28 @@ interface Props {
 
 // -----------------------------------------------------------------------------------------------------------------
 
-const importance_options = [
-  { label: 'Обычно', value: 'ordinary' },
-  { label: 'Важно', value: 'very_important' },
-] as const;
-
-const importance_cause_options = [
-  { label: 'Аварийная ситуация', value: 'alarm' },
-  { label: 'Ошибка планирования', value: 'error' },
-  { label: 'Позднее доведение лимитов', value: 'lost_time' },
-] as const;
-
-type MapOptionType<O extends Readonly<Array<{ label: string; value: string }>>> =
-  O[number]['value'];
-
-type FormValues = Partial<{
-  route: string;
-  notify: string[];
-  full_name: string;
-  short_name: string;
-  finance_source: number;
-  documents: UploadFile<Attachment>[];
-  importance: MapOptionType<typeof importance_options>;
-  reason: MapOptionType<typeof importance_cause_options>;
+type Options<T> = Array<{
+  label: string;
+  name: T;
 }>;
+
+const importance_options: Options<keyof typeof TaskImportance> = [
+  { label: 'Обычно', name: 'ordinary' },
+  { label: 'Важно', name: 'very_important' },
+];
+
+const importance_cause_options: Options<keyof typeof TaskReason> = [
+  { label: 'Аварийная ситуация', name: 'alarm' },
+  { label: 'Ошибка планирования', name: 'error' },
+  { label: 'Позднее доведение лимитов', name: 'lost_time' },
+];
+
+type FormValues = Partial<
+  Omit<Task, 'documents' | 'notified_user_and_group' | 'task_number' | 'creation_date'> & {
+    documents: UploadFile<UploadAttachment>[];
+    notify: string[];
+  }
+>;
 
 const config: Record<keyof FormValues, { label?: string; name: keyof FormValues }> = {
   documents: { name: 'documents' },
@@ -99,11 +98,11 @@ export function TruTaskForm({ getFormId, onSubmit, onError }: Props) {
         {...config.importance}
         rules={[{ required: true, message: 'Выберите важность задачи' }]}
       >
-        <Select options={importance_options as unknown as SelectProps['options']} />
+        <Select options={importance_options} />
       </Form.Item>
       {isImportant && (
         <Form.Item {...config.reason} rules={[{ required: true, message: 'Выберите причину' }]}>
-          <Select options={importance_cause_options as unknown as SelectProps['options']} />
+          <Select options={importance_cause_options} />
         </Form.Item>
       )}
       <Form.Item

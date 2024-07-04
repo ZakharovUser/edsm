@@ -1,16 +1,23 @@
-import { _inbox_rows } from '_mock';
+import { useMemo } from 'react';
 import { useSettingsContext } from 'components/settings';
 
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
-import { DataGrid } from 'shared/data-grid/ui';
+import { useGetInbox } from 'sections/inbox/hooks';
+
+import { InboxDataGrid } from 'entites/inbox/ui';
+import { convertTaskToRow } from 'entites/inbox/helpers';
+
 import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
 // ----------------------------------------------------------------------
 
 export function InboxView() {
+  const { data, isLoading } = useGetInbox();
   const settings = useSettingsContext();
+
+  const inbox_rows = useMemo(() => data?.map(convertTaskToRow), [data]);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
@@ -18,7 +25,7 @@ export function InboxView() {
         {NAVIGATION_CONFIG.INBOX.title}
       </Typography>
 
-      <DataGrid rows={_inbox_rows} />
+      <InboxDataGrid rows={inbox_rows || []} loading={isLoading} />
     </Container>
   );
 }

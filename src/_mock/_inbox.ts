@@ -1,4 +1,6 @@
-import { Rows } from 'shared/data-grid/types';
+import { Rows } from 'entites/inbox/model';
+
+import { TaskRoute, TaskImportance } from 'shared/task/model';
 
 import { _mock } from './_mock';
 import { _contacts } from './_others';
@@ -7,9 +9,9 @@ export const _inbox_rows: Rows = [
   {
     id: '2024/1',
     name: _mock.postTitle(0),
-    rule: 'Правило 1',
-    author: _contacts[0],
-    importance: 'Обычно',
+    rule: TaskRoute.tru,
+    author: _contacts[0].firstName,
+    importance: TaskImportance.very_important,
     department: 'Отдел 1',
     receipt_date: new Date('2024-01-01'),
     creation_date: new Date('2024-01-02'),
@@ -18,9 +20,9 @@ export const _inbox_rows: Rows = [
   {
     id: '2024/2',
     name: _mock.postTitle(3),
-    rule: 'Правило 2',
-    author: _contacts[3],
-    importance: 'Важно',
+    rule: TaskRoute.tru,
+    author: _contacts[3].firstName,
+    importance: TaskImportance.very_important,
     department: 'Отдел 2',
     receipt_date: new Date('2024-01-04'),
     creation_date: new Date('2024-01-05'),
@@ -29,9 +31,9 @@ export const _inbox_rows: Rows = [
   {
     id: '2024/3',
     name: _mock.postTitle(6),
-    rule: 'Правило 3',
-    author: _contacts[6],
-    importance: 'Обычно',
+    rule: TaskRoute.tru,
+    author: _contacts[6].firstName,
+    importance: TaskImportance.ordinary,
     department: 'Отдел 3',
     receipt_date: new Date('2024-01-07'),
     creation_date: new Date('2024-01-08'),
@@ -40,9 +42,9 @@ export const _inbox_rows: Rows = [
   {
     id: '2024/4',
     name: _mock.postTitle(2),
-    rule: 'Правило 4',
-    author: _contacts[2],
-    importance: 'Важно',
+    rule: TaskRoute.tru,
+    author: _contacts[2].firstName,
+    importance: TaskImportance.ordinary,
     department: 'Отдел 4',
     receipt_date: new Date('2024-01-10'),
     creation_date: new Date('2024-01-11'),
@@ -51,9 +53,9 @@ export const _inbox_rows: Rows = [
   {
     id: '2024/5',
     name: _mock.postTitle(9),
-    rule: 'Правило 5',
-    author: _contacts[9],
-    importance: 'Обычно',
+    rule: TaskRoute.tru,
+    author: _contacts[9].firstName,
+    importance: TaskImportance.ordinary,
     department: 'Отдел 5',
     receipt_date: new Date('2024-01-13'),
     creation_date: new Date('2024-01-14'),
