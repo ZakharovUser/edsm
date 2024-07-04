@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
@@ -20,7 +21,14 @@ interface Props {
 // -----------------------------------------------------------------------------------------------------------------
 
 export function CreateTaskModal({ open, onClose }: Props) {
+  const navigate = useNavigate();
+
   const [formId, setFormId] = useState<string | undefined>();
+
+  const onSubmit = async (values: unknown) =>
+    createTask(values)
+      .then(onClose)
+      .then(() => navigate('/inbox'));
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -32,7 +40,7 @@ export function CreateTaskModal({ open, onClose }: Props) {
             {
               id: 100,
               label: 'Закупта ТРУ',
-              panel: <TruTaskForm getFormId={setFormId} onSubmit={createTask} />,
+              panel: <TruTaskForm getFormId={setFormId} onSubmit={onSubmit} />,
             },
           ]}
         />

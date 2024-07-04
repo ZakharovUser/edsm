@@ -14,7 +14,8 @@ import { SelectFinancingSources } from './select-financing-sources';
 
 interface Props {
   getFormId(id: string): void;
-  onSubmit(values: unknown): void;
+  onSubmit(values: unknown): Promise<unknown>;
+  onError?: (error: unknown) => void;
 }
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -62,17 +63,19 @@ const initial: FormValues = {
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export function TruTaskForm({ getFormId, onSubmit }: Props) {
+export function TruTaskForm({ getFormId, onSubmit, onError }: Props) {
   const [form] = Form.useForm<FormValues>();
 
   useEffect(() => {
-    getFormId(initial.route!);
+    getFormId(initial.route as string);
   }, [getFormId]);
 
   const submit = () => {
     const { notify, ...values } = form.getFieldsValue();
 
-    onSubmit({ ...values, notified_user_and_group: notify && formatNotifiers(notify) });
+    onSubmit({ ...values, notified_user_and_group: notify && formatNotifiers(notify) })
+      .then(() => form.resetFields())
+      .catch((err) => onError?.(err) || alert(err));
   };
 
   const importanceValue = Form.useWatch('importance', form);
