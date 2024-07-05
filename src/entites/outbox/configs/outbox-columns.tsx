@@ -1,6 +1,6 @@
 import { Chip } from '@mui/material';
 
-import { Cols } from 'entites/inbox/model';
+import { Cols } from 'entites/outbox/model';
 
 import { TaskImportance } from 'shared/task/model';
 
@@ -16,7 +16,7 @@ export const columns: Cols = [
     field: 'importance',
     headerName: 'Важность',
     flex: 0.5,
-    sortable: false,
+    sortable: true,
     renderCell: (params) => {
       const label: TaskImportance = params.value;
       const color = label === TaskImportance.ordinary ? 'success' : 'error';

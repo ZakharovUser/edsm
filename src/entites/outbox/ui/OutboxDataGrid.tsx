@@ -1,13 +1,13 @@
 import { DataGridProps } from '@mui/x-data-grid';
 
-import { columns } from 'entites/inbox/configs';
+import { columns } from 'entites/outbox/configs';
 
 import { DataGrid } from 'shared/data-grid/ui';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export type InboxDataGridProps = Omit<DataGridProps, 'columns'>;
+export type OutboxDataGridProps = Omit<DataGridProps, 'columns'>;
 
-export function InboxDataGrid(props: InboxDataGridProps) {
+export function OutboxDataGrid(props: OutboxDataGridProps) {
   return <DataGrid columns={columns} {...props} />;
 }

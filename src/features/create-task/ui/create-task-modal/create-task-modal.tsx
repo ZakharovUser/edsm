@@ -30,7 +30,7 @@ export function CreateTaskModal({ open, onClose }: Props) {
     mutate(values, {
       onSuccess: () => {
         onClose();
-        navigate(`/${NAVIGATION_CONFIG.INBOX.path}`);
+        navigate(`/${NAVIGATION_CONFIG.OUTBOX.path}`);
       },
     });
   };

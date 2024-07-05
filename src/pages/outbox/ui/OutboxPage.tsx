@@ -1,19 +1,19 @@
 import { Helmet } from 'react-helmet-async';
 
-import { InboxView } from 'sections/inbox';
+import { OutboxView } from 'sections/outbox';
 
 import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
 // ----------------------------------------------------------------------
 
-export default function InboxPage() {
+export default function OutboxPage() {
   return (
     <>
       <Helmet>
         <title> {NAVIGATION_CONFIG.INBOX.title} </title>
       </Helmet>
 
-      <InboxView />
+      <OutboxView />
     </>
   );
 }

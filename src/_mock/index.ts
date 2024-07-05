@@ -9,7 +9,7 @@ export * from './_tour';
 export * from './_blog';
 export * from './_files';
 export * from './_order';
-export * from './_inbox';
+export * from '_mock/_outbox';
 export * from './_others';
 export * from './_invoice';
 export * from './_product';

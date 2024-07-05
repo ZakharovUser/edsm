@@ -6,6 +6,6 @@ interface Response {
   rows: Array<Task>;
 }
 
-export async function getInbox() {
+export async function getOutbox() {
   return httpClient.get<Response>('/api/edm/task/').then((res) => res.data.rows);
 }

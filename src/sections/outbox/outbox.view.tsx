@@ -3,22 +3,22 @@ import { useSettingsContext } from 'components/settings';
 
 import Container from '@mui/material/Container';
 
-import { useGetInbox } from 'sections/inbox/hooks';
+import { useGetOutbox } from 'sections/outbox/hooks';
 
-import { InboxDataGrid } from 'entites/inbox/ui';
-import { convertTaskToRow } from 'entites/inbox/helpers';
+import { OutboxDataGrid } from 'entites/outbox/ui';
+import { convertTaskToRow } from 'entites/outbox/helpers';
 
 // ----------------------------------------------------------------------
 
-export function InboxView() {
-  const { data, isLoading } = useGetInbox();
+export function OutboxView() {
+  const { data, isLoading } = useGetOutbox();
   const settings = useSettingsContext();
 
   const inbox_rows = useMemo(() => data?.map(convertTaskToRow).reverse(), [data]);
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
-      <InboxDataGrid rows={inbox_rows || []} loading={isLoading} />
+      <OutboxDataGrid rows={inbox_rows || []} loading={isLoading} />
     </Container>
   );
 }

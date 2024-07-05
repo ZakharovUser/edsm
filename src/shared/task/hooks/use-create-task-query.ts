@@ -9,6 +9,6 @@ export function useCreateTaskQuery() {
 
   return useMutation({
     mutationFn: createTask,
-    onSuccess: () => client.invalidateQueries({ queryKey: ['inbox'] }),
+    onSuccess: () => client.invalidateQueries({ queryKey: ['outbox'] }),
   });
 }
