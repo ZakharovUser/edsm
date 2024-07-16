@@ -10,7 +10,7 @@ export default function OutboxPage() {
   return (
     <>
       <Helmet>
-        <title> {NAVIGATION_CONFIG.INBOX.title} </title>
+        <title> {NAVIGATION_CONFIG.OUTBOX.title} </title>
       </Helmet>
 
       <OutboxView />
