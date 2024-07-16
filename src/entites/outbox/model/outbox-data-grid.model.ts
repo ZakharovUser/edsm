@@ -5,15 +5,15 @@ import { TaskRoute, TaskImportance } from 'shared/task/model';
 // -----------------------------------------------------------------------------------------------------------------
 
 export type Row = {
-  id: number | string;
   name: string;
   author: string;
   rule: TaskRoute;
-  importance: TaskImportance;
   department: string;
-  receipt_date: Date;
-  creation_date: Date;
-  completion_date: Date;
+  id: number | string;
+  receipt_date: string;
+  creation_date: string;
+  completion_date: string;
+  importance: TaskImportance;
 };
 
 export type Rows = Row[];
