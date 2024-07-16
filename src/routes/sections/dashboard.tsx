@@ -1,5 +1,5 @@
-import { lazy, Suspense } from 'react';
 import { AuthGuard } from 'auth/guard';
+import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import DashboardLayout from 'layouts/dashboard';
 import { LoadingScreen } from 'components/loading-screen';
@@ -15,6 +15,14 @@ const PageFour = lazy(() => import('pages/dashboard/four'));
 
 // ----------------------------------------------------------------------
 
+export const outboxRoutes = [
+  {
+    path: NAVIGATION_CONFIG.OUTBOX.path,
+    element: <OutboxPage />,
+    children: [{ path: ':taskId' }],
+  },
+];
+
 export const dashboardRoutes = [
   {
     element: (
@@ -28,7 +36,9 @@ export const dashboardRoutes = [
     ),
     children: [
       { path: NAVIGATION_CONFIG.INBOX.path, element: <PageTwo /> },
-      { path: NAVIGATION_CONFIG.OUTBOX.path, element: <OutboxPage /> },
+
+      ...outboxRoutes,
+
       { path: NAVIGATION_CONFIG.DRAFTS.path, element: <PageThree /> },
       { path: NAVIGATION_CONFIG.REPLACEMENT.path, element: <PageFour /> },
     ],
