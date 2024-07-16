@@ -27,6 +27,9 @@ export function dataGrid(theme: Theme) {
         },
         cell: {
           borderBottom: `1px dashed ${theme.palette.divider}`,
+          '&:focus': {
+            outline: 'none',
+          },
         },
         selectedRowCount: {
           whiteSpace: 'nowrap',
