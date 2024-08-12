@@ -1,4 +1,4 @@
-import { Rows } from 'entites/outbox/model';
+import { Rows } from 'sections/outbox/model';
 
 import { TaskRoute, TaskImportance } from 'shared/task/model';
 

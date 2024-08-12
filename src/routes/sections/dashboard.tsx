@@ -19,7 +19,6 @@ export const outboxRoutes = [
   {
     path: NAVIGATION_CONFIG.OUTBOX.path,
     element: <OutboxPage />,
-    children: [{ path: ':taskId' }],
   },
 ];
 

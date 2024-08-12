@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { getOutbox } from 'sections/outbox/api';
+import { getOutbox } from '../api';
 
 export function useGetOutbox() {
   return useQuery({

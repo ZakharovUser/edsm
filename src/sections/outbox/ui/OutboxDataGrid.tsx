@@ -1,8 +1,8 @@
 import { DataGridProps } from '@mui/x-data-grid';
 
-import { columns } from 'entites/outbox/configs';
-
 import { DataGrid } from 'shared/data-grid/ui';
+
+import { columns } from '../configs';
 
 // -----------------------------------------------------------------------------------------------------------------
 

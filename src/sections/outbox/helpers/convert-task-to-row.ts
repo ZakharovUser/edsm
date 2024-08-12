@@ -1,8 +1,10 @@
 import { format } from 'date-fns';
 
-import { Row } from 'entites/outbox/model';
-
 import { Task, TaskRoute, TaskImportance } from 'shared/task/model';
+
+import { Row } from '../model';
+
+// -----------------------------------------------------------------------------------------------------------------
 
 export function convertTaskToRow(task: Task): Row {
   return {

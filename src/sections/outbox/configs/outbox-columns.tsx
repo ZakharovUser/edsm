@@ -1,8 +1,10 @@
 import { Chip } from '@mui/material';
 
-import { Cols } from 'entites/outbox/model';
-
 import { TaskImportance } from 'shared/task/model';
+
+import { Cols } from '../model';
+
+// -----------------------------------------------------------------------------------------------------------------
 
 export const columns: Cols = [
   {
