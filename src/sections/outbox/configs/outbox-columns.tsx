@@ -1,6 +1,6 @@
 import { Chip } from '@mui/material';
 
-import { TaskImportance } from 'shared/task/model';
+import { TaskImportance } from 'entites/task/model';
 
 import { Cols } from '../model';
 

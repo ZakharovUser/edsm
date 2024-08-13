@@ -4,18 +4,32 @@ import { useSettingsContext } from 'components/settings';
 
 import Container from '@mui/material/Container';
 
+import { convertTaskToRow } from 'sections/outbox/helpers';
+
+import { useTaskRoutesQuery } from 'entites/task/hooks';
+
 import { useGetOutbox } from './hooks';
-import { convertTaskToRow } from './helpers';
 import { OutboxDrawer, OutboxDataGrid } from './ui';
 
 // ----------------------------------------------------------------------
 
 export function OutboxView() {
   const settings = useSettingsContext();
-  const { data, isLoading } = useGetOutbox();
+
+  const { data: routesMap } = useTaskRoutesQuery();
+  const { data: taskList, isLoading } = useGetOutbox();
+
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const inbox_rows = useMemo(() => data?.map(convertTaskToRow).reverse(), [data]);
+  const inbox_rows = useMemo(
+    () =>
+      taskList?.map((taskItem) =>
+        convertTaskToRow(taskItem, {
+          rule: (task) => routesMap?.[task.route],
+        })
+      ),
+    [taskList, routesMap]
+  );
 
   const taskId = searchParams.get('task');
 

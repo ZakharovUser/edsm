@@ -1,23 +1,27 @@
 import { format } from 'date-fns';
 
-import { Task, TaskRoute, TaskImportance } from 'shared/task/model';
+import { Task, TaskImportance } from 'entites/task/model';
 
 import { Row } from '../model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export function convertTaskToRow(task: Task): Row {
+type Formatters = {
+  [key in keyof Row]?: (task: Task) => Row[key] | undefined;
+};
+
+export function convertTaskToRow(task: Task, formatters?: Formatters): Row {
   return {
-    id: task.task_number,
-    name: task.short_name,
-    rule: TaskRoute[task.route],
-    importance: TaskImportance[task.importance],
-    creation_date: format(new Date(task.creation_date), 'P'),
+    id: formatters?.id?.(task) || task.task_number,
+    name: formatters?.name?.(task) || task.short_name,
+    rule: formatters?.rule?.(task) || task.route.toString(),
+    importance: formatters?.importance?.(task) || TaskImportance[task.importance],
+    creation_date: formatters?.creation_date?.(task) || format(new Date(task.creation_date), 'P'),
 
     // Добавить в api
-    author: 'None',
-    department: 'None',
-    completion_date: format(new Date(), 'P'),
-    receipt_date: format(new Date(), 'P'),
+    author: formatters?.author?.(task) || 'None',
+    department: formatters?.department?.(task) || 'None',
+    completion_date: formatters?.completion_date?.(task) || format(new Date(), 'P'),
+    receipt_date: formatters?.receipt_date?.(task) || format(new Date(), 'P'),
   };
 }

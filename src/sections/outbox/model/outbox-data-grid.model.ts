@@ -1,13 +1,13 @@
 import { GridColDef } from '@mui/x-data-grid';
 
-import { TaskRoute, TaskImportance } from 'shared/task/model';
+import { TaskImportance } from 'entites/task/model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
 export type Row = {
   name: string;
   author: string;
-  rule: TaskRoute;
+  rule: string;
   department: string;
   id: number | string;
   receipt_date: string;

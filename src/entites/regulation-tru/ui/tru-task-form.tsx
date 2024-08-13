@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { Form, Input, UploadFile } from 'antd';
 
+import { UploadAttachment } from 'entites/attachments/model';
+import { Task, TaskReason, TaskImportance } from 'entites/task/model';
+
 import { Select } from 'shared/select';
-import { UploadAttachment } from 'shared/attachments/model';
-import { Task, TaskReason, TaskImportance } from 'shared/task/model';
 
 import { formatFiles, formatNotifiers } from '../helpers';
 
@@ -57,7 +58,6 @@ const config: Record<keyof FormValues, { label?: string; name: keyof FormValues 
 
 const initial: FormValues = {
   importance: 'ordinary',
-  route: 'tru',
 };
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ export function TruTaskForm({ getFormId, onSubmit, onError }: Props) {
   const [form] = Form.useForm<FormValues>();
 
   useEffect(() => {
-    getFormId(initial.route as string);
+    // getFormId(initial.route as string);
   }, [getFormId]);
 
   const submit = () => {
@@ -84,8 +84,8 @@ export function TruTaskForm({ getFormId, onSubmit, onError }: Props) {
   return (
     <Form
       form={form}
-      id={initial.route}
-      name={initial.route}
+      // id={initial.route}
+      // name={initial.route}
       layout="vertical"
       autoComplete="off"
       initialValues={initial}

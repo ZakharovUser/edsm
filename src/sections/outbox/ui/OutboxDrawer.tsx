@@ -25,9 +25,8 @@ import { httpClient } from 'utils/axios';
 
 import { useGetOutboxItem } from 'sections/outbox/hooks';
 
+import { TaskReason, TaskImportance } from 'entites/task/model';
 import { useFinancingSources } from 'entites/financing-source/hooks';
-
-import { TaskRoute, TaskReason, TaskImportance } from 'shared/task/model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -57,7 +56,7 @@ export function OutboxDrawer({ taskId, ...props }: Props) {
       enabled: !!task?.finance_source,
     });
 
-  console.log(task);
+  // console.log(task);
 
   return (
     <Drawer
@@ -96,7 +95,7 @@ export function OutboxDrawer({ taskId, ...props }: Props) {
           </Row>
 
           <Row label="Регламент" isLoading={isPendingTask} icon={<ContentPasteIcon />}>
-            {task && TaskRoute[task.route]}
+            {task && task.route}
           </Row>
 
           <Row label="Важность" isLoading={isPendingTask} icon={<StarHalfIcon />}>

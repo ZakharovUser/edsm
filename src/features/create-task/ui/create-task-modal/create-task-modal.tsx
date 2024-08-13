@@ -5,9 +5,9 @@ import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import { DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
+import { useTaskMutation } from 'entites/task/hooks';
 import { TruTaskForm } from 'entites/regulation-tru/ui';
 
-import { useCreateTaskQuery } from 'shared/task/hooks';
 import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
 import { CreateTaskRegulations } from '../create-task-regulations/create-task-regulations';
@@ -22,7 +22,7 @@ interface Props {
 export function CreateTaskModal({ open, onClose }: Props) {
   const navigate = useNavigate();
 
-  const { mutate, isPending } = useCreateTaskQuery();
+  const { mutate, isPending } = useTaskMutation();
 
   const [formId, setFormId] = useState<string | undefined>();
 

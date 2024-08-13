@@ -1,8 +1,11 @@
-import { Attachment } from 'shared/attachments/model';
+import { Attachment } from 'entites/attachments/model';
 
-export enum TaskRoute {
-  tru = 'ТРУ',
+export interface TaskRoute {
+  id: number;
+  name: string;
 }
+
+export type TaskRoutes = Array<TaskRoute>;
 
 export enum TaskImportance {
   ordinary = 'Обычно',
@@ -26,8 +29,8 @@ export interface Task {
   task_number: number;
   creation_date: string;
   finance_source: number;
+  route: TaskRoute['id'];
   documents: Array<Attachment>;
-  route: keyof typeof TaskRoute;
   reason: keyof typeof TaskReason;
   importance: keyof typeof TaskImportance;
   notified_user_and_group: Array<TaskNotified>;
