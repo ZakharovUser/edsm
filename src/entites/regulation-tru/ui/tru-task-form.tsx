@@ -91,7 +91,7 @@ export function TruTaskForm({ getFormId, onSubmit, onError }: Props) {
       initialValues={initial}
       onFinish={submit}
     >
-      <Form.Item {...config.route} hidden>
+      <Form.Item {...config.route}>
         <Input readOnly />
       </Form.Item>
       <Form.Item

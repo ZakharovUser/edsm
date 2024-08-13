@@ -5,8 +5,8 @@ import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import { DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
-import { useTaskMutation } from 'entites/task/hooks';
 import { TruTaskForm } from 'entites/regulation-tru/ui';
+import { useTaskMutation, useTaskRoutesQuery } from 'entites/task/hooks';
 
 import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
@@ -23,6 +23,7 @@ export function CreateTaskModal({ open, onClose }: Props) {
   const navigate = useNavigate();
 
   const { mutate, isPending } = useTaskMutation();
+  const { data: routes } = useTaskRoutesQuery();
 
   const [formId, setFormId] = useState<string | undefined>();
 
@@ -35,20 +36,19 @@ export function CreateTaskModal({ open, onClose }: Props) {
     });
   };
 
+  const tabs =
+    routes &&
+    Object.entries(routes).map(([id, name]) => ({
+      id,
+      label: name,
+      panel: <TruTaskForm getFormId={setFormId} onSubmit={onSubmit} />,
+    }));
+
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle>Создание задачи</DialogTitle>
       <DialogContent>
-        <CreateTaskRegulations
-          name="regulations"
-          tabs={[
-            {
-              id: 100,
-              label: 'Закупта ТРУ',
-              panel: <TruTaskForm getFormId={setFormId} onSubmit={onSubmit} />,
-            },
-          ]}
-        />
+        <CreateTaskRegulations name="regulations" tabs={tabs} />
       </DialogContent>
       <DialogActions>
         <Button form={formId} type="reset" autoFocus onClick={onClose} disabled={isPending}>

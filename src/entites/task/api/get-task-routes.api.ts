@@ -8,9 +8,9 @@ interface Response {
   rows: TaskRoutes;
 }
 
-export type ReturnType = Record<TaskRoute['id'], TaskRoute['name']>;
+export type RoutesMap = Record<TaskRoute['id'], TaskRoute['name']>;
 
-export async function getTaskRoutesApi(): Promise<ReturnType> {
+export async function getTaskRoutesApi(): Promise<RoutesMap> {
   return httpClient.get<Response>('/api/edm/document_route/').then((res) => {
     const routesMap = res.data.rows.reduce(
       (map, route) => map.set(route.id, route.name),

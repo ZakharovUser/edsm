@@ -10,45 +10,39 @@ import { TabPanel } from 'shared/tab-panel';
 
 interface Props {
   name: string;
-  tabs: Array<{ id: number; label: string; panel: ReactNode }>;
+  tabs?: Array<{ id: number | string; label: string; panel: ReactNode }>;
 }
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export function CreateTaskRegulations({ tabs: controls, name }: Props) {
+export function CreateTaskRegulations({ tabs: controls = [], name }: Props) {
   const [tabIndex, setTabIndex] = useState(0);
 
-  const onChange = (_: unknown, newValue: number) => setTabIndex(newValue);
+  const onChange = (_: unknown, newTabIndex: number) => setTabIndex(newTabIndex);
 
   const [tabs, panels] = useMemo(
     () =>
       controls.reduce(
-        (elements: [JSX.Element[], JSX.Element[]], control, index) => {
-          const tab = (
-            <Tab
-              label={control.label}
-              {...a11yProps(name, index)}
-              key={`${name}-tab-${control.id}`}
-            />
-          );
+        (elements, { id, label, panel }, index) => {
+          const tab = <Tab label={label} {...a11yProps(name, index)} key={`${name}-tab-${id}`} />;
 
-          const panel = (
+          const tabPanel = (
             <TabPanel
+              id={id}
               name={name}
-              index={index}
-              value={tabIndex}
-              key={`${name}-tap-panel-${control.id}`}
+              hidden={tabIndex !== index}
+              key={`${name}-tab-panel-${id}`}
             >
-              {control.panel}
+              {panel}
             </TabPanel>
           );
 
           elements[0].push(tab);
-          elements[1].push(panel);
+          elements[1].push(tabPanel);
 
           return elements;
         },
-        [[], []]
+        [[], []] as [JSX.Element[], JSX.Element[]]
       ),
     [controls, name, tabIndex]
   );
@@ -74,9 +68,9 @@ export function CreateTaskRegulations({ tabs: controls, name }: Props) {
   );
 }
 
-function a11yProps(name: string, index: number) {
+function a11yProps(name: string, id: number) {
   return {
-    id: `${name}-tab-${index}`,
-    'aria-controls': `${name}-tabpanel-${index}`,
+    id: `${name}-tab-${id}`,
+    'aria-controls': `${name}-tabpanel-${id}`,
   };
 }

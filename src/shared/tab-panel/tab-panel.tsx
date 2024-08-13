@@ -1,21 +1,21 @@
-import { ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 
-interface Props {
-  children?: ReactNode;
-  index: number;
-  value: number;
+interface Props extends PropsWithChildren {
   name: string;
+  hidden: boolean;
+  id: number | string;
 }
 
-export function TabPanel({ name, value, children, index }: Props) {
+export function TabPanel({ name, children, id, hidden }: Props) {
   return (
     <div
       role="tabpanel"
-      hidden={value !== index}
-      id={`${name}-tabpanel-${index}`}
-      aria-labelledby={`${name}-tab-${index}`}
+      hidden={hidden}
+      id={`${name}-tabpanel-${id}`}
+      aria-labelledby={`${name}-tab-${id}`}
     >
-      {value === index && <>{children}</>}
+      {/* {value === index && <>{children}</>} */}
+      {children}
     </div>
   );
 }
