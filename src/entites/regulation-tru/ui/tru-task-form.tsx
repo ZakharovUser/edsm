@@ -1,5 +1,8 @@
-import { useEffect } from 'react';
+import { useMemo, useEffect } from 'react';
 import { Form, Input, UploadFile } from 'antd';
+
+import Alert from '@mui/material/Alert';
+import { AlertTitle } from '@mui/material';
 
 import { UploadAttachment } from 'entites/attachments/model';
 import { Task, TaskReason, TaskImportance } from 'entites/task/model';
@@ -15,9 +18,10 @@ import { SelectFinancingSources } from './select-financing-sources';
 // -----------------------------------------------------------------------------------------------------------------
 
 interface Props {
+  route: string;
+  error?: Error | null;
   getFormId(id: string): void;
-  onSubmit(values: unknown): Promise<unknown>;
-  onError?: (error: unknown) => void;
+  onSubmit(values: unknown, onSuccess?: VoidFunction): unknown;
 }
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -56,25 +60,32 @@ const config: Record<keyof FormValues, { label?: string; name: keyof FormValues 
   finance_source: { label: 'Источник финансирования', name: 'finance_source' },
 };
 
-const initial: FormValues = {
-  importance: 'ordinary',
-};
-
 // -----------------------------------------------------------------------------------------------------------------
 
-export function TruTaskForm({ getFormId, onSubmit, onError }: Props) {
+export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
   const [form] = Form.useForm<FormValues>();
 
-  useEffect(() => {
-    // getFormId(initial.route as string);
-  }, [getFormId]);
+  useEffect(() => getFormId(route), [getFormId, route]);
+
+  const initial: FormValues = useMemo(
+    () => ({
+      route: +route,
+      importance: 'ordinary',
+    }),
+    [route]
+  );
 
   const submit = () => {
     const { notify, ...values } = form.getFieldsValue();
 
-    onSubmit({ ...values, notified_user_and_group: notify && formatNotifiers(notify) })
-      .then(() => form.resetFields())
-      .catch((err) => onError?.(err) || alert(err));
+    onSubmit(
+      {
+        ...values,
+        notified_user_and_group: notify && formatNotifiers(notify),
+        route: '213',
+      },
+      form.resetFields
+    );
   };
 
   const importanceValue = Form.useWatch('importance', form);
@@ -84,15 +95,22 @@ export function TruTaskForm({ getFormId, onSubmit, onError }: Props) {
   return (
     <Form
       form={form}
-      // id={initial.route}
-      // name={initial.route}
+      id={route}
+      name={route}
       layout="vertical"
       autoComplete="off"
       initialValues={initial}
       onFinish={submit}
     >
-      <Form.Item {...config.route}>
-        <Input readOnly />
+      {error && (
+        <Alert sx={{ mb: 1 }} severity="error">
+          <AlertTitle>Ошибка</AlertTitle>
+          {JSON.stringify(error)}
+        </Alert>
+      )}
+
+      <Form.Item {...config.route} hidden>
+        <Input readOnly value={route} />
       </Form.Item>
       <Form.Item
         {...config.importance}

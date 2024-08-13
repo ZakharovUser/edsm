@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
 
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
@@ -7,8 +6,6 @@ import { DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 import { TruTaskForm } from 'entites/regulation-tru/ui';
 import { useTaskMutation, useTaskRoutesQuery } from 'entites/task/hooks';
-
-import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
 import { CreateTaskRegulations } from '../create-task-regulations/create-task-regulations';
 
@@ -20,38 +17,62 @@ interface Props {
 }
 
 export function CreateTaskModal({ open, onClose }: Props) {
-  const navigate = useNavigate();
+  const ref = useRef<HTMLDivElement>();
 
-  const { mutate, isPending } = useTaskMutation();
-  const { data: routes } = useTaskRoutesQuery();
+  const { data, isPending: isPendingRoutes, error: errorRoutes } = useTaskRoutesQuery();
+  const { mutate, isPending: isPendingMutate, error: errorMutate, reset } = useTaskMutation();
 
   const [formId, setFormId] = useState<string | undefined>();
 
-  const onSubmit = async (values: unknown) => {
+  useEffect(() => {
+    if (errorMutate || errorRoutes) {
+      ref.current?.scrollTo(0, 0);
+    }
+  }, [errorRoutes, errorMutate, ref]);
+
+  const onSubmit = (values: unknown, onSuccess?: VoidFunction) => {
     mutate(values, {
       onSuccess: () => {
+        onSuccess?.();
         onClose();
-        navigate(`/${NAVIGATION_CONFIG.OUTBOX.path}`);
       },
     });
   };
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   const tabs =
-    routes &&
-    Object.entries(routes).map(([id, name]) => ({
+    data &&
+    Object.entries(data).map(([id, name]) => ({
       id,
       label: name,
-      panel: <TruTaskForm getFormId={setFormId} onSubmit={onSubmit} />,
+      panel: (
+        <TruTaskForm
+          route={id}
+          onSubmit={onSubmit}
+          getFormId={setFormId}
+          error={errorMutate || errorRoutes}
+        />
+      ),
     }));
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
       <DialogTitle>Создание задачи</DialogTitle>
-      <DialogContent>
+      <DialogContent ref={ref}>
         <CreateTaskRegulations name="regulations" tabs={tabs} />
       </DialogContent>
       <DialogActions>
-        <Button form={formId} type="reset" autoFocus onClick={onClose} disabled={isPending}>
+        <Button
+          form={formId}
+          type="reset"
+          autoFocus
+          onClick={handleClose}
+          disabled={isPendingMutate || isPendingRoutes}
+        >
           Отменить
         </Button>
         <Button
@@ -59,7 +80,7 @@ export function CreateTaskModal({ open, onClose }: Props) {
           type="submit"
           color="primary"
           variant="contained"
-          disabled={isPending}
+          disabled={isPendingMutate || isPendingRoutes}
         >
           Создать
         </Button>
