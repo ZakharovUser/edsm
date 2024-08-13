@@ -10,7 +10,7 @@ import { TabPanel } from 'shared/tab-panel';
 
 interface Props {
   name: string;
-  tabs?: Array<{ id: number | string; label: string; panel: ReactNode }>;
+  tabs: Array<{ id: number | string; label: string; panel: ReactNode }> | undefined;
 }
 
 // -----------------------------------------------------------------------------------------------------------------
