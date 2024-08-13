@@ -16,7 +16,7 @@ import { OutboxDrawer, OutboxDataGrid } from './ui';
 export function OutboxView() {
   const settings = useSettingsContext();
 
-  const { data: routesMap } = useTaskRoutesQuery();
+  const { data: routes } = useTaskRoutesQuery();
   const { data: taskList, isLoading } = useGetOutbox();
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,10 +25,10 @@ export function OutboxView() {
     () =>
       taskList?.map((taskItem) =>
         convertTaskToRow(taskItem, {
-          rule: (task) => routesMap?.[task.route],
+          rule: (task) => routes?.[task.route],
         })
       ),
-    [taskList, routesMap]
+    [taskList, routes]
   );
 
   const taskId = searchParams.get('task');
