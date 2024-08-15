@@ -5,6 +5,11 @@ export interface TaskRoute {
   name: string;
 }
 
+export interface FinancingSource {
+  id: number;
+  name: string;
+}
+
 export type TaskRoutes = Array<TaskRoute>;
 
 export enum TaskImportance {
@@ -24,13 +29,13 @@ type NotifiedGroup = { type: 'group'; value: number };
 export type TaskNotified = NotifiedUser | NotifiedGroup;
 
 export interface Task {
+  route: TaskRoute;
   full_name: string;
   short_name: string;
   task_number: number;
   creation_date: string;
-  finance_source: number;
-  route: TaskRoute['id'];
   documents: Array<Attachment>;
+  finance_source: FinancingSource;
   reason: keyof typeof TaskReason;
   importance: keyof typeof TaskImportance;
   notified_user_and_group: Array<TaskNotified>;

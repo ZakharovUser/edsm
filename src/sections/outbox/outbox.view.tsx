@@ -6,8 +6,6 @@ import Container from '@mui/material/Container';
 
 import { convertTaskToRow } from 'sections/outbox/helpers';
 
-import { useTaskRoutesQuery } from 'entites/task/hooks';
-
 import { useGetOutbox } from './hooks';
 import { OutboxDrawer, OutboxDataGrid } from './ui';
 
@@ -16,20 +14,11 @@ import { OutboxDrawer, OutboxDataGrid } from './ui';
 export function OutboxView() {
   const settings = useSettingsContext();
 
-  const { data: routes } = useTaskRoutesQuery();
-  const { data: taskList, isLoading } = useGetOutbox();
+  const { data, isLoading } = useGetOutbox();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const inbox_rows = useMemo(
-    () =>
-      taskList?.map((taskItem) =>
-        convertTaskToRow(taskItem, {
-          rule: (task) => routes?.[task.route],
-        })
-      ),
-    [taskList, routes]
-  );
+  const inbox_rows = useMemo(() => data?.map((task) => convertTaskToRow(task)), [data]);
 
   const taskId = searchParams.get('task');
 

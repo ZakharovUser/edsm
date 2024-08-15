@@ -67,17 +67,17 @@ export function CreateTaskModal({ open, onClose }: Props) {
       </DialogContent>
       <DialogActions>
         <Button
-          form={formId}
-          type="reset"
           autoFocus
+          type="reset"
+          form={formId}
           onClick={handleClose}
           disabled={isPendingMutate || isPendingRoutes}
         >
           Отменить
         </Button>
         <Button
-          form={formId}
           type="submit"
+          form={formId}
           color="primary"
           variant="contained"
           disabled={isPendingMutate || isPendingRoutes}

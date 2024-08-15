@@ -14,7 +14,7 @@ export function convertTaskToRow(task: Task, formatters?: Formatters): Row {
   return {
     id: formatters?.id?.(task) || task.task_number,
     name: formatters?.name?.(task) || task.short_name,
-    rule: formatters?.rule?.(task) || task.route.toString(),
+    rule: formatters?.rule?.(task) || task.route.name,
     importance: formatters?.importance?.(task) || TaskImportance[task.importance],
     creation_date: formatters?.creation_date?.(task) || format(new Date(task.creation_date), 'P'),
 

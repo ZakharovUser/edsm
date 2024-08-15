@@ -43,9 +43,13 @@ const importance_cause_options: Options<keyof typeof TaskReason> = [
 ];
 
 type FormValues = Partial<
-  Omit<Task, 'documents' | 'notified_user_and_group' | 'task_number' | 'creation_date'> & {
+  Omit<
+    Task,
+    'documents' | 'notified_user_and_group' | 'task_number' | 'creation_date' | 'route'
+  > & {
     documents: UploadFile<UploadAttachment>[];
     notify: string[];
+    route: string;
   }
 >;
 
@@ -69,7 +73,7 @@ export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
 
   const initial: FormValues = useMemo(
     () => ({
-      route: +route,
+      route,
       importance: 'ordinary',
     }),
     [route]

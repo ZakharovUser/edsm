@@ -26,7 +26,6 @@ import { httpClient } from 'utils/axios';
 import { useGetOutboxItem } from 'sections/outbox/hooks';
 
 import { TaskReason, TaskImportance } from 'entites/task/model';
-import { useFinancingSources } from 'entites/financing-source/hooks';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -50,13 +49,7 @@ export async function getAttachmentLink(id: string) {
 export function OutboxDrawer({ taskId, ...props }: Props) {
   const { data: task, isPending: isPendingTask } = useGetOutboxItem(taskId);
 
-  const { data: financingSources, isPending: isPendingFinancingSources } =
-    useFinancingSources<string>({
-      select: (data) => data.find((source) => source.id === task?.finance_source)?.name,
-      enabled: !!task?.finance_source,
-    });
-
-  // console.log(task);
+  console.log(task);
 
   return (
     <Drawer
@@ -95,7 +88,7 @@ export function OutboxDrawer({ taskId, ...props }: Props) {
           </Row>
 
           <Row label="Регламент" isLoading={isPendingTask} icon={<ContentPasteIcon />}>
-            {task && task.route}
+            {task && task.route.name}
           </Row>
 
           <Row label="Важность" isLoading={isPendingTask} icon={<StarHalfIcon />}>
@@ -109,9 +102,9 @@ export function OutboxDrawer({ taskId, ...props }: Props) {
           <Row
             label="Источник финансирования"
             icon={<AccountBalanceWalletIcon />}
-            isLoading={isPendingFinancingSources}
+            isLoading={isPendingTask}
           >
-            {financingSources}
+            {task && task.finance_source.name}
           </Row>
 
           <Row label="Дата создания" isLoading={isPendingTask} icon={<CalendarMonthIcon />}>
