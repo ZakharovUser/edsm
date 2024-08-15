@@ -1,13 +1,14 @@
+import { Tabs, TabsProps } from 'antd';
+import StickyBox from 'react-sticky-box';
 import { useRef, useState, useEffect } from 'react';
 
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
+import { useTheme } from '@mui/material/styles';
 import { DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 import { TruTaskForm } from 'entites/regulation-tru/ui';
 import { useTaskMutation, useTaskRoutesQuery } from 'entites/task/hooks';
-
-import { CreateTaskRegulations } from '../create-task-regulations/create-task-regulations';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export function CreateTaskModal({ open, onClose }: Props) {
+  const { palette } = useTheme();
   const ref = useRef<HTMLDivElement>();
 
   const { data, isPending: isPendingRoutes, error: errorRoutes } = useTaskRoutesQuery();
@@ -44,12 +46,12 @@ export function CreateTaskModal({ open, onClose }: Props) {
     onClose();
   };
 
-  const tabs =
+  const tabs: TabsProps['items'] =
     data &&
     Object.entries(data).map(([id, name]) => ({
-      id,
+      key: id,
       label: name,
-      panel: (
+      children: (
         <TruTaskForm
           route={id}
           onSubmit={onSubmit}
@@ -63,7 +65,14 @@ export function CreateTaskModal({ open, onClose }: Props) {
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
       <DialogTitle>Создание задачи</DialogTitle>
       <DialogContent ref={ref}>
-        <CreateTaskRegulations name="regulations" tabs={tabs} />
+        <Tabs
+          items={tabs}
+          renderTabBar={(props, DefaultTabBar) => (
+            <StickyBox offsetTop={0} style={{ zIndex: 10 }}>
+              <DefaultTabBar {...props} style={{ background: palette.background.paper }} />
+            </StickyBox>
+          )}
+        />
       </DialogContent>
       <DialogActions>
         <Button
