@@ -15,6 +15,7 @@ import { MotionLazy } from 'components/animate/motion-lazy';
 import { SettingsDrawer, SettingsProvider } from 'components/settings';
 
 import { AuthProvider } from 'auth/context/session';
+import { WebsocketProvider } from 'socket/context';
 
 // ----------------------------------------------------------------------
 
@@ -26,26 +27,28 @@ export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <SettingsProvider
-          defaultSettings={{
-            themeMode: 'light', // 'light' | 'dark'
-            themeDirection: 'ltr', //  'rtl' | 'ltr'
-            themeContrast: 'default', // 'default' | 'bold'
-            themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
-            themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
-            themeStretch: false,
-          }}
-        >
-          <ThemeProviderMui>
-            <ThemeProviderAntd>
-              <MotionLazy>
-                <SettingsDrawer />
-                <ProgressBar />
-                <Router />
-              </MotionLazy>
-            </ThemeProviderAntd>
-          </ThemeProviderMui>
-        </SettingsProvider>
+        <WebsocketProvider>
+          <SettingsProvider
+            defaultSettings={{
+              themeMode: 'light', // 'light' | 'dark'
+              themeDirection: 'ltr', //  'rtl' | 'ltr'
+              themeContrast: 'default', // 'default' | 'bold'
+              themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
+              themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+              themeStretch: false,
+            }}
+          >
+            <ThemeProviderMui>
+              <ThemeProviderAntd>
+                <MotionLazy>
+                  <SettingsDrawer />
+                  <ProgressBar />
+                  <Router />
+                </MotionLazy>
+              </ThemeProviderAntd>
+            </ThemeProviderMui>
+          </SettingsProvider>
+        </WebsocketProvider>
       </AuthProvider>
     </QueryClientProvider>
   );
