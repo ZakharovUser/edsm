@@ -25,9 +25,9 @@ export default function App() {
   useScrollToTop();
 
   return (
-    <WebsocketProvider>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <WebsocketProvider>
           <SettingsProvider
             defaultSettings={{
               themeMode: 'light', // 'light' | 'dark'
@@ -48,8 +48,8 @@ export default function App() {
               </ThemeProviderAntd>
             </ThemeProviderMui>
           </SettingsProvider>
-        </AuthProvider>
-      </QueryClientProvider>
-    </WebsocketProvider>
+        </WebsocketProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }

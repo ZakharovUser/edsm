@@ -109,22 +109,20 @@ export function AuthProvider({ children }: PropsWithChildren) {
     dispatch({ type: Methods.LOGOUT });
   }, []);
 
-  const checkAuthenticated = state.user ? 'authenticated' : 'unauthenticated';
-
-  const status = state.loading ? 'loading' : checkAuthenticated;
+  const { user, loading } = state;
 
   const memoizedValue = useMemo(
     (): SessionContextType => ({
-      user: state.user,
+      user,
+      loading,
       method: 'session',
-      loading: status === 'loading',
-      authenticated: status === 'authenticated',
-      unauthenticated: status === 'unauthenticated',
+      authenticated: user !== null,
+      unauthenticated: user === null,
       //
       login,
       logout,
     }),
-    [login, logout, status, state.user]
+    [loading, login, logout, user]
   );
 
   return <AuthContext.Provider value={memoizedValue}>{children}</AuthContext.Provider>;

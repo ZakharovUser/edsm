@@ -1,44 +1,52 @@
-import { io } from 'socket.io-client';
+import { useAuthContext } from 'auth/hooks';
 import { useRef, useEffect, createContext, PropsWithChildren } from 'react';
 
 export const WebsocketContext = createContext({});
 
-export type Socket = ReturnType<typeof io>;
+const onConnect = (event: Event) => {
+  const socket = event.target as WebSocket;
+  socket.send(JSON.stringify({ command: 'test' }));
+  console.log('WS connect');
+};
+
+const onDisconnect = (event: CloseEvent) => {
+  if (event.wasClean) {
+    console.log(`[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`);
+  } else {
+    // например, сервер убил процесс или сеть недоступна
+    // обычно в этом случае event.code 1006
+    console.log('[close] Соединение прервано');
+  }
+};
+
+const onConnectError = (err: unknown) => {
+  console.log('WS connect error', err);
+};
 
 export function WebsocketProvider({ children }: PropsWithChildren) {
-  // const client = useRef<Socket | null>(null);
-  const client = useRef<WebSocket | null>(null);
-
-  // http://91.226.234.195:1337/api/edm/ws/notifications/
+  const { authenticated } = useAuthContext();
+  const socketRef = useRef<WebSocket | null>(null);
 
   useEffect(() => {
-    // const socket = io('', {
-    //   path: '/api/edm/ws/notifications',
-    // });
-    const socket = new WebSocket('ws://91.226.234.195:1337/api/edm/ws/notifications/');
+    if (authenticated) {
+      socketRef.current = new WebSocket('ws://91.226.234.195:1337/ws/notifications/');
+    }
 
-    const onConnect = () => console.log('WS connect');
-    const onDisconnect = () => console.log('WS disconnect');
-    const onConnectError = (err: unknown) => console.log('WS connect error', err);
-
-    // socket.on('connect', onConnect);
-    socket.onopen = onConnect;
-
-    // socket.on('disconnect', onDisconnect);
-    socket.onclose = onDisconnect;
-
-    // socket.on('connect_error', onConnectError);
-    socket.onerror = onConnectError;
-
-    client.current = socket;
+    socketRef.current?.addEventListener('open', onConnect);
+    socketRef.current?.addEventListener('close', onDisconnect);
+    socketRef.current?.addEventListener('error', onConnectError);
+    socketRef.current?.addEventListener('message', (event) => {
+      console.log(event.data);
+    });
 
     return () => {
-      socket.close();
-      // socket.off('connect', onConnect);
-      // socket.off('disconnect', onDisconnect);
-      // socket.off('connect_error', onConnectError);
-    };
-  }, []);
+      socketRef.current?.removeEventListener('open', onConnect);
+      socketRef.current?.removeEventListener('close', onDisconnect);
+      socketRef.current?.removeEventListener('error', onConnectError);
 
-  return <WebsocketContext.Provider value={client}>{children}</WebsocketContext.Provider>;
+      socketRef.current?.close();
+    };
+  }, [authenticated]);
+
+  return <WebsocketContext.Provider value={socketRef}>{children}</WebsocketContext.Provider>;
 }
