@@ -12,6 +12,7 @@ import { Select } from 'shared/select';
 import { formatFiles, formatNotifiers } from '../helpers';
 
 import { SelectFiles } from './select-files';
+import { SelectDeadline } from './select-deadline';
 import { SelectUserGroups } from './select-user-groups';
 import { SelectFinancingSources } from './select-financing-sources';
 
@@ -59,6 +60,7 @@ const config: Record<keyof FormValues, { label?: string; name: keyof FormValues 
   reason: { label: 'Причина', name: 'reason' },
   notify: { label: 'Уведомлять', name: 'notify' },
   importance: { label: 'Важность', name: 'importance' },
+  deadline: { label: 'Дата выполнения', name: 'deadline' },
   full_name: { label: 'Наименование (полное)', name: 'full_name' },
   short_name: { label: 'Наименование (короткое)', name: 'short_name' },
   finance_source: { label: 'Источник финансирования', name: 'finance_source' },
@@ -143,6 +145,12 @@ export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
         rules={[{ required: true, message: 'Выберите источник финансирования' }]}
       >
         <SelectFinancingSources />
+      </Form.Item>
+      <Form.Item
+        {...config.deadline}
+        rules={[{ required: true, message: 'Выберите дату выполнение' }]}
+      >
+        <SelectDeadline />
       </Form.Item>
       <Form.Item {...config.notify}>
         <SelectUserGroups />

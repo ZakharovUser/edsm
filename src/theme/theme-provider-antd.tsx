@@ -1,7 +1,10 @@
+import locale from 'antd/locale/ru_RU';
 import { PropsWithChildren } from 'react';
 import { theme, ThemeConfig, ConfigProvider } from 'antd';
 
 import { alpha, useTheme } from '@mui/material/styles';
+
+// -----------------------------------------------------------------------------------------------------------------
 
 const { darkAlgorithm, defaultAlgorithm } = theme;
 
@@ -26,5 +29,9 @@ export function ThemeProviderAntd({ children }: PropsWithChildren) {
     },
   };
 
-  return <ConfigProvider theme={themeConfig}>{children}</ConfigProvider>;
+  return (
+    <ConfigProvider theme={themeConfig} locale={locale}>
+      {children}
+    </ConfigProvider>
+  );
 }
