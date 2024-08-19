@@ -49,8 +49,6 @@ export async function getAttachmentLink(id: string) {
 export function OutboxDrawer({ taskId, ...props }: Props) {
   const { data: task, isPending: isPendingTask } = useGetOutboxItem(taskId);
 
-  console.log(task);
-
   return (
     <Drawer
       anchor="right"
