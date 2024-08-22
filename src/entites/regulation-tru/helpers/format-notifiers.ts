@@ -1,20 +1,19 @@
-export function formatNotifiers(notifiers: string[]) {
-  return notifiers.reduce(
-    (notifications: Array<{ type: string; value: string | number }>, value) => {
-      const notifier = value.match(/^[^:]+/);
+import { TaskNotified } from 'entites/task/model';
 
-      if (!notifier) return notifications;
+export function formatNotifiers(notifiers: string[]): Array<TaskNotified> {
+  return notifiers.reduce((notifications: Array<TaskNotified>, value) => {
+    const notifier = value.match(/^[^:]+/);
 
-      const groupId = parseInt(notifier[0], 10);
+    if (!notifier) return notifications;
 
-      if (groupId) {
-        notifications.push({ type: 'group', value: groupId });
-      } else {
-        notifications.push({ type: 'user', value: notifier[0] });
-      }
+    const groupId = parseInt(notifier[0], 10);
 
-      return notifications;
-    },
-    []
-  );
+    if (groupId) {
+      notifications.push({ type: 'group', value: groupId });
+    } else {
+      notifications.push({ type: 'user', value: notifier[0] });
+    }
+
+    return notifications;
+  }, []);
 }

@@ -1,5 +1,7 @@
 import { LogoutOptions, PopupLoginOptions, RedirectLoginOptions } from '@auth0/auth0-react';
 
+import { InstituteListModel } from 'entites/institute/model';
+
 // ----------------------------------------------------------------------
 
 export type ActionMapType<M extends { [index: string]: any }> = {
@@ -13,7 +15,17 @@ export type ActionMapType<M extends { [index: string]: any }> = {
       };
 };
 
-export type AuthUserType = null | Record<string, any>;
+export interface AuthUser {
+  rank: string;
+  email: string;
+  username: string;
+  last_name: string;
+  first_name: string;
+  middle_name: string;
+  org_list: InstituteListModel;
+}
+
+export type AuthUserType = AuthUser | null;
 
 export type AuthStateType = {
   token?: string;

@@ -1,12 +1,12 @@
 import { Dayjs } from 'dayjs';
 import { useMemo, useEffect } from 'react';
-import { Form, Input, UploadFile, FormItemProps } from 'antd';
+import { useAuthContext } from 'auth/hooks';
+import { Form, Input, FormItemProps } from 'antd';
 
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
 
-import { UploadAttachment } from 'entites/attachments/model';
-import { Task, TaskReason, TaskImportance } from 'entites/task/model';
+import { TaskReason, TaskRequest, TaskImportance } from 'entites/task/model';
 
 import { Select } from 'shared/select';
 
@@ -23,7 +23,7 @@ interface Props {
   route: string;
   error?: Error | null;
   getFormId(id: string): void;
-  onSubmit(values: unknown, onSuccess?: VoidFunction): unknown;
+  onSubmit(values: Partial<TaskRequest>, onSuccess?: VoidFunction): unknown;
 }
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -45,57 +45,52 @@ const importance_cause_options: Options<keyof typeof TaskReason> = [
 ];
 
 type FormValues = Partial<
-  Omit<
-    Task,
-    | 'route'
-    | 'documents'
-    | 'task_number'
-    | 'creation_date'
-    | 'deadline_date'
-    | 'notified_user_and_group'
-  > & {
-    route: string;
+  Omit<TaskRequest, 'deadline_date' | 'notified_user_and_group'> & {
     deadline: Dayjs;
     notify: string[];
-    documents: UploadFile<UploadAttachment>[];
   }
 >;
 
 const config: Record<
   keyof FormValues,
-  { name: keyof FormValues; label?: string; rules?: FormItemProps['rules'] }
+  { name: keyof FormValues; label?: FormItemProps['label']; rules?: FormItemProps['rules'] }
 > = {
   documents: { name: 'documents' },
   route: { label: 'Регламент', name: 'route' },
   notify: { label: 'Уведомлять', name: 'notify' },
   reason: {
-    label: 'Причина',
     name: 'reason',
+    label: 'Причина',
     rules: [{ required: true, message: 'Выберите причину' }],
   },
+  org_name: {
+    name: 'org_name',
+    label: 'Учреждение',
+    rules: [{ required: true, message: 'Выберите учреждение' }],
+  },
   importance: {
-    label: 'Важность',
     name: 'importance',
+    label: 'Важность',
     rules: [{ required: true, message: 'Выберите важность задачи' }],
   },
   deadline: {
-    label: 'Дата выполнения',
     name: 'deadline',
+    label: 'Дата выполнения',
     rules: [{ required: true, message: 'Выберите дату выполнение' }],
   },
   full_name: {
-    label: 'Наименование (полное)',
     name: 'full_name',
+    label: 'Наименование (полное)',
     rules: [{ required: true, message: 'Введите полное наименование' }],
   },
   short_name: {
-    label: 'Наименование (короткое)',
     name: 'short_name',
+    label: 'Наименование (короткое)',
     rules: [{ required: true, message: 'Введите короткое наименование' }],
   },
   finance_source: {
-    label: 'Источник финансирования',
     name: 'finance_source',
+    label: 'Источник финансирования',
     rules: [{ required: true, message: 'Выберите источник финансирования' }],
   },
 };
@@ -103,16 +98,26 @@ const config: Record<
 // -----------------------------------------------------------------------------------------------------------------
 
 export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
+  const { user } = useAuthContext();
   const [form] = Form.useForm<FormValues>();
 
   useEffect(() => getFormId(route), [getFormId, route]);
 
-  const initial: FormValues = useMemo(
+  const initial = useMemo(
     () => ({
       route,
       importance: 'ordinary',
     }),
     [route]
+  );
+
+  const institutes = useMemo(
+    () =>
+      user?.org_list.map((org) => ({
+        value: org.id,
+        label: org.name,
+      })),
+    [user?.org_list]
   );
 
   const submit = () => {
@@ -148,9 +153,11 @@ export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
           {JSON.stringify(error)}
         </Alert>
       )}
-
       <Form.Item {...config.route} hidden>
         <Input readOnly value={route} />
+      </Form.Item>
+      <Form.Item {...config.org_name}>
+        <Select options={institutes} />
       </Form.Item>
       <Form.Item {...config.importance}>
         <Select options={importance_options} />
