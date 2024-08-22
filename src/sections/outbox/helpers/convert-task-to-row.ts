@@ -1,6 +1,6 @@
-import { format } from 'date-fns';
-
 import { Task, TaskImportance } from 'entites/task/model';
+
+import { formatDate } from 'shared/helpers/format-date';
 
 import { Row } from '../model';
 
@@ -12,16 +12,14 @@ type Formatters = {
 
 export function convertTaskToRow(task: Task, formatters?: Formatters): Row {
   return {
+    author: formatters?.author?.(task) || '-',
     id: formatters?.id?.(task) || task.task_number,
-    name: formatters?.name?.(task) || task.short_name,
     rule: formatters?.rule?.(task) || task.route.name,
+    name: formatters?.name?.(task) || task.short_name,
+    department: formatters?.department?.(task) || '-',
+    receipt_date: formatters?.receipt_date?.(task) || '-',
     importance: formatters?.importance?.(task) || TaskImportance[task.importance],
-    creation_date: formatters?.creation_date?.(task) || format(new Date(task.creation_date), 'P'),
-
-    // Добавить в api
-    author: formatters?.author?.(task) || 'None',
-    department: formatters?.department?.(task) || 'None',
-    completion_date: formatters?.completion_date?.(task) || format(new Date(), 'P'),
-    receipt_date: formatters?.receipt_date?.(task) || format(new Date(), 'P'),
+    creation_date: formatters?.creation_date?.(task) || formatDate(task.creation_date),
+    completion_date: formatters?.completion_date?.(task) || formatDate(task.deadline_date),
   };
 }

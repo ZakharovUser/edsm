@@ -34,8 +34,8 @@ export interface Task {
   short_name: string;
   task_number: number;
   creation_date: string;
+  deadline_date: string;
   documents: Array<Attachment>;
-  deadline_date: string | null;
   finance_source: FinancingSource;
   reason: keyof typeof TaskReason;
   importance: keyof typeof TaskImportance;

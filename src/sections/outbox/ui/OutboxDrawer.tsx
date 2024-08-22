@@ -1,7 +1,3 @@
-// eslint-disable-next-line import/no-duplicates
-import { format } from 'date-fns';
-// eslint-disable-next-line import/no-duplicates
-import ru from 'date-fns/locale/ru';
 import { ReactElement, cloneElement, PropsWithChildren } from 'react';
 
 import Box from '@mui/material/Box';
@@ -26,6 +22,8 @@ import { httpClient } from 'utils/axios';
 import { useGetOutboxItem } from 'sections/outbox/hooks';
 
 import { TaskReason, TaskImportance } from 'entites/task/model';
+
+import { formatDate } from 'shared/helpers/format-date';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -98,15 +96,19 @@ export function OutboxDrawer({ taskId, ...props }: Props) {
           </Row>
 
           <Row
+            isLoading={isPendingTask}
             label="Источник финансирования"
             icon={<AccountBalanceWalletIcon />}
-            isLoading={isPendingTask}
           >
             {task && task.finance_source.name}
           </Row>
 
           <Row label="Дата создания" isLoading={isPendingTask} icon={<CalendarMonthIcon />}>
-            {task && format(new Date(task.creation_date), 'PPpp', { locale: ru })}
+            {task && formatDate(task.creation_date)}
+          </Row>
+
+          <Row label="Дата выполнения" isLoading={isPendingTask} icon={<CalendarMonthIcon />}>
+            {task?.deadline_date && formatDate(task.deadline_date)}
           </Row>
 
           <Row label="Документы" isLoading={isPendingTask} icon={<AttachFileIcon />}>

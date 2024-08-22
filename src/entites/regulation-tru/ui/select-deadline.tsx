@@ -1,19 +1,16 @@
 import dayjs from 'dayjs';
-// eslint-disable-next-line import/no-duplicates
-import { format } from 'date-fns';
-// eslint-disable-next-line import/no-duplicates
-import ru from 'date-fns/locale/ru';
 import { Flex, DatePicker, DatePickerProps } from 'antd';
+
+import { formatDate } from 'shared/helpers/format-date';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-const formatDate: DatePickerProps['format'] = (value) =>
-  `до ${format(value.toDate(), 'PP', { locale: ru })}`;
-
 export function SelectDeadline(props: DatePickerProps) {
+  const now = dayjs();
+
   return (
     <Flex vertical>
-      <DatePicker {...props} format={formatDate} minDate={dayjs()} />
+      <DatePicker {...props} minDate={now} format={(value) => `до ${formatDate(value.toDate())}`} />
     </Flex>
   );
 }
