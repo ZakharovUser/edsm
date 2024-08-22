@@ -7,8 +7,10 @@ import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import LabelIcon from '@mui/icons-material/Label';
+import PersonIcon from '@mui/icons-material/Person';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
+import ApartmentIcon from '@mui/icons-material/Apartment';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
@@ -24,6 +26,7 @@ import { useGetOutboxItem } from 'sections/outbox/hooks';
 import { TaskReason, TaskImportance } from 'entites/task/model';
 
 import { formatDate } from 'shared/helpers/format-date';
+import { formatUserName } from 'shared/helpers/format-user-name';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -83,8 +86,16 @@ export function OutboxDrawer({ taskId, ...props }: Props) {
             {taskId}
           </Row>
 
+          <Row label="Автор" isLoading={isPendingTask} icon={<PersonIcon />}>
+            {task && formatUserName(task.created_by)}
+          </Row>
+
+          <Row label="Учреждение" isLoading={isPendingTask} icon={<ApartmentIcon />}>
+            {task?.org_name}
+          </Row>
+
           <Row label="Регламент" isLoading={isPendingTask} icon={<ContentPasteIcon />}>
-            {task && task.route.name}
+            {task?.route.name}
           </Row>
 
           <Row label="Важность" isLoading={isPendingTask} icon={<StarHalfIcon />}>
@@ -100,7 +111,7 @@ export function OutboxDrawer({ taskId, ...props }: Props) {
             label="Источник финансирования"
             icon={<AccountBalanceWalletIcon />}
           >
-            {task && task.finance_source.name}
+            {task?.finance_source.name}
           </Row>
 
           <Row label="Дата создания" isLoading={isPendingTask} icon={<CalendarMonthIcon />}>

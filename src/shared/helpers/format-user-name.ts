@@ -1,4 +1,4 @@
-export function formatAuthorName(author: string): string {
+export function formatUserName(author: string): string {
   const [lastName, name, surName] = author.split(' ');
 
   return `${lastName} ${name[0].toUpperCase()}. ${surName[0].toUpperCase()}.`;

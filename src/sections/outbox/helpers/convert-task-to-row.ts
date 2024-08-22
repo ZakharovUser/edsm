@@ -1,7 +1,7 @@
 import { Task, TaskImportance } from 'entites/task/model';
 
 import { formatDate } from 'shared/helpers/format-date';
-import { formatAuthorName } from 'shared/helpers/format-user-name';
+import { formatUserName } from 'shared/helpers/format-user-name';
 
 import { Row } from '../model';
 
@@ -17,7 +17,7 @@ export function convertTaskToRow(task: Task, formatters?: Formatters): Row {
     rule: formatters?.rule?.(task) || task.route.name,
     name: formatters?.name?.(task) || task.short_name,
     receipt_date: formatters?.receipt_date?.(task) || '-',
-    author: formatters?.author?.(task) || formatAuthorName(task.created_by),
+    author: formatters?.author?.(task) || formatUserName(task.created_by),
     department: formatters?.department?.(task) || task.org_name?.toString(),
     importance: formatters?.importance?.(task) || TaskImportance[task.importance],
     creation_date: formatters?.creation_date?.(task) || formatDate(task.creation_date),
