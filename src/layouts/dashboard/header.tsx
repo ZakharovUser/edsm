@@ -19,8 +19,8 @@ import { CreateTask } from 'features/create-task/ui';
 import { NAV, HEADER } from '../config-layout';
 import SettingsButton from '../common/settings-button';
 import AccountPopover from '../common/account-popover';
-import ContactsPopover from '../common/contacts-popover';
-import NotificationsPopover from '../common/notifications-popover';
+// import ContactsPopover from '../common/contacts-popover';
+// import NotificationsPopover from '../common/notifications-popover';
 
 // ----------------------------------------------------------------------
 
@@ -105,9 +105,9 @@ export default function Header({ onOpenNav }: Props) {
         >
           <CreateTask />
 
-          <NotificationsPopover />
+          {/* <NotificationsPopover /> */}
 
-          <ContactsPopover />
+          {/* <ContactsPopover /> */}
 
           <SettingsButton />
 
