@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 import { ReactElement, cloneElement, PropsWithChildren } from 'react';
 
 import Box from '@mui/material/Box';
@@ -21,8 +23,7 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 
 import { httpClient } from 'utils/axios';
 
-import { useGetOutboxItem } from 'sections/outbox/hooks';
-
+import { getTaskItem } from 'entites/task/api';
 import { TaskReason, TaskImportance } from 'entites/task/model';
 
 import { formatDate } from 'shared/helpers/format-date';
@@ -30,10 +31,7 @@ import { formatUserName } from 'shared/helpers/format-user-name';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export interface Props extends Omit<DrawerProps, 'onClose'> {
-  taskId: string | null;
-  onClose: VoidFunction;
-}
+export type Props = Omit<DrawerProps, 'onClose' | 'open'>;
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -47,11 +45,23 @@ export async function getAttachmentLink(id: string) {
     .then((res) => res.data.attachment);
 }
 
-export function OutboxDrawer({ taskId, ...props }: Props) {
-  const { data: task, isPending: isPendingTask } = useGetOutboxItem(taskId);
+// -----------------------------------------------------------------------------------------------------------------
+
+export function TaskDrawer(props: Props) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const taskId = searchParams.get('task');
+
+  const { data: task, isPending: isPendingTask } = useQuery({
+    queryKey: ['task', taskId],
+    queryFn: ({ queryKey }) => getTaskItem(queryKey[1] as string),
+    enabled: !!taskId,
+  });
 
   return (
     <Drawer
+      open={!!taskId}
+      onClose={() => setSearchParams()}
       anchor="right"
       hideBackdrop
       disableScrollLock
@@ -68,7 +78,7 @@ export function OutboxDrawer({ taskId, ...props }: Props) {
     >
       <Box sx={{ p: 2 }}>
         <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
-          <IconButton onClick={props.onClose} size="small">
+          <IconButton onClick={() => setSearchParams()} size="small">
             <KeyboardDoubleArrowRightIcon />
           </IconButton>
         </Stack>
@@ -91,7 +101,7 @@ export function OutboxDrawer({ taskId, ...props }: Props) {
           </Row>
 
           <Row label="Учреждение" isLoading={isPendingTask} icon={<ApartmentIcon />}>
-            {task?.org_name}
+            {task?.org_name.name_short}
           </Row>
 
           <Row label="Регламент" isLoading={isPendingTask} icon={<ContentPasteIcon />}>

@@ -1,7 +1,7 @@
 import { httpClient } from 'utils/axios';
 
-import { Task } from 'entites/task/model';
+import { Task } from '../model';
 
-export async function getOutboxItem(id: string | null) {
+export async function getTaskItem(id: string) {
   return httpClient.get<Task>(`/api/edm/task/${id}`).then((res) => res.data);
 }

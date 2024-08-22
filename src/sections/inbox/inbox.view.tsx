@@ -1,11 +1,11 @@
 import { TaskView } from 'entites/task/ui/task-view';
 
-import { useGetOutbox } from './hooks';
+import { useGetInbox } from './hooks';
 
 // ----------------------------------------------------------------------
 
-export function OutboxView() {
-  const { data, isLoading } = useGetOutbox();
+export default function InboxView() {
+  const { data, isLoading } = useGetInbox();
 
   return <TaskView tasks={data || []} loading={isLoading} />;
 }

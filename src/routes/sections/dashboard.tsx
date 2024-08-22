@@ -8,8 +8,8 @@ import { NAVIGATION_CONFIG } from 'shared/navigation/config';
 
 // ----------------------------------------------------------------------
 
-const OutboxPage = lazy(() => import('pages/outbox/ui'));
-const PageTwo = lazy(() => import('pages/dashboard/two'));
+const OutboxPage = lazy(() => import('pages/outbox'));
+const InboxPage = lazy(() => import('pages/inbox/inbox-page'));
 const PageThree = lazy(() => import('pages/dashboard/three'));
 const PageFour = lazy(() => import('pages/dashboard/four'));
 
@@ -19,6 +19,13 @@ export const outboxRoutes = [
   {
     path: NAVIGATION_CONFIG.OUTBOX.path,
     element: <OutboxPage />,
+  },
+];
+
+export const inboxRoutes = [
+  {
+    path: NAVIGATION_CONFIG.INBOX.path,
+    element: <InboxPage />,
   },
 ];
 
@@ -34,8 +41,7 @@ export const dashboardRoutes = [
       </AuthGuard>
     ),
     children: [
-      { path: NAVIGATION_CONFIG.INBOX.path, element: <PageTwo /> },
-
+      ...inboxRoutes,
       ...outboxRoutes,
 
       { path: NAVIGATION_CONFIG.DRAFTS.path, element: <PageThree /> },

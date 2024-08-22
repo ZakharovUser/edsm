@@ -46,8 +46,8 @@ export interface Task extends TaskBase {
   created_by: string;
   task_number: number;
   creation_date: string;
+  org_name: InstituteModel;
   documents: Array<Attachment>;
-  org_name: InstituteModel['id'];
 }
 
 export interface TaskRequest extends TaskBase {

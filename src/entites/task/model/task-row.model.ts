@@ -1,6 +1,6 @@
 import { GridColDef } from '@mui/x-data-grid';
 
-import { TaskImportance } from 'entites/task/model';
+import { TaskImportance } from './task.model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -15,8 +15,6 @@ export type Row = {
   completion_date: string;
   importance: TaskImportance;
 };
-
-export type Rows = Row[];
 
 export type Cols = (Omit<GridColDef, 'field'> & {
   field: keyof Row;

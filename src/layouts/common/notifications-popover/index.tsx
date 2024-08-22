@@ -52,7 +52,7 @@ export default function NotificationsPopover() {
 
   const [currentTab, setCurrentTab] = useState('all');
 
-  const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
+  const handleChangeTab = useCallback((_event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   }, []);
 
