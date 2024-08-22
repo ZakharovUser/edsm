@@ -42,10 +42,12 @@ interface TaskBase {
 }
 
 export interface Task extends TaskBase {
+  route: TaskRoute;
+  created_by: string;
   task_number: number;
   creation_date: string;
-  route: TaskRoute;
   documents: Array<Attachment>;
+  org_name: InstituteModel['id'];
 }
 
 export interface TaskRequest extends TaskBase {
