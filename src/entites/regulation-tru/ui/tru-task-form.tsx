@@ -1,5 +1,6 @@
+import { Dayjs } from 'dayjs';
 import { useMemo, useEffect } from 'react';
-import { Form, Input, UploadFile } from 'antd';
+import { Form, Input, UploadFile, FormItemProps } from 'antd';
 
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
@@ -46,24 +47,57 @@ const importance_cause_options: Options<keyof typeof TaskReason> = [
 type FormValues = Partial<
   Omit<
     Task,
-    'documents' | 'notified_user_and_group' | 'task_number' | 'creation_date' | 'route'
+    | 'route'
+    | 'documents'
+    | 'task_number'
+    | 'creation_date'
+    | 'deadline_date'
+    | 'notified_user_and_group'
   > & {
-    documents: UploadFile<UploadAttachment>[];
-    notify: string[];
     route: string;
+    deadline: Dayjs;
+    notify: string[];
+    documents: UploadFile<UploadAttachment>[];
   }
 >;
 
-const config: Record<keyof FormValues, { label?: string; name: keyof FormValues }> = {
+const config: Record<
+  keyof FormValues,
+  { name: keyof FormValues; label?: string; rules?: FormItemProps['rules'] }
+> = {
   documents: { name: 'documents' },
   route: { label: 'Регламент', name: 'route' },
-  reason: { label: 'Причина', name: 'reason' },
   notify: { label: 'Уведомлять', name: 'notify' },
-  importance: { label: 'Важность', name: 'importance' },
-  deadline: { label: 'Дата выполнения', name: 'deadline' },
-  full_name: { label: 'Наименование (полное)', name: 'full_name' },
-  short_name: { label: 'Наименование (короткое)', name: 'short_name' },
-  finance_source: { label: 'Источник финансирования', name: 'finance_source' },
+  reason: {
+    label: 'Причина',
+    name: 'reason',
+    rules: [{ required: true, message: 'Выберите причину' }],
+  },
+  importance: {
+    label: 'Важность',
+    name: 'importance',
+    rules: [{ required: true, message: 'Выберите важность задачи' }],
+  },
+  deadline: {
+    label: 'Дата выполнения',
+    name: 'deadline',
+    rules: [{ required: true, message: 'Выберите дату выполнение' }],
+  },
+  full_name: {
+    label: 'Наименование (полное)',
+    name: 'full_name',
+    rules: [{ required: true, message: 'Введите полное наименование' }],
+  },
+  short_name: {
+    label: 'Наименование (короткое)',
+    name: 'short_name',
+    rules: [{ required: true, message: 'Введите короткое наименование' }],
+  },
+  finance_source: {
+    label: 'Источник финансирования',
+    name: 'finance_source',
+    rules: [{ required: true, message: 'Выберите источник финансирования' }],
+  },
 };
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -82,11 +116,12 @@ export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
   );
 
   const submit = () => {
-    const { notify, ...values } = form.getFieldsValue();
+    const { notify, deadline, ...values } = form.getFieldsValue();
 
     onSubmit(
       {
         ...values,
+        deadline_date: deadline?.format('YYYY-MM-DD'),
         notified_user_and_group: notify && formatNotifiers(notify),
       },
       form.resetFields
@@ -117,39 +152,24 @@ export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
       <Form.Item {...config.route} hidden>
         <Input readOnly value={route} />
       </Form.Item>
-      <Form.Item
-        {...config.importance}
-        rules={[{ required: true, message: 'Выберите важность задачи' }]}
-      >
+      <Form.Item {...config.importance}>
         <Select options={importance_options} />
       </Form.Item>
       {isImportant && (
-        <Form.Item {...config.reason} rules={[{ required: true, message: 'Выберите причину' }]}>
+        <Form.Item {...config.reason}>
           <Select options={importance_cause_options} />
         </Form.Item>
       )}
-      <Form.Item
-        {...config.short_name}
-        rules={[{ required: true, message: 'Введите короткое наименование' }]}
-      >
+      <Form.Item {...config.short_name}>
         <Input maxLength={40} showCount />
       </Form.Item>
-      <Form.Item
-        {...config.full_name}
-        rules={[{ required: true, message: 'Введите полное наименование' }]}
-      >
+      <Form.Item {...config.full_name}>
         <Input />
       </Form.Item>
-      <Form.Item
-        {...config.finance_source}
-        rules={[{ required: true, message: 'Выберите источник финансирования' }]}
-      >
+      <Form.Item {...config.finance_source}>
         <SelectFinancingSources />
       </Form.Item>
-      <Form.Item
-        {...config.deadline}
-        rules={[{ required: true, message: 'Выберите дату выполнение' }]}
-      >
+      <Form.Item {...config.deadline}>
         <SelectDeadline />
       </Form.Item>
       <Form.Item {...config.notify}>
