@@ -29,13 +29,13 @@ type NotifiedGroup = { type: 'group'; value: number };
 export type TaskNotified = NotifiedUser | NotifiedGroup;
 
 export interface Task {
-  deadline: Date;
   route: TaskRoute;
   full_name: string;
   short_name: string;
   task_number: number;
   creation_date: string;
   documents: Array<Attachment>;
+  deadline_date: string | null;
   finance_source: FinancingSource;
   reason: keyof typeof TaskReason;
   importance: keyof typeof TaskImportance;
