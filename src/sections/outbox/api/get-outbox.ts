@@ -7,5 +7,5 @@ interface Response {
 }
 
 export async function getOutbox() {
-  return httpClient.get<Response>('/api/edm/task/').then((res) => res.data.rows);
+  return httpClient.get<Response>('/api/edm/task/outbox/').then((res) => res.data.rows);
 }
