@@ -1,15 +1,14 @@
 import { useAuthContext } from 'auth/hooks';
-import { useRef, useEffect, createContext, PropsWithChildren } from 'react';
+import useWebsocket from 'react-use-websocket';
+import { useMemo, createContext, PropsWithChildren } from 'react';
 
 export const WebsocketContext = createContext({});
 
-const onConnect = (event: Event) => {
-  const socket = event.target as WebSocket;
-  socket.send(JSON.stringify({ command: 'test' }));
+const onOpen = (_event: WebSocketEventMap['open']) => {
   console.log('WS connect');
 };
 
-const onDisconnect = (event: CloseEvent) => {
+const onClose = (event: WebSocketEventMap['close']) => {
   if (event.wasClean) {
     console.log(`[close] Соединение закрыто чисто, код=${event.code} причина=${event.reason}`);
   } else {
@@ -19,34 +18,26 @@ const onDisconnect = (event: CloseEvent) => {
   }
 };
 
-const onConnectError = (err: unknown) => {
-  console.log('WS connect error', err);
+const onError = (_event: WebSocketEventMap['error']) => {
+  console.log('WS connect error');
 };
+
+const wsUrl = '/ws/notifications/';
 
 export function WebsocketProvider({ children }: PropsWithChildren) {
   const { authenticated } = useAuthContext();
-  const socketRef = useRef<WebSocket | null>(null);
 
-  useEffect(() => {
-    if (authenticated) {
-      socketRef.current = new WebSocket('ws://91.226.234.195:1337/ws/notifications/');
-    }
+  const url = useMemo(() => (authenticated ? wsUrl : ''), [authenticated]);
 
-    socketRef.current?.addEventListener('open', onConnect);
-    socketRef.current?.addEventListener('close', onDisconnect);
-    socketRef.current?.addEventListener('error', onConnectError);
-    socketRef.current?.addEventListener('message', (event) => {
-      console.log(event.data);
-    });
+  const { sendJsonMessage } = useWebsocket(url, {
+    onOpen,
+    onError,
+    onClose,
+    share: true,
+    shouldReconnect: () => authenticated,
+  });
 
-    return () => {
-      socketRef.current?.removeEventListener('open', onConnect);
-      socketRef.current?.removeEventListener('close', onDisconnect);
-      socketRef.current?.removeEventListener('error', onConnectError);
+  const value = useMemo(() => ({ send: sendJsonMessage }), [sendJsonMessage]);
 
-      socketRef.current?.close();
-    };
-  }, [authenticated]);
-
-  return <WebsocketContext.Provider value={socketRef}>{children}</WebsocketContext.Provider>;
+  return <WebsocketContext.Provider value={value}>{children}</WebsocketContext.Provider>;
 }

@@ -24,6 +24,10 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      '/ws': {
+        target: 'ws://91.226.234.195:1337',
+        ws: true,
+      },
     },
   },
   preview: {
