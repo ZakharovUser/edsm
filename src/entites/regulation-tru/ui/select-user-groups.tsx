@@ -1,29 +1,34 @@
 import { useMemo } from 'react';
-import { TreeSelect, TreeSelectProps } from 'antd';
+import { TreeSelect, Typography, TreeSelectProps } from 'antd';
 
 import { useUserGroups } from 'entites/contacts/hooks';
 import { ContactGroupModel } from 'entites/contacts/models';
 
 // -----------------------------------------------------------------------------------------------------------------
 
+const { Text } = Typography;
+
 export function SelectUserGroups(props: TreeSelectProps) {
-  const { data, isError, isPending } = useUserGroups();
+  const { data, error, isError, isPending } = useUserGroups();
 
   const treeData = useMemo(() => parseUserGroups(data), [data]);
 
   return (
-    <TreeSelect
-      {...props}
-      allowClear
-      treeCheckable
-      loading={isPending}
-      treeData={treeData}
-      treeNodeFilterProp="title"
-      disabled={isError || isPending}
-      dropdownStyle={{ zIndex: 1500 }}
-      showCheckedStrategy="SHOW_PARENT"
-      status={(isError && 'error') || ''}
-    />
+    <>
+      <TreeSelect
+        {...props}
+        allowClear
+        treeCheckable
+        loading={isPending}
+        treeData={treeData}
+        treeNodeFilterProp="title"
+        disabled={isError || isPending}
+        dropdownStyle={{ zIndex: 1500 }}
+        showCheckedStrategy="SHOW_PARENT"
+        status={(isError && 'error') || ''}
+      />
+      {isError && <Text type="danger">{error?.detail}</Text>}
+    </>
   );
 }
 

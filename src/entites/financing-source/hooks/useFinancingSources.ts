@@ -3,6 +3,10 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import getFinancingSources from 'entites/financing-source/api';
 import { FinancingSourceModel } from 'entites/financing-source/models';
 
+interface Error {
+  detail: string;
+}
+
 export function useFinancingSources<TData = FinancingSourceModel[]>(
   options: Pick<
     UseQueryOptions<FinancingSourceModel[], Error, TData | undefined>,
