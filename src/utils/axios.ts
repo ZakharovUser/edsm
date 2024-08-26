@@ -1,5 +1,5 @@
 import { HOST_API } from 'config-global';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 // ----------------------------------------------------------------------
 
@@ -11,10 +11,14 @@ export const axiosInstance = axios.create({ baseURL: HOST_API });
 
 axiosInstance.interceptors.response.use(
   (res) => res,
-  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
+  (error) => Promise.reject(error || 'Something went wrong')
 );
 
 // -----------------------------------------------------------------------------------------------------------------
+
+export type UseResponseError<E extends Error> = E extends Error ? E : never;
+
+export type ResponseError<Res = any, Req = any> = UseResponseError<AxiosError<Req, Res>>;
 
 export const httpClient = axios.create({
   withCredentials: true,
@@ -22,7 +26,7 @@ export const httpClient = axios.create({
 
 httpClient.interceptors.response.use(
   (res) => res,
-  (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
+  (error) => Promise.reject(error)
 );
 
 // ----------------------------------------------------------------------

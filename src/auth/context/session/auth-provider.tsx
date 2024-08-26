@@ -1,3 +1,4 @@
+import { useSession } from 'auth/context/session/hooks';
 import { useMemo, useEffect, useReducer, useCallback, PropsWithChildren } from 'react';
 import { AuthUserType, ActionMapType, AuthStateType, SessionContextType } from 'auth/types';
 
@@ -15,6 +16,7 @@ enum Methods {
 type Payload = {
   [Methods.INITIAL]: {
     user: AuthUserType;
+    loading: boolean;
   };
   [Methods.LOGIN]: {
     user: AuthUserType;
@@ -36,7 +38,7 @@ const reducer = (state: AuthStateType, action: ActionsType) => {
   switch (action.type) {
     case Methods.INITIAL:
       return {
-        loading: false,
+        loading: action.payload.loading,
         user: action.payload.user,
       };
     case Methods.LOGIN:
@@ -57,30 +59,30 @@ const reducer = (state: AuthStateType, action: ActionsType) => {
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const { data: { isAuthenticated } = { isAuthenticated: false }, isPending } = useSession();
 
-  const initialize = useCallback(async () => {
-    const { isAuthenticated } = await httpClient
-      .get(endpoints.crossAuth.session)
-      .then(({ data }) => data);
-
+  useEffect(() => {
     if (isAuthenticated) {
-      const user = await getUser();
-
-      dispatch({
-        type: Methods.INITIAL,
-        payload: { user },
-      });
+      getUser().then((user) =>
+        dispatch({
+          type: Methods.INITIAL,
+          payload: { user, loading: isPending },
+        })
+      );
     } else {
       dispatch({
         type: Methods.INITIAL,
-        payload: { user: null },
+        payload: { user: null, loading: isPending },
       });
     }
-  }, []);
+  }, [isAuthenticated, isPending]);
 
-  useEffect(() => {
-    initialize();
-  }, [initialize]);
+  // LOGOUT
+  const logout = useCallback(async () => {
+    await httpClient.get(endpoints.crossAuth.logout);
+
+    dispatch({ type: Methods.LOGOUT });
+  }, []);
 
   // LOGIN
   const login = useCallback(async (username: string, password: string) => {
@@ -100,13 +102,6 @@ export function AuthProvider({ children }: PropsWithChildren) {
         payload: { user, token },
       });
     }
-  }, []);
-
-  // LOGOUT
-  const logout = useCallback(async () => {
-    await httpClient.get(endpoints.crossAuth.logout);
-
-    dispatch({ type: Methods.LOGOUT });
   }, []);
 
   const { user, loading } = state;
