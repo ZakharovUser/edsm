@@ -22,7 +22,7 @@ const onError = (_event: WebSocketEventMap['error']) => {
   console.log('WS connect error');
 };
 
-const wsUrl = '/ws/notifications/';
+const wsUrl = 'ws://91.226.234.195:1337/ws/notifications/';
 
 export function WebsocketProvider({ children }: PropsWithChildren) {
   const { authenticated } = useAuthContext();
