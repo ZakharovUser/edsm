@@ -27,26 +27,27 @@ import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import {
-  Timeline,
-  TimelineDot,
-  TimelineContent,
-  TimelineConnector,
-  TimelineSeparator,
-} from '@mui/lab';
-import {
   Accordion,
   AccordionDetails,
   accordionClasses,
   AccordionSummary,
   accordionSummaryClasses,
 } from '@mui/material';
+import {
+  Timeline,
+  TimelineDot,
+  TimelineContent,
+  TimelineDotProps,
+  TimelineConnector,
+  TimelineSeparator,
+} from '@mui/lab';
 
 import { httpClient } from 'utils/axios';
 import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
 import { getTaskItem } from 'entites/task/api';
-import { TaskReason, TaskImportance } from 'entites/task/model';
+import { TaskReason, TaskStatus, TaskImportance } from 'entites/task/model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -64,6 +65,15 @@ export async function getAttachmentLink(id: string) {
     .then((res) => res.data.attachment);
 }
 
+const taskStatusMap: Record<TaskStatus, TimelineDotProps['color']> = {
+  [TaskStatus.New]: 'info',
+  [TaskStatus.Draft]: 'grey',
+  [TaskStatus.Canceled]: 'error',
+  [TaskStatus.Completed]: 'success',
+  [TaskStatus.Refinement]: 'warning',
+  [TaskStatus.Progress]: 'secondary',
+};
+
 // -----------------------------------------------------------------------------------------------------------------
 
 export function TaskDrawer(props: Props) {
@@ -80,7 +90,7 @@ export function TaskDrawer(props: Props) {
   });
 
   console.log(user);
-  console.log(task);
+  console.log(task?.task_history);
 
   return (
     <Drawer
@@ -191,56 +201,37 @@ export function TaskDrawer(props: Props) {
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
-                <Timeline
-                  sx={{
-                    [`& .${timelineItemClasses.root}:before`]: {
-                      flex: 0,
-                      padding: 0,
-                    },
-                  }}
-                >
-                  <TimelineItem>
-                    <TimelineSeparator>
-                      <TimelineDot variant="outlined" color="grey" />
-                      <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>Новая</TimelineContent>
-                  </TimelineItem>
-                  <TimelineItem>
-                    <TimelineSeparator>
-                      <TimelineDot variant="outlined" color="warning" />
-                      <TimelineConnector sx={{ bgcolor: 'warning.main' }} />
-                    </TimelineSeparator>
-                    <TimelineContent>На доработке</TimelineContent>
-                  </TimelineItem>
-                  <TimelineItem>
-                    <TimelineSeparator>
-                      <TimelineDot variant="outlined" color="info" />
-                      <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>Sleep</TimelineContent>
-                  </TimelineItem>
-                  <TimelineItem>
-                    <TimelineSeparator>
-                      <TimelineDot variant="outlined" color="success" />
-                      <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>Выполнена</TimelineContent>
-                  </TimelineItem>
-                  <TimelineItem>
-                    <TimelineSeparator>
-                      <TimelineDot variant="outlined" color="error" />
-                      <TimelineConnector />
-                    </TimelineSeparator>
-                    <TimelineContent>Отменена</TimelineContent>
-                  </TimelineItem>
-                  <TimelineItem>
-                    <TimelineSeparator>
-                      <TimelineDot variant="outlined" color="secondary" />
-                    </TimelineSeparator>
-                    <TimelineContent>В работе</TimelineContent>
-                  </TimelineItem>
-                </Timeline>
+                {task && task.task_history.length && (
+                  <Timeline
+                    sx={{
+                      [`& .${timelineItemClasses.root}:before`]: {
+                        flex: 0,
+                        padding: 0,
+                      },
+                    }}
+                  >
+                    {task.task_history.map((step, idx, arr) => {
+                      const last = idx === arr.length - 1;
+
+                      return (
+                        <TimelineItem key={step.timestamp}>
+                          <TimelineSeparator>
+                            <TimelineDot
+                              variant="outlined"
+                              color={taskStatusMap[step.task_status]}
+                            />
+                            {!last && (
+                              <TimelineConnector
+                                sx={{ bgcolor: `${taskStatusMap[step.task_status]}.main` }}
+                              />
+                            )}
+                          </TimelineSeparator>
+                          <TimelineContent>{step.timestamp}</TimelineContent>
+                        </TimelineItem>
+                      );
+                    })}
+                  </Timeline>
+                )}
               </AccordionDetails>
             </Accordion>
           </Box>
