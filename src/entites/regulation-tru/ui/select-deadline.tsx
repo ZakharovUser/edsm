@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { Flex, DatePicker, DatePickerProps } from 'antd';
 
-import { formatDate } from 'shared/helpers/format-date';
+import { fDate } from 'utils/format-time';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ export function SelectDeadline(props: DatePickerProps) {
 
   return (
     <Flex vertical>
-      <DatePicker {...props} minDate={now} format={(value) => `до ${formatDate(value.toDate())}`} />
+      <DatePicker {...props} minDate={now} format={(value) => `до ${fDate(value.toDate())}`} />
     </Flex>
   );
 }

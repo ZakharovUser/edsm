@@ -22,12 +22,11 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
 import { httpClient } from 'utils/axios';
+import { fDate } from 'utils/format-time';
+import { formatUserName } from 'utils/format-user-name';
 
 import { getTaskItem } from 'entites/task/api';
 import { TaskReason, TaskImportance } from 'entites/task/model';
-
-import { formatDate } from 'shared/helpers/format-date';
-import { formatUserName } from 'shared/helpers/format-user-name';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -125,11 +124,11 @@ export function TaskDrawer(props: Props) {
           </Row>
 
           <Row label="Дата создания" isLoading={isPendingTask} icon={<CalendarMonthIcon />}>
-            {task && formatDate(task.creation_date)}
+            {task && fDate(task.creation_date)}
           </Row>
 
           <Row label="Дата выполнения" isLoading={isPendingTask} icon={<CalendarMonthIcon />}>
-            {task?.deadline_date && formatDate(task.deadline_date)}
+            {task?.deadline_date && fDate(task.deadline_date)}
           </Row>
 
           <Row label="Документы" isLoading={isPendingTask} icon={<AttachFileIcon />}>
