@@ -31,6 +31,37 @@ type NotifiedGroup = { type: 'group'; value: number };
 
 export type TaskNotified = NotifiedUser | NotifiedGroup;
 
+export enum TaskStatus {
+  New = 'new',
+  Draft = 'draft',
+  Canceled = 'canceled',
+  Completed = 'completed',
+  Progress = 'in_progress',
+  Refinement = 'refinement',
+}
+
+export interface TaskStage {
+  id: number;
+  route: number;
+  stage_name: string;
+  order_number: number;
+  group: Array<number>;
+}
+
+export interface TaskHistoryStep {
+  timestamp: string;
+  task_status: TaskStatus;
+  current_stage: TaskStage;
+  executor_id: number | null;
+  // comments: [];
+}
+
+export interface TaskMembers {
+  creator_id: number;
+  executor_id: null | number;
+  supervisor_id: null | number;
+}
+
 interface TaskBase {
   full_name: string;
   short_name: string;
@@ -45,9 +76,11 @@ export interface Task extends TaskBase {
   route: TaskRoute;
   created_by: string;
   task_number: number;
+  members: TaskMembers;
   creation_date: string;
   org_name: InstituteModel;
   documents: Array<Attachment>;
+  task_history: Array<TaskHistoryStep>;
 }
 
 export interface TaskRequest extends TaskBase {
