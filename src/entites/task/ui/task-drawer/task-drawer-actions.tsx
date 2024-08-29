@@ -1,10 +1,12 @@
 import React from 'react';
 
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
+import Stack, { StackProps } from '@mui/material/Stack';
 
-interface Props {
+// -----------------------------------------------------------------------------------------------------------------
+
+interface Props extends StackProps {
   canAccept: boolean;
   canApprove: boolean;
   onAccept: VoidFunction;
@@ -12,11 +14,19 @@ interface Props {
   onApprove: VoidFunction;
 }
 
-export function TaskDrawerActions({ onAccept, canAccept, canApprove, onApprove, onCancel }: Props) {
+export function TaskDrawerActions({
+  sx,
+  onAccept,
+  canAccept,
+  canApprove,
+  onApprove,
+  onCancel,
+  ...props
+}: Props) {
   const theme = useTheme();
 
   return (
-    <Stack sx={{ flex: 0, py: 1, borderTop: `dashed 1px ${theme.palette.divider}` }}>
+    <Stack sx={{ borderTop: `dashed 1px ${theme.palette.divider}`, ...sx }} {...props}>
       <Button type="button" onClick={onAccept} disabled={!canAccept}>
         Принять
       </Button>

@@ -233,6 +233,7 @@ export function TaskDrawer(props: Props) {
         </Scrollbar>
 
         <TaskDrawerActions
+          sx={{ flex: 0, py: 1 }}
           canAccept={canAccept}
           canApprove={canApprove}
           onAccept={onAcceptTask}
