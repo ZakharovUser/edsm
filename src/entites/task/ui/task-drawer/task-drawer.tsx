@@ -1,6 +1,5 @@
 import { useAuthContext } from 'auth/hooks';
 import Scrollbar from 'components/scrollbar';
-import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
 import React, { useState, ReactElement, cloneElement, PropsWithChildren } from 'react';
 
@@ -35,11 +34,11 @@ import {
 import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
-import { useTaskRights } from 'entites/task/hooks';
+import { useTask, useTaskRights } from 'entites/task/hooks';
 import { TaskReason, TaskStatus, TaskImportance } from 'entites/task/model';
+import { cancelTask, approveTask, setTaskExecutor } from 'entites/task/api';
 import { TaskDrawerActions } from 'entites/task/ui/task-drawer/task-drawer-actions';
 import { View, TaskDrawerHeader } from 'entites/task/ui/task-drawer/task-drawer-header';
-import { cancelTask, approveTask, getTaskItem, setTaskExecutor } from 'entites/task/api';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -74,11 +73,7 @@ export function TaskDrawer(props: Props) {
 
   const taskId = searchParams.get('task');
 
-  const { data: task, isPending: isPendingTask } = useQuery({
-    queryKey: ['task', taskId],
-    queryFn: ({ queryKey }) => getTaskItem(queryKey[1] as string),
-    enabled: !!taskId,
-  });
+  const { data: task, isPending: isPendingTask } = useTask(taskId);
 
   const { canAccept, canApprove } = useTaskRights(task);
 
@@ -121,7 +116,12 @@ export function TaskDrawer(props: Props) {
       {...props}
     >
       <Stack direction="column" sx={{ height: '100%', px: 1 }}>
-        <TaskDrawerHeader view={view} onClose={setSearchParams} onChangeView={setView} />
+        <TaskDrawerHeader
+          view={view}
+          sx={{ flex: 0 }}
+          onChangeView={setView}
+          onClose={setSearchParams}
+        />
 
         <Scrollbar sx={{ flex: 1, py: 1 }}>
           <Typography variant="h4" sx={{ mb: 0.5 }}>
