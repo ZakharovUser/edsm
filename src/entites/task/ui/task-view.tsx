@@ -5,12 +5,13 @@ import Stack from '@mui/material/Stack';
 
 import { ErrorView } from 'sections/error';
 
+import { TaskDrawer } from 'entites/task/ui/task-drawer/task-drawer';
+
 import { Container } from 'shared/container/ui';
 
 import { Task } from '../model';
 import { convertTaskToRow } from '../helpers';
 
-import { TaskDrawer } from './task-drawer';
 import { TaskDataGrid } from './task-data-grid';
 
 // -----------------------------------------------------------------------------------------------------------------

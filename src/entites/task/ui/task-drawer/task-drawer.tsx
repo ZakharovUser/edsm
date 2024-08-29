@@ -6,7 +6,6 @@ import React, { useState, ReactElement, cloneElement, PropsWithChildren } from '
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -42,6 +41,7 @@ import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
 import { TaskReason, TaskStatus, TaskImportance } from 'entites/task/model';
+import { TaskDrawerActions } from 'entites/task/ui/task-drawer/task-drawer-actions';
 import { cancelTask, approveTask, getTaskItem, setTaskExecutor } from 'entites/task/api';
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -281,22 +281,15 @@ export function TaskDrawer(props: Props) {
               </Timeline>
             )}
           </Box>
-        </Scrollbar>
 
-        <Stack sx={{ flex: 0, py: 1, borderTop: `dashed 1px ${theme.palette.divider}` }}>
-          <Button type="button" onClick={onAcceptTask} disabled={!canAccept}>
-            Принять
-          </Button>
-          <Button type="button" onClick={onApproveTask} disabled={!canApprove}>
-            Согласовать
-          </Button>
-          <Button type="button" disabled>
-            Отклонить
-          </Button>
-          <Button type="button" onClick={onCancelTask} disabled={!canApprove}>
-            Прекратить
-          </Button>
-        </Stack>
+          <TaskDrawerActions
+            canAccept={canAccept}
+            canApprove={canApprove}
+            onAccept={onAcceptTask}
+            onApprove={onApproveTask}
+            onCancel={onCancelTask}
+          />
+        </Scrollbar>
       </Stack>
     </Drawer>
   );
