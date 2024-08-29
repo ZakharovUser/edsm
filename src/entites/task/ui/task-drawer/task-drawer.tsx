@@ -6,27 +6,22 @@ import React, { useState, ReactElement, cloneElement, PropsWithChildren } from '
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import { Theme } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import LabelIcon from '@mui/icons-material/Label';
-import NotesIcon from '@mui/icons-material/Notes';
 import PersonIcon from '@mui/icons-material/Person';
 import StreamIcon from '@mui/icons-material/Stream';
 import NumbersIcon from '@mui/icons-material/Numbers';
-import { Theme, useTheme } from '@mui/material/styles';
-import TimelineIcon from '@mui/icons-material/Timeline';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import {
   Timeline,
   TimelineDot,
@@ -42,17 +37,12 @@ import { formatUserName } from 'utils/format-user-name';
 
 import { TaskReason, TaskStatus, TaskImportance } from 'entites/task/model';
 import { TaskDrawerActions } from 'entites/task/ui/task-drawer/task-drawer-actions';
+import { View, TaskDrawerHeader } from 'entites/task/ui/task-drawer/task-drawer-header';
 import { cancelTask, approveTask, getTaskItem, setTaskExecutor } from 'entites/task/api';
 
 // -----------------------------------------------------------------------------------------------------------------
 
 export type Props = Omit<DrawerProps, 'onClose' | 'open'>;
-
-// -----------------------------------------------------------------------------------------------------------------
-
-const lighten = {
-  color: (theme: Theme) => theme.palette.grey['500'],
-};
 
 // export async function getAttachmentLink(id: string) {
 //   return httpClient
@@ -74,15 +64,9 @@ const statusOptions: Record<TaskStatus, StatusOption> = {
   [TaskStatus.Progress]: { color: 'secondary', label: 'В работе' },
 };
 
-enum View {
-  Summary,
-  History,
-}
-
 // -----------------------------------------------------------------------------------------------------------------
 
 export function TaskDrawer(props: Props) {
-  const theme = useTheme();
   const { user } = useAuthContext();
   const [view, setView] = useState<View>(View.Summary);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -94,10 +78,6 @@ export function TaskDrawer(props: Props) {
     queryFn: ({ queryKey }) => getTaskItem(queryKey[1] as string),
     enabled: !!taskId,
   });
-
-  const onChangeView = (_event: React.MouseEvent<HTMLElement>, nextView: View | null) => {
-    if (nextView !== null) setView(nextView);
-  };
 
   const onAcceptTask = () => {
     if (taskId) {
@@ -148,31 +128,7 @@ export function TaskDrawer(props: Props) {
       {...props}
     >
       <Stack direction="column" sx={{ height: '100%', px: 1 }}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ flex: 0, borderBottom: `dashed 1px ${theme.palette.divider}`, py: 1 }}
-        >
-          <IconButton onClick={() => setSearchParams()} size="small">
-            <KeyboardDoubleArrowRightIcon />
-          </IconButton>
-
-          <ToggleButtonGroup
-            exclusive
-            size="small"
-            value={view}
-            onChange={onChangeView}
-            sx={{ bgcolor: 'transparent' }}
-          >
-            <ToggleButton value={View.Summary} sx={{ p: 0.5 }}>
-              <NotesIcon fontSize="small" />
-            </ToggleButton>
-            <ToggleButton value={View.History} sx={{ p: 0.5 }}>
-              <TimelineIcon fontSize="small" />
-            </ToggleButton>
-          </ToggleButtonGroup>
-        </Stack>
+        <TaskDrawerHeader view={view} onClose={setSearchParams} onChangeView={setView} />
 
         <Scrollbar sx={{ flex: 1, py: 1 }}>
           <Typography variant="h4" sx={{ mb: 0.5 }}>
@@ -281,19 +237,23 @@ export function TaskDrawer(props: Props) {
               </Timeline>
             )}
           </Box>
-
-          <TaskDrawerActions
-            canAccept={canAccept}
-            canApprove={canApprove}
-            onAccept={onAcceptTask}
-            onApprove={onApproveTask}
-            onCancel={onCancelTask}
-          />
         </Scrollbar>
+
+        <TaskDrawerActions
+          canAccept={canAccept}
+          canApprove={canApprove}
+          onAccept={onAcceptTask}
+          onApprove={onApproveTask}
+          onCancel={onCancelTask}
+        />
       </Stack>
     </Drawer>
   );
 }
+
+const lighten = {
+  color: (theme: Theme) => theme.palette.grey['500'],
+};
 
 interface RowProps extends PropsWithChildren {
   label: string;
