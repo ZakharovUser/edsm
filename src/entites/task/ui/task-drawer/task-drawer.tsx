@@ -35,6 +35,7 @@ import {
 import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
+import { useTaskRights } from 'entites/task/hooks';
 import { TaskReason, TaskStatus, TaskImportance } from 'entites/task/model';
 import { TaskDrawerActions } from 'entites/task/ui/task-drawer/task-drawer-actions';
 import { View, TaskDrawerHeader } from 'entites/task/ui/task-drawer/task-drawer-header';
@@ -79,6 +80,8 @@ export function TaskDrawer(props: Props) {
     enabled: !!taskId,
   });
 
+  const { canAccept, canApprove } = useTaskRights(task);
+
   const onAcceptTask = () => {
     if (taskId) {
       setTaskExecutor(taskId, { executor_id: user?.id }).then(console.log);
@@ -98,16 +101,6 @@ export function TaskDrawer(props: Props) {
   };
 
   const currentHistoryStep = task?.task_history.at(-1);
-
-  const isInGroups = !!user?.groups
-    .map(({ id }) => !!currentHistoryStep?.current_stage.group.includes(id))
-    .some(Boolean);
-
-  const isNotStepExecutor = currentHistoryStep?.executor_id === null;
-  const isUserStepExecutor = currentHistoryStep?.executor_id === user?.id;
-
-  const canAccept = isNotStepExecutor && isInGroups;
-  const canApprove = isUserStepExecutor && isInGroups;
 
   return (
     <Drawer
