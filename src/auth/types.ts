@@ -1,5 +1,6 @@
 import { LogoutOptions, PopupLoginOptions, RedirectLoginOptions } from '@auth0/auth0-react';
 
+import { GroupModel } from 'entites/user/models';
 import { InstituteListModel } from 'entites/institute/model';
 
 // ----------------------------------------------------------------------
@@ -16,12 +17,14 @@ export type ActionMapType<M extends { [index: string]: any }> = {
 };
 
 export interface AuthUser {
+  id: number;
   rank: string;
   email: string;
   username: string;
   last_name: string;
   first_name: string;
   middle_name: string;
+  groups: Array<GroupModel>;
   org_list: InstituteListModel;
 }
 
