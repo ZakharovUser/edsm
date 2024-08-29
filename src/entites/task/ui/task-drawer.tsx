@@ -1,8 +1,7 @@
-import { useAuthContext } from 'auth/hooks';
 import Scrollbar from 'components/scrollbar';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
-import { ReactElement, cloneElement, PropsWithChildren } from 'react';
+import { useState, ReactElement, cloneElement, PropsWithChildren } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -11,28 +10,22 @@ import Skeleton from '@mui/material/Skeleton';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import LabelIcon from '@mui/icons-material/Label';
+import NotesIcon from '@mui/icons-material/Notes';
 import PersonIcon from '@mui/icons-material/Person';
 import NumbersIcon from '@mui/icons-material/Numbers';
-import HistoryIcon from '@mui/icons-material/History';
 import { Theme, useTheme } from '@mui/material/styles';
+import TimelineIcon from '@mui/icons-material/Timeline';
 import StarHalfIcon from '@mui/icons-material/StarHalf';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+import { ToggleButton, ToggleButtonGroup } from '@mui/material';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-import {
-  Accordion,
-  AccordionDetails,
-  accordionClasses,
-  AccordionSummary,
-  accordionSummaryClasses,
-} from '@mui/material';
 import {
   Timeline,
   TimelineDot,
@@ -40,9 +33,9 @@ import {
   TimelineDotProps,
   TimelineConnector,
   TimelineSeparator,
+  TimelineOppositeContent,
 } from '@mui/lab';
 
-import { httpClient } from 'utils/axios';
 import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
@@ -59,11 +52,11 @@ const lighten = {
   color: (theme: Theme) => theme.palette.grey['500'],
 };
 
-export async function getAttachmentLink(id: string) {
-  return httpClient
-    .get<{ attachment: string }>(`/api/edm/attachments/${id}`)
-    .then((res) => res.data.attachment);
-}
+// export async function getAttachmentLink(id: string) {
+//   return httpClient
+//     .get<{ attachment: string }>(`/api/edm/attachments/${id}`)
+//     .then((res) => res.data.attachment);
+// }
 
 const taskStatusMap: Record<TaskStatus, TimelineDotProps['color']> = {
   [TaskStatus.New]: 'info',
@@ -74,11 +67,17 @@ const taskStatusMap: Record<TaskStatus, TimelineDotProps['color']> = {
   [TaskStatus.Progress]: 'secondary',
 };
 
+enum View {
+  Summary,
+  History,
+}
+
 // -----------------------------------------------------------------------------------------------------------------
 
 export function TaskDrawer(props: Props) {
   const theme = useTheme();
-  const { user } = useAuthContext();
+  // const { user } = useAuthContext();
+  const [view, setView] = useState<View>(View.Summary);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const taskId = searchParams.get('task');
@@ -89,8 +88,11 @@ export function TaskDrawer(props: Props) {
     enabled: !!taskId,
   });
 
-  console.log(user);
-  console.log(task?.task_history);
+  const onChangeView = (_event: React.MouseEvent<HTMLElement>, nextView: View | null) => {
+    if (nextView !== null) setView(nextView);
+  };
+
+  console.log(view);
 
   return (
     <Drawer
@@ -111,11 +113,31 @@ export function TaskDrawer(props: Props) {
       {...props}
     >
       <Stack direction="column" sx={{ height: '100%', px: 1 }}>
-        <Box sx={{ flex: 0, borderBottom: `dashed 1px ${theme.palette.divider}`, py: 1 }}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ flex: 0, borderBottom: `dashed 1px ${theme.palette.divider}`, py: 1 }}
+        >
           <IconButton onClick={() => setSearchParams()} size="small">
             <KeyboardDoubleArrowRightIcon />
           </IconButton>
-        </Box>
+
+          <ToggleButtonGroup
+            exclusive
+            size="small"
+            value={view}
+            onChange={onChangeView}
+            sx={{ bgcolor: 'transparent' }}
+          >
+            <ToggleButton value={View.Summary} sx={{ p: 0.5 }}>
+              <NotesIcon fontSize="small" />
+            </ToggleButton>
+            <ToggleButton value={View.History} sx={{ p: 0.5 }}>
+              <TimelineIcon fontSize="small" />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Stack>
 
         <Scrollbar sx={{ flex: 1, py: 1 }}>
           <Typography variant="h4" sx={{ mb: 0.5 }}>
@@ -126,7 +148,7 @@ export function TaskDrawer(props: Props) {
             {task && !isPendingTask ? task.full_name : <Skeleton />}
           </Typography>
 
-          <Stack gap={1.5}>
+          <Box hidden={view !== View.Summary}>
             <Row label="ID" isLoading={isPendingTask} icon={<NumbersIcon />}>
               {taskId}
             </Row>
@@ -176,64 +198,46 @@ export function TaskDrawer(props: Props) {
                   </a>
                 ))}
             </Row>
-          </Stack>
+          </Box>
 
-          <Box sx={{ p: 1, mt: 1.5 }}>
-            <Accordion
-              slotProps={{ transition: { unmountOnExit: true } }}
-              sx={{
-                [`&:not(:has(.${accordionClasses.expanded}))`]: {
-                  boxShadow: '0 8px 16px 0 rgba(145, 158, 171, 0.16)',
-                },
-              }}
-            >
-              <AccordionSummary
+          <Box hidden={view !== View.History}>
+            {task && (
+              <Timeline
                 sx={{
-                  [`& .${accordionSummaryClasses.content}`]: { justifyContent: 'center' },
+                  m: 0,
+                  p: 0,
+                  [`& .${timelineItemClasses.root}:before`]: {
+                    flex: 0,
+                    padding: 0,
+                  },
                 }}
-                expandIcon={<ExpandMoreIcon sx={{ ...lighten, fontSize: 18 }} />}
               >
-                <Stack direction="row" alignItems="center" gap={0.5}>
-                  <HistoryIcon sx={{ ...lighten, fontSize: 18 }} />
-                  <Typography sx={{ ...lighten, fontSize: 14 }} noWrap>
-                    История
-                  </Typography>
-                </Stack>
-              </AccordionSummary>
-              <AccordionDetails>
-                {task && task.task_history.length && (
-                  <Timeline
-                    sx={{
-                      [`& .${timelineItemClasses.root}:before`]: {
-                        flex: 0,
-                        padding: 0,
-                      },
-                    }}
-                  >
-                    {task.task_history.map((step, idx, arr) => {
-                      const last = idx === arr.length - 1;
-
-                      return (
-                        <TimelineItem key={step.timestamp}>
-                          <TimelineSeparator>
-                            <TimelineDot
-                              variant="outlined"
-                              color={taskStatusMap[step.task_status]}
-                            />
-                            {!last && (
-                              <TimelineConnector
-                                sx={{ bgcolor: `${taskStatusMap[step.task_status]}.main` }}
-                              />
-                            )}
-                          </TimelineSeparator>
-                          <TimelineContent>{step.timestamp}</TimelineContent>
-                        </TimelineItem>
-                      );
-                    })}
-                  </Timeline>
-                )}
-              </AccordionDetails>
-            </Accordion>
+                {task.task_history.map((step, idx, arr) => (
+                  <TimelineItem key={step.timestamp}>
+                    <TimelineOppositeContent
+                      sx={{ m: 'auto 0' }}
+                      align="right"
+                      variant="body2"
+                      color="text.secondary"
+                    >
+                      <div>{fDate(step.timestamp)}</div>
+                      <div>{fDate(step.timestamp, 'hh:mm:ss')}</div>
+                    </TimelineOppositeContent>
+                    <TimelineSeparator>
+                      <TimelineDot variant="outlined" color={taskStatusMap[step.task_status]} />
+                      {idx !== arr.length - 1 && (
+                        <TimelineConnector
+                          sx={{ bgcolor: `${taskStatusMap[step.task_status]}.main` }}
+                        />
+                      )}
+                    </TimelineSeparator>
+                    <TimelineContent>
+                      <Typography variant="body2">{step.current_stage.stage_name}</Typography>
+                    </TimelineContent>
+                  </TimelineItem>
+                ))}
+              </Timeline>
+            )}
           </Box>
         </Scrollbar>
 
@@ -269,7 +273,12 @@ function Row({ label, isLoading, children, icon }: RowProps) {
     );
 
   return (
-    <Stack direction="row" alignItems="center" gap={1}>
+    <Stack
+      direction="row"
+      alignItems="center"
+      gap={1}
+      sx={{ [`&:not(:first-of-type)`]: { mt: 1 } }}
+    >
       <Stack direction="row" alignItems="center" gap={0.5} sx={{ width: 150 }}>
         {Icon}
         <Typography sx={{ ...lighten, fontSize: 14 }} noWrap>
