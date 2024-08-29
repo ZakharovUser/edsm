@@ -1,3 +1,4 @@
+import { useAuthContext } from 'auth/hooks';
 import Scrollbar from 'components/scrollbar';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
@@ -12,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import LabelIcon from '@mui/icons-material/Label';
 import NotesIcon from '@mui/icons-material/Notes';
 import PersonIcon from '@mui/icons-material/Person';
+import StreamIcon from '@mui/icons-material/Stream';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import { Theme, useTheme } from '@mui/material/styles';
 import TimelineIcon from '@mui/icons-material/Timeline';
@@ -39,8 +41,8 @@ import {
 import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
-import { getTaskItem, postSetExecutor } from 'entites/task/api';
 import { TaskReason, TaskStatus, TaskImportance } from 'entites/task/model';
+import { cancelTask, approveTask, getTaskItem, setTaskExecutor } from 'entites/task/api';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -58,13 +60,18 @@ const lighten = {
 //     .then((res) => res.data.attachment);
 // }
 
-const taskStatusMap: Record<TaskStatus, TimelineDotProps['color']> = {
-  [TaskStatus.New]: 'info',
-  [TaskStatus.Draft]: 'grey',
-  [TaskStatus.Canceled]: 'error',
-  [TaskStatus.Completed]: 'success',
-  [TaskStatus.Refinement]: 'warning',
-  [TaskStatus.Progress]: 'secondary',
+type StatusOption = {
+  label: string;
+  color: TimelineDotProps['color'];
+};
+
+const statusOptions: Record<TaskStatus, StatusOption> = {
+  [TaskStatus.New]: { color: 'info', label: 'Новая' },
+  [TaskStatus.Draft]: { color: 'grey', label: 'Черновик' },
+  [TaskStatus.Canceled]: { color: 'error', label: 'Отменена' },
+  [TaskStatus.Completed]: { color: 'success', label: 'Завершена' },
+  [TaskStatus.Refinement]: { color: 'warning', label: 'На доработке' },
+  [TaskStatus.Progress]: { color: 'secondary', label: 'В работе' },
 };
 
 enum View {
@@ -76,7 +83,7 @@ enum View {
 
 export function TaskDrawer(props: Props) {
   const theme = useTheme();
-  // const { user } = useAuthContext();
+  const { user } = useAuthContext();
   const [view, setView] = useState<View>(View.Summary);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -92,13 +99,35 @@ export function TaskDrawer(props: Props) {
     if (nextView !== null) setView(nextView);
   };
 
-  const onAccept = (): void => {
+  const onAcceptTask = () => {
     if (taskId) {
-      postSetExecutor(parseInt(taskId, 10)).then(console.log);
+      setTaskExecutor(taskId, { executor_id: user?.id }).then(console.log);
     }
   };
 
-  console.log(view);
+  const onApproveTask = () => {
+    if (taskId) {
+      approveTask(taskId).then(console.log);
+    }
+  };
+
+  const onCancelTask = () => {
+    if (taskId) {
+      cancelTask(taskId).then(console.log);
+    }
+  };
+
+  const currentHistoryStep = task?.task_history.at(-1);
+
+  const isInGroups = !!user?.groups
+    .map(({ id }) => !!currentHistoryStep?.current_stage.group.includes(id))
+    .some(Boolean);
+
+  const isNotStepExecutor = currentHistoryStep?.executor_id === null;
+  const isUserStepExecutor = currentHistoryStep?.executor_id === user?.id;
+
+  const canAccept = isNotStepExecutor && isInGroups;
+  const canApprove = isUserStepExecutor && isInGroups;
 
   return (
     <Drawer
@@ -157,6 +186,10 @@ export function TaskDrawer(props: Props) {
           <Box hidden={view !== View.Summary}>
             <Row label="ID" isLoading={isPendingTask} icon={<NumbersIcon />}>
               {taskId}
+            </Row>
+
+            <Row label="Статус" isLoading={isPendingTask} icon={<StreamIcon />}>
+              {currentHistoryStep && statusOptions[currentHistoryStep.task_status].label}
             </Row>
 
             <Row label="Автор" isLoading={isPendingTask} icon={<PersonIcon />}>
@@ -230,10 +263,13 @@ export function TaskDrawer(props: Props) {
                       <div>{fDate(step.timestamp, 'hh:mm:ss')}</div>
                     </TimelineOppositeContent>
                     <TimelineSeparator>
-                      <TimelineDot variant="outlined" color={taskStatusMap[step.task_status]} />
+                      <TimelineDot
+                        variant="outlined"
+                        color={statusOptions[step.task_status].color}
+                      />
                       {idx !== arr.length - 1 && (
                         <TimelineConnector
-                          sx={{ bgcolor: `${taskStatusMap[step.task_status]}.main` }}
+                          sx={{ bgcolor: `${statusOptions[step.task_status]}.main` }}
                         />
                       )}
                     </TimelineSeparator>
@@ -248,12 +284,18 @@ export function TaskDrawer(props: Props) {
         </Scrollbar>
 
         <Stack sx={{ flex: 0, py: 1, borderTop: `dashed 1px ${theme.palette.divider}` }}>
-          <Button type="button" onClick={onAccept}>
+          <Button type="button" onClick={onAcceptTask} disabled={!canAccept}>
             Принять
           </Button>
-          <Button>Согласовать</Button>
-          <Button>Отклонить</Button>
-          <Button>Прекратить</Button>
+          <Button type="button" onClick={onApproveTask} disabled={!canApprove}>
+            Согласовать
+          </Button>
+          <Button type="button" disabled>
+            Отклонить
+          </Button>
+          <Button type="button" onClick={onCancelTask} disabled={!canApprove}>
+            Прекратить
+          </Button>
         </Stack>
       </Stack>
     </Drawer>

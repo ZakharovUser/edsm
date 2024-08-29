@@ -5,6 +5,6 @@ interface Body {
   supervisor_id?: number;
 }
 
-export async function postSetExecutor(taskId: number, body?: Body) {
+export async function setTaskExecutor(taskId: number | string, body?: Body) {
   return httpClient.post(`/api/edm/task/${taskId}/set_executor/`, body);
 }
