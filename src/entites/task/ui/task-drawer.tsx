@@ -1,7 +1,7 @@
 import Scrollbar from 'components/scrollbar';
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router-dom';
-import { useState, ReactElement, cloneElement, PropsWithChildren } from 'react';
+import React, { useState, ReactElement, cloneElement, PropsWithChildren } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -39,7 +39,7 @@ import {
 import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
-import { getTaskItem } from 'entites/task/api';
+import { getTaskItem, postSetExecutor } from 'entites/task/api';
 import { TaskReason, TaskStatus, TaskImportance } from 'entites/task/model';
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -90,6 +90,12 @@ export function TaskDrawer(props: Props) {
 
   const onChangeView = (_event: React.MouseEvent<HTMLElement>, nextView: View | null) => {
     if (nextView !== null) setView(nextView);
+  };
+
+  const onAccept = (): void => {
+    if (taskId) {
+      postSetExecutor(parseInt(taskId, 10)).then(console.log);
+    }
   };
 
   console.log(view);
@@ -242,7 +248,9 @@ export function TaskDrawer(props: Props) {
         </Scrollbar>
 
         <Stack sx={{ flex: 0, py: 1, borderTop: `dashed 1px ${theme.palette.divider}` }}>
-          <Button>Принять</Button>
+          <Button type="button" onClick={onAccept}>
+            Принять
+          </Button>
           <Button>Согласовать</Button>
           <Button>Отклонить</Button>
           <Button>Прекратить</Button>
