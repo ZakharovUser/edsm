@@ -3,6 +3,7 @@ import { httpClient } from 'utils/axios';
 interface Body {
   executor_id?: number;
   supervisor_id?: number;
+  members?: {};
 }
 
 export async function setTaskExecutor(taskId: number | string, body?: Body) {

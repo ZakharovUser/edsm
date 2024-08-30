@@ -237,8 +237,8 @@ export function TaskDrawer(props: Props) {
           canAccept={canAccept}
           canApprove={canApprove}
           onAccept={onAcceptTask}
-          onApprove={onApproveTask}
           onCancel={onCancelTask}
+          onApprove={onApproveTask}
         />
       </Stack>
     </Drawer>
