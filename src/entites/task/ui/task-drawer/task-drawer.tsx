@@ -1,13 +1,12 @@
+import React, { useState } from 'react';
 import Scrollbar from 'components/scrollbar';
 import { useSearchParams } from 'react-router-dom';
-import React, { useState, ReactElement, cloneElement, PropsWithChildren } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { Theme } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
-import LabelIcon from '@mui/icons-material/Label';
 import PersonIcon from '@mui/icons-material/Person';
 import StreamIcon from '@mui/icons-material/Stream';
 import NumbersIcon from '@mui/icons-material/Numbers';
@@ -35,8 +34,10 @@ import { formatUserName } from 'utils/format-user-name';
 
 import { useTask, useTaskRights } from 'entites/task/hooks';
 import { TaskReason, TaskStatus, TaskImportance } from 'entites/task/model';
-import { TaskDrawerActions } from 'entites/task/ui/task-drawer/task-drawer-actions';
-import { View, TaskDrawerHeader } from 'entites/task/ui/task-drawer/task-drawer-header';
+
+import { Row } from './task-drawer-row';
+import { TaskDrawerActions } from './task-drawer-actions';
+import { View, TaskDrawerHeader } from './task-drawer-header';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -62,6 +63,12 @@ const statusOptions: Record<TaskStatus, StatusOption> = {
   [TaskStatus.Progress]: { color: 'secondary', label: 'В работе' },
 };
 
+const lighten = {
+  color: (theme: Theme) => theme.palette.grey['500'],
+};
+
+const iconProps = { sx: { ...lighten, fontSize: 18 } };
+
 // -----------------------------------------------------------------------------------------------------------------
 
 export function TaskDrawer(props: Props) {
@@ -71,7 +78,6 @@ export function TaskDrawer(props: Props) {
   const taskId = searchParams.get('task');
 
   const { data: task, isPending: isPendingTask } = useTask(taskId);
-
   const { canAccept, canApprove } = useTaskRights(task);
 
   const currentHistoryStep = task?.task_history.at(-1);
@@ -112,51 +118,63 @@ export function TaskDrawer(props: Props) {
           </Typography>
 
           <Box hidden={view !== View.Summary}>
-            <Row label="ID" isLoading={isPendingTask} icon={<NumbersIcon />}>
+            <Row label="ID" loading={isPendingTask} icon={<NumbersIcon {...iconProps} />}>
               {taskId}
             </Row>
 
-            <Row label="Статус" isLoading={isPendingTask} icon={<StreamIcon />}>
+            <Row label="Статус" loading={isPendingTask} icon={<StreamIcon {...iconProps} />}>
               {currentHistoryStep && statusOptions[currentHistoryStep.task_status].label}
             </Row>
 
-            <Row label="Автор" isLoading={isPendingTask} icon={<PersonIcon />}>
+            <Row label="Автор" loading={isPendingTask} icon={<PersonIcon {...iconProps} />}>
               {task && formatUserName(task.created_by)}
             </Row>
 
-            <Row label="Учреждение" isLoading={isPendingTask} icon={<ApartmentIcon />}>
+            <Row label="Учреждение" loading={isPendingTask} icon={<ApartmentIcon {...iconProps} />}>
               {task?.org_name.name_short}
             </Row>
 
-            <Row label="Регламент" isLoading={isPendingTask} icon={<ContentPasteIcon />}>
+            <Row
+              label="Регламент"
+              loading={isPendingTask}
+              icon={<ContentPasteIcon {...iconProps} />}
+            >
               {task?.route.name}
             </Row>
 
-            <Row label="Важность" isLoading={isPendingTask} icon={<StarHalfIcon />}>
+            <Row label="Важность" loading={isPendingTask} icon={<StarHalfIcon {...iconProps} />}>
               {task && TaskImportance[task.importance]}
             </Row>
 
-            <Row label="Причина" isLoading={isPendingTask} icon={<ErrorOutlineIcon />}>
+            <Row label="Причина" loading={isPendingTask} icon={<ErrorOutlineIcon {...iconProps} />}>
               {task && TaskReason[task.reason]}
             </Row>
 
             <Row
-              isLoading={isPendingTask}
+              loading={isPendingTask}
               label="Источник финансирования"
-              icon={<AccountBalanceWalletIcon />}
+              icon={<AccountBalanceWalletIcon {...iconProps} />}
             >
               {task?.finance_source.name}
             </Row>
 
-            <Row label="Дата создания" isLoading={isPendingTask} icon={<CalendarMonthIcon />}>
+            <Row
+              label="Дата создания"
+              loading={isPendingTask}
+              icon={<CalendarMonthIcon {...iconProps} />}
+            >
               {task && fDate(task.creation_date)}
             </Row>
 
-            <Row label="Дата выполнения" isLoading={isPendingTask} icon={<CalendarMonthIcon />}>
+            <Row
+              label="Дата выполнения"
+              loading={isPendingTask}
+              icon={<CalendarMonthIcon {...iconProps} />}
+            >
               {task?.deadline_date && fDate(task.deadline_date)}
             </Row>
 
-            <Row label="Документы" isLoading={isPendingTask} icon={<AttachFileIcon />}>
+            <Row label="Документы" loading={isPendingTask} icon={<AttachFileIcon {...iconProps} />}>
               {task &&
                 task.documents.length > 0 &&
                 task.documents.map((attach) => (
@@ -214,47 +232,5 @@ export function TaskDrawer(props: Props) {
         <TaskDrawerActions sx={{ flex: 0, py: 1 }} canAccept={canAccept} canApprove={canApprove} />
       </Stack>
     </Drawer>
-  );
-}
-
-const lighten = {
-  color: (theme: Theme) => theme.palette.grey['500'],
-};
-
-interface RowProps extends PropsWithChildren {
-  label: string;
-  icon?: ReactElement;
-  isLoading?: boolean;
-}
-
-function Row({ label, isLoading, children, icon }: RowProps) {
-  if (!children && !isLoading) return null;
-
-  const iconProps = { sx: { ...lighten, fontSize: 18 } };
-
-  const Icon = icon ? cloneElement(icon, iconProps) : <LabelIcon {...iconProps} />;
-
-  const Content =
-    typeof children === 'string' ? (
-      <Typography sx={{ flex: 1, fontSize: 14 }}>{isLoading ? <Skeleton /> : children}</Typography>
-    ) : (
-      <Box sx={{ flex: 1, fontSize: 14 }}>{isLoading ? <Skeleton /> : children}</Box>
-    );
-
-  return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      gap={1}
-      sx={{ [`&:not(:first-of-type)`]: { mt: 1 } }}
-    >
-      <Stack direction="row" alignItems="center" gap={0.5} sx={{ width: 150 }}>
-        {Icon}
-        <Typography sx={{ ...lighten, fontSize: 14 }} noWrap>
-          {label}
-        </Typography>
-      </Stack>
-      {Content}
-    </Stack>
   );
 }
