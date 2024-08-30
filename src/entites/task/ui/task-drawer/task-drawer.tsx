@@ -1,4 +1,3 @@
-import { useAuthContext } from 'auth/hooks';
 import Scrollbar from 'components/scrollbar';
 import { useSearchParams } from 'react-router-dom';
 import React, { useState, ReactElement, cloneElement, PropsWithChildren } from 'react';
@@ -36,7 +35,6 @@ import { formatUserName } from 'utils/format-user-name';
 
 import { useTask, useTaskRights } from 'entites/task/hooks';
 import { TaskReason, TaskStatus, TaskImportance } from 'entites/task/model';
-import { cancelTask, approveTask, setTaskExecutor } from 'entites/task/api';
 import { TaskDrawerActions } from 'entites/task/ui/task-drawer/task-drawer-actions';
 import { View, TaskDrawerHeader } from 'entites/task/ui/task-drawer/task-drawer-header';
 
@@ -67,7 +65,6 @@ const statusOptions: Record<TaskStatus, StatusOption> = {
 // -----------------------------------------------------------------------------------------------------------------
 
 export function TaskDrawer(props: Props) {
-  const { user } = useAuthContext();
   const [view, setView] = useState<View>(View.Summary);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -76,24 +73,6 @@ export function TaskDrawer(props: Props) {
   const { data: task, isPending: isPendingTask } = useTask(taskId);
 
   const { canAccept, canApprove } = useTaskRights(task);
-
-  const onAcceptTask = () => {
-    if (taskId) {
-      setTaskExecutor(taskId, { executor_id: user?.id }).then(console.log);
-    }
-  };
-
-  const onApproveTask = () => {
-    if (taskId) {
-      approveTask(taskId).then(console.log);
-    }
-  };
-
-  const onCancelTask = () => {
-    if (taskId) {
-      cancelTask(taskId).then(console.log);
-    }
-  };
 
   const currentHistoryStep = task?.task_history.at(-1);
 
@@ -232,14 +211,7 @@ export function TaskDrawer(props: Props) {
           </Box>
         </Scrollbar>
 
-        <TaskDrawerActions
-          sx={{ flex: 0, py: 1 }}
-          canAccept={canAccept}
-          canApprove={canApprove}
-          onAccept={onAcceptTask}
-          onCancel={onCancelTask}
-          onApprove={onApproveTask}
-        />
+        <TaskDrawerActions sx={{ flex: 0, py: 1 }} canAccept={canAccept} canApprove={canApprove} />
       </Stack>
     </Drawer>
   );
