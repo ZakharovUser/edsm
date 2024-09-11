@@ -12,7 +12,7 @@ export interface RowProps extends PropsWithChildren {
   icon?: ReactElement;
 }
 
-export function Row({ label, loading, children, icon }: RowProps) {
+export function PanelRow({ label, loading, children, icon }: RowProps) {
   if (!children && !loading) return null;
 
   const Content =

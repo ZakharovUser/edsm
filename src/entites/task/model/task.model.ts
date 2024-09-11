@@ -53,7 +53,7 @@ export interface TaskHistoryStep {
   task_status: TaskStatus;
   current_stage: TaskStage;
   executor_id: number | null;
-  // comments: [];
+  comments: string[];
 }
 
 export interface TaskMembers {
@@ -87,4 +87,13 @@ export interface TaskRequest extends TaskBase {
   route: TaskRoute['id'];
   org_name: InstituteModel['id'];
   documents: UploadFile<UploadAttachment>[];
+}
+
+export interface TaskPermissions {
+  canReject: boolean;
+  canAccept: boolean;
+  canCancel: boolean;
+  canAttach: boolean;
+  canApprove: boolean;
+  canAddComments: boolean;
 }

@@ -6,14 +6,13 @@ import NotesIcon from '@mui/icons-material/Notes';
 import Stack, { StackProps } from '@mui/material/Stack';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
+import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
-// -----------------------------------------------------------------------------------------------------------------
+import { View } from './panels/types';
 
-export enum View {
-  Summary,
-  History,
-}
+// -----------------------------------------------------------------------------------------------------------------
 
 interface Props extends StackProps {
   view: View;
@@ -52,6 +51,12 @@ export function TaskDrawerHeader({ view, onClose, onChangeView, sx, ...props }: 
         </ToggleButton>
         <ToggleButton value={View.History} sx={{ p: 0.5 }}>
           <TimelineIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton value={View.Comments} sx={{ p: 0.5 }}>
+          <AnnouncementOutlinedIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton value={View.Attachments} sx={{ p: 0.5 }}>
+          <AttachFileOutlinedIcon fontSize="small" />
         </ToggleButton>
       </ToggleButtonGroup>
     </Stack>
