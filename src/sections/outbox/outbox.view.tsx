@@ -5,9 +5,9 @@ import Stack from '@mui/material/Stack';
 
 import { ErrorView } from 'sections/error';
 
-import { TaskDrawer } from 'features/task/view-task/ui';
 import { TaskDataGrid } from 'features/task/list-task/ui';
 import { convertTaskToRow } from 'features/task/list-task/helpers';
+import { TaskDrawer } from 'features/task/view-task/ui/task-drawer';
 
 import { Container } from 'shared/container/ui';
 

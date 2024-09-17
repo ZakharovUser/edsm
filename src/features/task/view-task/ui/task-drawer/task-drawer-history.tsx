@@ -14,9 +14,9 @@ import {
 
 import { fDate } from 'utils/format-time';
 
-import { Task } from 'entities/task/model';
+import { taskStatusOptions } from 'features/task/view-task/helpers';
 
-import { taskStatusOptions } from '../helpers';
+import { Task } from 'entities/task/model';
 
 // -----------------------------------------------------------------------------------------------------------------
 

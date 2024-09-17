@@ -10,7 +10,7 @@ import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
-import { View } from '../models';
+import { View } from 'features/task/view-task/models';
 
 // -----------------------------------------------------------------------------------------------------------------
 

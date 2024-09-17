@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useAuthContext } from 'auth/hooks';
 import Scrollbar from 'components/scrollbar';
 import { useSearchParams } from 'react-router-dom';
 
@@ -8,13 +7,16 @@ import Stack from '@mui/material/Stack';
 import { Theme } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
-import LoadingButton from '@mui/lab/LoadingButton';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 
-import { useTask, useTaskPermissions } from 'entities/task/hooks';
-import { useAcceptTask, useCancelTask, useRejectTask, useApproveTask } from 'entities/task/api';
+import { View } from 'features/task/view-task/models';
 
-import { View } from '../models';
+import { useTask, useTaskPermissions } from 'entities/task/hooks';
+
+import { TaskRejectButton } from '../task-actions/task-reject-button';
+import { TaskCancelButton } from '../task-actions/task-cancel-button';
+import { TaskAcceptButton } from '../task-actions/task-accept-button';
+import { TaskApproveButton } from '../task-actions/task-approve-button';
 
 import { TaskDrawerHeader } from './task-drawer-header';
 import { TaskDrawerHistory } from './task-drawer-history';
@@ -41,8 +43,6 @@ const lighten = {
 const iconProps = { sx: { ...lighten, fontSize: 18 } };
 
 export function TaskDrawer(props: Props) {
-  const { user } = useAuthContext();
-
   const [view, setView] = useState<View>(View.Summary);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -52,27 +52,6 @@ export function TaskDrawer(props: Props) {
   const { data: task, isPending: isPendingTask } = useTask(taskId);
 
   const { canAccept, canApprove, canCancel, canReject } = useTaskPermissions(task);
-
-  const { mutate: acceptTask, isPending: isPendingAcceptTask } = useAcceptTask();
-  const { mutate: cancelTask, isPending: isPendingCancelTask } = useCancelTask();
-  const { mutate: rejectTask, isPending: inPendingRejectTask } = useRejectTask();
-  const { mutate: approveTask, isPending: isPendingApproveTask } = useApproveTask();
-
-  const onAccept = () => {
-    if (taskId && canAccept) acceptTask({ taskId, executor_id: user?.id });
-  };
-
-  const onApprove = () => {
-    if (taskId && canApprove) approveTask({ taskId });
-  };
-
-  const onCancel = () => {
-    if (taskId && canCancel) cancelTask({ taskId });
-  };
-
-  const onReject = () => {
-    if (taskId && canReject) rejectTask({ taskId });
-  };
 
   return (
     <Drawer
@@ -127,38 +106,10 @@ export function TaskDrawer(props: Props) {
           gap={0.5}
           sx={{ borderTop: (theme) => `dashed 1px ${theme.palette.divider}`, flex: 0, py: 1 }}
         >
-          <LoadingButton
-            type="button"
-            onClick={onAccept}
-            disabled={!canAccept}
-            loading={isPendingAcceptTask}
-          >
-            Принять
-          </LoadingButton>
-          <LoadingButton
-            type="button"
-            onClick={onApprove}
-            disabled={!canApprove}
-            loading={isPendingApproveTask}
-          >
-            Согласовать
-          </LoadingButton>
-          <LoadingButton
-            type="button"
-            onClick={onReject}
-            disabled={!canReject}
-            loading={inPendingRejectTask}
-          >
-            Отклонить
-          </LoadingButton>
-          <LoadingButton
-            type="button"
-            onClick={onCancel}
-            disabled={!canCancel}
-            loading={isPendingCancelTask}
-          >
-            Прекратить
-          </LoadingButton>
+          {canAccept && <TaskAcceptButton taskId={taskId} canAccept={canAccept} />}
+          {canApprove && <TaskApproveButton taskId={taskId} canApprove={canApprove} />}
+          {canReject && <TaskRejectButton taskId={taskId} canReject={canReject} />}
+          {canCancel && <TaskCancelButton taskId={taskId} canCancel={canCancel} />}
         </Stack>
       </Stack>
     </Drawer>
