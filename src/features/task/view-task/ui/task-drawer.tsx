@@ -12,7 +12,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 
 import { useTask, useTaskPermissions } from 'entities/task/hooks';
-import { useAcceptTask, useCancelTask, useApproveTask } from 'entities/task/api';
+import { useAcceptTask, useCancelTask, useRejectTask, useApproveTask } from 'entities/task/api';
 
 import { View } from '../models';
 
@@ -55,6 +55,7 @@ export function TaskDrawer(props: Props) {
 
   const { mutate: acceptTask, isPending: isPendingAcceptTask } = useAcceptTask();
   const { mutate: cancelTask, isPending: isPendingCancelTask } = useCancelTask();
+  const { mutate: rejectTask, isPending: inPendingRejectTask } = useRejectTask();
   const { mutate: approveTask, isPending: isPendingApproveTask } = useApproveTask();
 
   const onAccept = () => {
@@ -70,8 +71,7 @@ export function TaskDrawer(props: Props) {
   };
 
   const onReject = () => {
-    if (taskId && canReject) return true;
-    return false;
+    if (taskId && canReject) rejectTask({ taskId });
   };
 
   return (
@@ -143,7 +143,12 @@ export function TaskDrawer(props: Props) {
           >
             Согласовать
           </LoadingButton>
-          <LoadingButton type="button" disabled={!canReject} onClick={onReject}>
+          <LoadingButton
+            type="button"
+            onClick={onReject}
+            disabled={!canReject}
+            loading={inPendingRejectTask}
+          >
             Отклонить
           </LoadingButton>
           <LoadingButton
