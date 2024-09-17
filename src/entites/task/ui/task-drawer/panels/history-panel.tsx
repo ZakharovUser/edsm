@@ -50,7 +50,7 @@ export function HistoryPanel({ history, hidden }: Props) {
                 color="text.secondary"
               >
                 <div>{fDate(step.timestamp)}</div>
-                <div>{fDate(step.timestamp, 'hh:mm:ss')}</div>
+                <div>{fDate(step.timestamp, 'HH:mm:ss')}</div>
               </TimelineOppositeContent>
               <TimelineSeparator>
                 <TimelineDot variant="outlined" color={statusOptions[step.task_status].color} />
