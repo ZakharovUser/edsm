@@ -26,8 +26,6 @@ interface Props {
 }
 
 export function HistoryPanel({ history, hidden }: Props) {
-  console.log(history);
-
   return (
     <Box hidden={hidden}>
       {history && (

@@ -1,17 +1,23 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { httpClient } from 'utils/axios';
 
-interface Body {
-  message: string;
+interface Params {
+  taskId: number | string;
+  message?: string;
 }
 
-export async function approveTask(taskId: number | string, body?: Body) {
-  return httpClient.post(`api/edm/task/${taskId}/accept/`, body);
+export async function approveTask({ taskId, message }: Params) {
+  return httpClient.post(`api/edm/task/${taskId}/accept/`, message && { message });
 }
 
 export function useApproveTask() {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: (params: Parameters<typeof approveTask>) => approveTask(...params),
+    mutationFn: approveTask,
+    onSuccess: (_meta, params) => {
+      queryClient.invalidateQueries({ queryKey: ['task', params.taskId] });
+    },
   });
 }
