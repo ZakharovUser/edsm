@@ -69,7 +69,7 @@ export function TaskDrawer(props: Props) {
           view={view}
           sx={{ flex: 0 }}
           onChangeView={setView}
-          onClose={setSearchParams}
+          onClose={() => setSearchParams()}
         />
 
         <Box>
