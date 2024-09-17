@@ -150,7 +150,7 @@
           "value": {
             "custom-mui": "@mui/**",
             "custom-routes": "routes/**",
-            "custom-entites": "entites/**",
+            "custom-entites": "entities/**",
             "custom-utils": "utils/**",
             "custom-features": "features/**",
             "custom-sections": "sections/**",

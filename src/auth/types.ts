@@ -1,7 +1,7 @@
 import { LogoutOptions, PopupLoginOptions, RedirectLoginOptions } from '@auth0/auth0-react';
 
-import { GroupModel } from 'entites/user/models';
-import { InstituteListModel } from 'entites/institute/model';
+import { GroupModel } from 'entities/user/models';
+import { InstituteListModel } from 'entities/institute/model';
 
 // ----------------------------------------------------------------------
 

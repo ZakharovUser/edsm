@@ -1,6 +1,6 @@
 import { httpClient } from 'utils/axios';
 
-import { Task } from 'entites/task/model';
+import { Task } from 'entities/task/model';
 
 interface Response {
   rows: Array<Task>;

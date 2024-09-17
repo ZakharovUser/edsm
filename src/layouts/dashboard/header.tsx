@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 
 import { useTitle } from 'routes/hooks';
 
-import { CreateTask } from 'features/create-task/ui';
+import { CreateTask } from 'features/task/create-task/ui';
 
 import { NAV, HEADER } from '../config-layout';
 import SettingsButton from '../common/settings-button';
