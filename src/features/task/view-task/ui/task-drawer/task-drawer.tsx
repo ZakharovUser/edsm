@@ -53,6 +53,8 @@ export function TaskDrawer(props: Props) {
 
   const { canAccept, canApprove, canCancel, canReject } = useTaskPermissions(task);
 
+  const isActions = canAccept || canApprove || canCancel || canReject;
+
   return (
     <Drawer
       open={!!taskId}
@@ -102,15 +104,17 @@ export function TaskDrawer(props: Props) {
           <TaskDrawerAttachments hidden={view !== View.Attachments} />
         </Scrollbar>
 
-        <Stack
-          gap={0.5}
-          sx={{ borderTop: (theme) => `dashed 1px ${theme.palette.divider}`, flex: 0, py: 1 }}
-        >
-          {canAccept && <TaskAcceptButton taskId={taskId} canAccept={canAccept} />}
-          {canApprove && <TaskApproveButton taskId={taskId} canApprove={canApprove} />}
-          {canReject && <TaskRejectButton taskId={taskId} canReject={canReject} />}
-          {canCancel && <TaskCancelButton taskId={taskId} canCancel={canCancel} />}
-        </Stack>
+        {isActions && (
+          <Stack
+            gap={0.5}
+            sx={{ borderTop: (theme) => `dashed 1px ${theme.palette.divider}`, flex: 0, py: 1 }}
+          >
+            {taskId && canAccept && <TaskAcceptButton taskId={taskId} canAccept={canAccept} />}
+            {taskId && canApprove && <TaskApproveButton taskId={taskId} canApprove={canApprove} />}
+            {taskId && canReject && <TaskRejectButton taskId={taskId} canReject={canReject} />}
+            {taskId && canCancel && <TaskCancelButton taskId={taskId} canCancel={canCancel} />}
+          </Stack>
+        )}
       </Stack>
     </Drawer>
   );

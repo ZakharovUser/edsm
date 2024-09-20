@@ -150,7 +150,7 @@ export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
       {error && (
         <Alert sx={{ mb: 1 }} severity="error">
           <AlertTitle>Ошибка</AlertTitle>
-          {JSON.stringify(error)}
+          {error.message}
         </Alert>
       )}
       <Form.Item {...config.route} hidden>

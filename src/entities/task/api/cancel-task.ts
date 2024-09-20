@@ -4,10 +4,11 @@ import { httpClient } from 'utils/axios';
 
 interface Params {
   taskId: number | string;
+  message?: string;
 }
 
-export async function cancelTask({ taskId }: Params) {
-  return httpClient.post(`/api/edm/task/${taskId}/cancel/`);
+export async function cancelTask({ taskId, message }: Params) {
+  return httpClient.post(`/api/edm/task/${taskId}/cancel/`, message && { message });
 }
 
 export function useCancelTask() {
