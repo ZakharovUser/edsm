@@ -4,10 +4,11 @@ import { httpClient } from 'utils/axios';
 
 interface Params {
   taskId: number | string;
+  message?: string;
 }
 
-export async function rejectTask({ taskId }: Params) {
-  return httpClient.post(`/api/edm/task/${taskId}/back_previous_stage/ `);
+export async function rejectTask({ taskId, message }: Params) {
+  return httpClient.post(`/api/edm/task/${taskId}/back_previous_stage/ `, message && { message });
 }
 
 export function useRejectTask() {
