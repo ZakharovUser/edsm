@@ -1,1 +1,1 @@
-export { type GroupModel } from './group.model';
+export * from './group.model';
