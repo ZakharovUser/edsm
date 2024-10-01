@@ -8,8 +8,8 @@ import { Task, TaskStatus, TaskPermissions } from 'entities/task/model';
 export function useTaskPermissions(task: Task | undefined): TaskPermissions {
   const { user } = useAuthContext();
 
-  const currentHistoryStep = task?.task_history.at(-1);
-  const firstHistoryStep = task?.task_history.at(0);
+  const currentHistoryStep = task?.task_history.at(0);
+  const firstHistoryStep = task?.task_history.at(-1);
 
   const isInGroups = !!user?.groups
     .map(({ id }) => !!currentHistoryStep?.current_stage.group.includes(id))
