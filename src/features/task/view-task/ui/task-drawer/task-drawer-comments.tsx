@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Scrollbar from 'components/scrollbar';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -30,7 +29,7 @@ export function TaskDrawerComments({ hidden, history: _h }: Props) {
   };
 
   return (
-    <Scrollbar hidden={hidden} sx={{ w: '100%' }}>
+    <Box hidden={hidden}>
       <Box sx={{ mb: 2 }}>
         {comments.map((text, idx) => (
           <Box component="pre" sx={{ whiteSpace: 'pre-wrap' }} key={idx}>
@@ -50,6 +49,6 @@ export function TaskDrawerComments({ hidden, history: _h }: Props) {
       <Button type="button" sx={{ mt: 1 }} fullWidth onClick={onAddComment}>
         Добавить
       </Button>
-    </Scrollbar>
+    </Box>
   );
 }
