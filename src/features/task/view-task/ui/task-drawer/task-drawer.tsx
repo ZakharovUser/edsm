@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 import { Theme } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
@@ -27,14 +28,6 @@ import { TaskDrawerAttachments } from './task-drawer-attachments';
 
 export type Props = Omit<DrawerProps, 'onClose' | 'open'>;
 
-// export async function getAttachmentLink(id: string) {
-//   return httpClient
-//     .get<{ attachment: string }>(`/api/edm/attachments/${id}`)
-//     .then((res) => res.data.attachment);
-// }
-
-// -----------------------------------------------------------------------------------------------------------------
-
 const lighten = {
   color: (theme: Theme) => theme.palette.grey['500'],
 };
@@ -48,11 +41,13 @@ export function TaskDrawer(props: Props) {
 
   const taskId = searchParams.get('task');
 
-  const { data: task, isPending: isPendingTask } = useTask(taskId);
+  const { data: task, isPending: isPendingTask, error } = useTask(taskId);
 
   const { canAccept, canApprove, canCancel, canReject } = useTaskPermissions(task);
 
   const isActions = canAccept || canApprove || canCancel || canReject;
+
+  console.log(error);
 
   return (
     <Drawer
@@ -83,12 +78,14 @@ export function TaskDrawer(props: Props) {
         />
 
         <Box>
+          {error?.response && <Alert severity="error">{error.response?.data.detail}</Alert>}
+
           <Typography variant="h4" sx={{ mb: 0.5 }}>
-            {task && !isPendingTask ? task.short_name : <Skeleton />}
+            {isPendingTask ? <Skeleton /> : task?.short_name}
           </Typography>
 
           <Typography variant="body2" sx={{ ...lighten, mb: 2 }}>
-            {task && !isPendingTask ? task.full_name : <Skeleton />}
+            {isPendingTask ? <Skeleton /> : task?.full_name}
           </Typography>
         </Box>
 
