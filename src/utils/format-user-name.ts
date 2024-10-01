@@ -1,5 +1,15 @@
-export function formatUserName(author: string): string {
-  const [lastName, name, surName] = author.split(' ');
+export function formatUserName(fullName: string): string;
+export function formatUserName(surname: string, name: string, lastname: string): string;
+export function formatUserName(fullOrSurname: string, name?: string, lastname?: string): string {
+  if (name) {
+    return `${fullOrSurname} ${name[0].toUpperCase()}.${
+      lastname ? lastname[0].toUpperCase().concat('.') : ''
+    }`;
+  }
 
-  return `${lastName} ${name[0].toUpperCase()}. ${surName[0].toUpperCase()}.`;
+  const [_surname, _name, _lastname] = fullOrSurname.split(' ');
+
+  return `${_surname} ${_name[0].toUpperCase()}.${
+    _lastname ? _lastname[0].toUpperCase().concat('.') : ''
+  }`;
 }
