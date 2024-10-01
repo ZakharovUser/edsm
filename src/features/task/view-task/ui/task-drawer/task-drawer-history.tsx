@@ -37,7 +37,7 @@ export function TaskDrawerHistory({ history, hidden }: Props) {
           const { color, label } = taskStatusOptions[step.task_status];
 
           return (
-            <Fragment key={idx}>
+            <Fragment key={step.id}>
               <Stack sx={{ justifySelf: 'end', pt: 0.5, pb: 2 }}>
                 <Label>{step.current_stage.stage_name}</Label>
                 <Typography noWrap variant="caption" align="right">
@@ -86,13 +86,7 @@ export function TaskDrawerHistory({ history, hidden }: Props) {
                             commented_by.middle_name
                           )}
                         </Typography>
-                        <Typography
-                          noWrap
-                          // component="p"
-                          // align="right"
-                          variant="caption"
-                          // sx={{  }}
-                        >
+                        <Typography noWrap variant="caption">
                           {fDate(comment.comment_date, 'dd.MM.yy HH:mm')}
                         </Typography>
                       </Stack>

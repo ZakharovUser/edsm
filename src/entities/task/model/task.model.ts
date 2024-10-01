@@ -59,6 +59,7 @@ interface TaskHistoryStepComment {
 }
 
 export interface TaskHistoryStep {
+  id: number;
   timestamp: string;
   task_status: TaskStatus;
   current_stage: TaskStage;
