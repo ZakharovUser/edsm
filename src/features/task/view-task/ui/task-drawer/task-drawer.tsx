@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Scrollbar from 'components/scrollbar';
 import { useSearchParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -60,15 +59,17 @@ export function TaskDrawer(props: Props) {
       open={!!taskId}
       onClose={() => setSearchParams()}
       anchor="right"
-      hideBackdrop
-      disableScrollLock
       disableRestoreFocus
-      sx={{
-        width: 0,
+      ModalProps={{
+        slotProps: {
+          backdrop: {
+            sx: { bgcolor: 'transparent' },
+          },
+        },
       }}
       PaperProps={{
         sx: {
-          minWidth: 400,
+          width: 500,
         },
       }}
       {...props}
@@ -86,12 +87,12 @@ export function TaskDrawer(props: Props) {
             {task && !isPendingTask ? task.short_name : <Skeleton />}
           </Typography>
 
-          <Typography variant="body1" sx={{ ...lighten, maxWidth: '500px', mb: 3, fontSize: 14 }}>
+          <Typography variant="body2" sx={{ ...lighten, mb: 2 }}>
             {task && !isPendingTask ? task.full_name : <Skeleton />}
           </Typography>
         </Box>
 
-        <Scrollbar sx={{ flex: 1, py: 1 }}>
+        <Box sx={{ overflow: 'auto', flex: 1, py: 1, pr: 2 }}>
           <TaskDrawerSummary
             task={task}
             iconProps={iconProps}
@@ -102,7 +103,7 @@ export function TaskDrawer(props: Props) {
           <TaskDrawerHistory hidden={view !== View.History} history={task?.task_history} />
           <TaskDrawerComments hidden={view !== View.Comments} history={task?.task_history} />
           <TaskDrawerAttachments hidden={view !== View.Attachments} />
-        </Scrollbar>
+        </Box>
 
         {isActions && (
           <Stack

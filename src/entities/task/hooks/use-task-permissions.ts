@@ -15,9 +15,9 @@ export function useTaskPermissions(task: Task | undefined): TaskPermissions {
     .map(({ id }) => !!currentHistoryStep?.current_stage.group.includes(id))
     .some(Boolean);
 
-  const isUserCreator = firstHistoryStep?.executor_id === user?.id;
-  const isNotStepExecutor = currentHistoryStep?.executor_id === null;
-  const isUserStepExecutor = currentHistoryStep?.executor_id === user?.id;
+  const isNotStepExecutor = !currentHistoryStep?.executor?.id;
+  const isUserCreator = firstHistoryStep?.executor?.id === user?.id;
+  const isUserStepExecutor = currentHistoryStep?.executor?.id === user?.id;
 
   const isCanceled = currentHistoryStep?.task_status === TaskStatus.Canceled;
   const isCompleted = currentHistoryStep?.task_status === TaskStatus.Completed;

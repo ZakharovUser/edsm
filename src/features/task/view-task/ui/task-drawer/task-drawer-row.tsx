@@ -31,7 +31,7 @@ export function TaskDrawerRow({ label, loading, children, icon }: RowProps) {
       alignItems="center"
       sx={{ [`&:not(:first-of-type)`]: { mt: 1 } }}
     >
-      <Stack direction="row" alignItems="center" gap={0.5} sx={{ width: 150 }}>
+      <Stack direction="row" alignItems="center" gap={0.5} sx={{ width: 250 }}>
         {icon}
         <Typography
           noWrap

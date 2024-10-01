@@ -1,7 +1,10 @@
 import { UploadFile } from 'antd';
 
 import { InstituteModel } from 'entities/institute/model';
+import { UserModel } from 'entities/user/models/group.model';
 import { Attachment, UploadAttachment } from 'entities/attachments/model';
+
+import { Nullable } from 'shared/utils/types';
 
 export interface TaskRoute {
   id: number;
@@ -48,18 +51,19 @@ export interface TaskStage {
   group: Array<number>;
 }
 
+interface TaskHistoryStepComment {
+  id: number;
+  comment_text: string;
+  comment_date: string;
+  commented_by: UserModel;
+}
+
 export interface TaskHistoryStep {
   timestamp: string;
   task_status: TaskStatus;
   current_stage: TaskStage;
-  executor_id: number | null;
-  comments: string[];
-}
-
-export interface TaskMembers {
-  creator_id: number;
-  executor_id: null | number;
-  supervisor_id: null | number;
+  executor: Nullable<UserModel>;
+  comments: TaskHistoryStepComment[];
 }
 
 interface TaskBase {
@@ -76,7 +80,6 @@ export interface Task extends TaskBase {
   route: TaskRoute;
   created_by: string;
   task_number: number;
-  members: TaskMembers;
   creation_date: string;
   org_name: InstituteModel;
   documents: Array<Attachment>;
