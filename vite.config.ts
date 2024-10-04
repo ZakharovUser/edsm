@@ -24,6 +24,9 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      '/media': {
+        target: 'http://91.226.234.195:1337',
+      },
       '/ws': {
         target: 'ws://91.226.234.195:1337',
         ws: true,

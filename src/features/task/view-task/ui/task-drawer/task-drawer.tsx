@@ -4,9 +4,6 @@ import { useSearchParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
-import { Theme } from '@mui/material/styles';
-import Skeleton from '@mui/material/Skeleton';
-import Typography from '@mui/material/Typography';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 
 import { View } from 'features/task/view-task/models';
@@ -28,12 +25,6 @@ import { TaskDrawerAttachments } from './task-drawer-attachments';
 
 export type Props = Omit<DrawerProps, 'onClose' | 'open'>;
 
-const lighten = {
-  color: (theme: Theme) => theme.palette.grey['500'],
-};
-
-const iconProps = { sx: { ...lighten, fontSize: 18 } };
-
 export function TaskDrawer(props: Props) {
   const [view, setView] = useState<View>(View.Summary);
 
@@ -46,8 +37,6 @@ export function TaskDrawer(props: Props) {
   const { canAccept, canApprove, canCancel, canReject } = useTaskPermissions(task);
 
   const isActions = canAccept || canApprove || canCancel || canReject;
-
-  console.log(error);
 
   return (
     <Drawer
@@ -77,29 +66,21 @@ export function TaskDrawer(props: Props) {
           onClose={() => setSearchParams()}
         />
 
-        <Box>
-          {error?.response && <Alert severity="error">{error.response?.data.detail}</Alert>}
-
-          <Typography variant="h4" sx={{ mb: 0.5 }}>
-            {isPendingTask ? <Skeleton /> : task?.short_name}
-          </Typography>
-
-          <Typography variant="body2" sx={{ ...lighten, mb: 2 }}>
-            {isPendingTask ? <Skeleton /> : task?.full_name}
-          </Typography>
-        </Box>
+        {error?.response && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error.response?.data.detail}
+          </Alert>
+        )}
 
         <Box sx={{ overflow: 'auto', flex: 1, py: 1, pr: 2 }}>
-          <TaskDrawerSummary
-            task={task}
-            iconProps={iconProps}
-            loading={isPendingTask}
-            hidden={view !== View.Summary}
-          />
-
+          <TaskDrawerSummary task={task} loading={isPendingTask} hidden={view !== View.Summary} />
           <TaskDrawerHistory hidden={view !== View.History} history={task?.task_history} />
           <TaskDrawerComments hidden={view !== View.Comments} history={task?.task_history} />
-          <TaskDrawerAttachments hidden={view !== View.Attachments} />
+          <TaskDrawerAttachments
+            attachments={task?.documents}
+            loading={isPendingTask}
+            hidden={view !== View.Attachments}
+          />
         </Box>
 
         {isActions && (

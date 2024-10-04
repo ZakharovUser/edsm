@@ -3,6 +3,7 @@ import React from 'react';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import NotesIcon from '@mui/icons-material/Notes';
+import Typography from '@mui/material/Typography';
 import Stack, { StackProps } from '@mui/material/Stack';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import { ToggleButton, ToggleButtonGroup } from '@mui/material';
@@ -35,9 +36,12 @@ export function TaskDrawerHeader({ view, onClose, onChangeView, sx, ...props }: 
       sx={{ borderBottom: `dashed 1px ${theme.palette.divider}`, py: 1, ...sx }}
       {...props}
     >
-      <IconButton onClick={onClose} size="small">
-        <KeyboardDoubleArrowRightIcon />
-      </IconButton>
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <IconButton onClick={onClose} size="small">
+          <KeyboardDoubleArrowRightIcon />
+        </IconButton>
+        <Typography variant="subtitle1">{view}</Typography>
+      </Stack>
 
       <ToggleButtonGroup
         exclusive

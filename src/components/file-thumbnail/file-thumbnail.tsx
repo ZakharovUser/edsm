@@ -9,7 +9,7 @@ import { fileData, fileThumb, fileFormat } from './utils';
 // ----------------------------------------------------------------------
 
 type FileIconProps = {
-  file: File | string;
+  file: File | string | undefined;
   tooltip?: boolean;
   imageView?: boolean;
   onDownload?: VoidFunction;
@@ -25,7 +25,7 @@ export default function FileThumbnail({
   sx,
   imgSx,
 }: FileIconProps) {
-  const { name = '', path = '', preview = '' } = fileData(file);
+  const { name = '', path = '', preview = '' } = fileData(file || '');
 
   const format = fileFormat(path || preview);
 
