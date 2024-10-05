@@ -1,4 +1,4 @@
-import { httpClient } from 'utils/axios';
+import { httpClient } from 'utils/http-client';
 
 import { FinancingSourceModel } from 'entities/financing-source/models';
 

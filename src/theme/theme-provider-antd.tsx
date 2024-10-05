@@ -26,6 +26,8 @@ export function ThemeProviderAntd({ children }: PropsWithChildren) {
       zIndexPopupBase: zIndex.modal + 100,
       colorBgBase: palette.background.default,
       colorPrimaryBg: alpha(palette.primary.main, alphaBg),
+      colorLinkHover: 'inherit',
+      colorLinkActive: 'inherit',
     },
   };
 

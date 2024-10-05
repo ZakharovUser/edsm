@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { ResponseError } from 'utils/axios';
+import { ResponseError } from 'utils/http-client';
 
 import { getSession } from '../api';
 

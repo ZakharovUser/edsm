@@ -2,9 +2,12 @@ import { Dayjs } from 'dayjs';
 import { useMemo, useEffect } from 'react';
 import { useAuthContext } from 'auth/hooks';
 import { Form, Input, FormItemProps } from 'antd';
+import UploadFiles from 'components/upload-files';
 
 import Alert from '@mui/material/Alert';
 import { AlertTitle } from '@mui/material';
+
+import { endpoints } from 'utils/http-client';
 
 import { TaskReason, TaskRequest, TaskImportance } from 'entities/task/model';
 
@@ -12,7 +15,6 @@ import { Select } from 'shared/select';
 
 import { formatFiles, formatNotifiers } from '../helpers';
 
-import { SelectFiles } from './select-files';
 import { SelectDeadline } from './select-deadline';
 import { SelectUserGroups } from './select-user-groups';
 import { SelectFinancingSources } from './select-financing-sources';
@@ -183,7 +185,7 @@ export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
         <SelectUserGroups />
       </Form.Item>
       <Form.Item {...config.documents} valuePropName="fileList" getValueFromEvent={formatFiles}>
-        <SelectFiles />
+        <UploadFiles action={endpoints.attachment.post} />
       </Form.Item>
     </Form>
   );

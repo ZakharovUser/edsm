@@ -2,7 +2,7 @@ import { useSession } from 'auth/context/session/hooks';
 import { useMemo, useEffect, useReducer, useCallback, PropsWithChildren } from 'react';
 import { AuthUserType, ActionMapType, AuthStateType, SessionContextType } from 'auth/types';
 
-import { endpoints, httpClient } from 'utils/axios';
+import { endpoints, httpClient } from 'utils/http-client';
 
 import { AuthContext } from './auth-context';
 import { getUser, getToken, postLogin } from './api';

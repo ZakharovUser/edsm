@@ -1,6 +1,6 @@
 import { paths } from 'routes/paths';
 
-import { axiosInstance as axios } from 'utils/axios';
+import { axiosInstance as axios } from 'utils/http-client';
 
 // ----------------------------------------------------------------------
 

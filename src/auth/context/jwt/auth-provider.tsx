@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useReducer, useCallback } from 'react';
 import { AuthUserType, ActionMapType, AuthStateType } from 'auth/types';
 
-import { endpoints, axiosInstance as axios } from 'utils/axios';
+import { endpoints, axiosInstance as axios } from 'utils/http-client';
 
 import { AuthContext } from './auth-context';
 import { setSession, isValidToken } from './utils';

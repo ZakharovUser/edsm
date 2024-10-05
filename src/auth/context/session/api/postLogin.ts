@@ -1,4 +1,4 @@
-import { endpoints, httpClient, CSRFTokenHeader } from 'utils/axios';
+import { endpoints, httpClient, CSRFTokenHeader } from 'utils/http-client';
 
 interface PostLoginProps {
   username: string;

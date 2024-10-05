@@ -1,16 +1,17 @@
 import { useQueries, UseQueryResult } from '@tanstack/react-query';
 
-import { httpClient } from 'utils/axios';
+import { httpClient } from 'utils/http-client';
 
 import { Attachment } from 'entities/attachments/model';
 
 // -----------------------------------------------------------------------------------------------------------------;
 
-type AttachmentResponse = {
+export type AttachmentResponse = {
   data: Attachment & {
     url: string | undefined;
   };
   isPending: boolean;
+  isError: boolean;
 };
 
 export async function getAttachmentLink(uuid: string) {
@@ -36,6 +37,7 @@ export function useAttachments(attachments: Attachment[] = []) {
             lastModified: attachment.lastModified,
           },
           isPending: res.isPending,
+          isError: res.isError,
         };
       }),
   });

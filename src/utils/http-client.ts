@@ -41,36 +41,24 @@ export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
 
 // ----------------------------------------------------------------------
 
+export const root = {
+  api: '/api/edm',
+};
+
 export const endpoints = {
-  chat: '/api/chat',
-  kanban: '/api/kanban',
-  calendar: '/api/calendar',
   auth: {
     me: '/api/auth/me',
     login: '/api/auth/login',
     register: '/api/auth/register',
   },
   crossAuth: {
-    session: '/api/edm/session/',
-    token: '/api/edm/csrf/',
-    user: '/api/edm/whoami/',
-    login: '/api/edm/login/',
-    logout: '/api/edm/logout/',
+    token: `${root.api}/csrf/`,
+    user: `${root.api}/whoami/`,
+    login: `${root.api}/login/`,
+    logout: `${root.api}/logout/`,
+    session: `${root.api}/session/`,
   },
-  mail: {
-    list: '/api/mail/list',
-    details: '/api/mail/details',
-    labels: '/api/mail/labels',
-  },
-  post: {
-    list: '/api/post/list',
-    details: '/api/post/details',
-    latest: '/api/post/latest',
-    search: '/api/post/search',
-  },
-  product: {
-    list: '/api/product/list',
-    details: '/api/product/details',
-    search: '/api/product/search',
+  attachment: {
+    post: `${root.api}/attachments/`,
   },
 };
