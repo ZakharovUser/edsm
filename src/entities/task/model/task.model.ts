@@ -2,7 +2,7 @@ import { UploadFile } from 'antd';
 
 import { InstituteModel } from 'entities/institute/model';
 import { UserModel } from 'entities/user/models/group.model';
-import { Attachment, UploadAttachment } from 'entities/attachments/model';
+import { AttachmentModel, UploadAttachmentModel } from 'entities/attachments/model';
 
 import { Nullable } from 'shared/utils/types';
 
@@ -83,14 +83,14 @@ export interface Task extends TaskBase {
   task_number: number;
   creation_date: string;
   org_name: InstituteModel;
-  documents: Array<Attachment>;
+  documents: Array<AttachmentModel>;
   task_history: Array<TaskHistoryStep>;
 }
 
 export interface TaskRequest extends TaskBase {
   route: TaskRoute['id'];
   org_name: InstituteModel['id'];
-  documents: UploadFile<UploadAttachment>[];
+  documents: UploadFile<UploadAttachmentModel>[];
 }
 
 export interface TaskPermissions {

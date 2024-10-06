@@ -21,7 +21,7 @@ export function useUpdateTask() {
   return useMutation({
     mutationFn: updateTask,
     onSuccess: (_meta, params) => {
-      queryClient.invalidateQueries({ queryKey: ['task', params.id] });
+      queryClient.invalidateQueries({ queryKey: ['task', params.id.toString()] });
     },
   });
 }

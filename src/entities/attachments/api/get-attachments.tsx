@@ -2,12 +2,12 @@ import { useQueries, UseQueryResult } from '@tanstack/react-query';
 
 import { httpClient } from 'utils/http-client';
 
-import { Attachment } from 'entities/attachments/model';
+import { AttachmentModel } from 'entities/attachments/model';
 
 // -----------------------------------------------------------------------------------------------------------------;
 
 export type AttachmentResponse = {
-  data: Attachment & {
+  data: AttachmentModel & {
     url: string | undefined;
   };
   isPending: boolean;
@@ -18,7 +18,7 @@ export async function getAttachmentLink(uuid: string) {
   return httpClient.get(`/api/edm/attachments/${uuid}`).then((res) => res.data);
 }
 
-export function useAttachments(attachments: Attachment[] = []) {
+export function useAttachments(attachments: AttachmentModel[] = []) {
   return useQueries({
     queries: attachments.map((attachment) => ({
       queryKey: ['attachment', attachment.uuid],

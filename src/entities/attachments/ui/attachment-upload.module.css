@@ -1,6 +1,9 @@
 .upload {
   width: 100%;
   display: flex;
+}
+
+.reverse {
   flex-direction: column-reverse;
 }
 

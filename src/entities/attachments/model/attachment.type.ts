@@ -1,10 +1,10 @@
-export interface Attachment {
+export interface AttachmentModel {
   name: string;
   size: number;
   uuid: string;
   lastModified: number;
 }
 
-export interface UploadAttachment {
+export interface UploadAttachmentModel {
   uuid: string;
 }
