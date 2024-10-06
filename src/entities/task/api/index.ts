@@ -6,3 +6,4 @@ export * from './approve-task';
 export * from './create-task-comment';
 export * from './get-task-routes.api';
 export * from './reject-task';
+export * from './update-task';

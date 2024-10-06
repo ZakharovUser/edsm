@@ -32,9 +32,9 @@ export function TaskDrawer(props: Props) {
 
   const taskId = searchParams.get('task');
 
-  const { data: task, isPending: isPendingTask, error } = useTask(taskId);
+  const task = useTask(taskId);
 
-  const { canAccept, canApprove, canCancel, canReject } = useTaskPermissions(task);
+  const { canAccept, canApprove, canCancel, canReject } = useTaskPermissions(task.data);
 
   const isActions = canAccept || canApprove || canCancel || canReject;
 
@@ -66,19 +66,23 @@ export function TaskDrawer(props: Props) {
           onClose={() => setSearchParams()}
         />
 
-        {error?.response && (
+        {task.error?.response && (
           <Alert severity="error" sx={{ mb: 2 }}>
-            {error.response?.data.detail}
+            {task.error.response?.data.detail}
           </Alert>
         )}
 
         <Box sx={{ overflow: 'auto', flex: 1, py: 1, pr: 2 }}>
-          <TaskDrawerSummary task={task} loading={isPendingTask} hidden={view !== View.Summary} />
-          <TaskDrawerHistory hidden={view !== View.History} history={task?.task_history} />
-          <TaskDrawerComments hidden={view !== View.Comments} history={task?.task_history} />
+          <TaskDrawerSummary
+            task={task.data}
+            loading={task.isPending}
+            hidden={view !== View.Summary}
+          />
+          <TaskDrawerHistory hidden={view !== View.History} history={task.data?.task_history} />
+          <TaskDrawerComments hidden={view !== View.Comments} history={task.data?.task_history} />
           <TaskDrawerAttachments
-            attachments={task?.documents}
-            loading={isPendingTask}
+            task={task.data}
+            loading={task.isPending}
             hidden={view !== View.Attachments}
           />
         </Box>

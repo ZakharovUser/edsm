@@ -22,6 +22,7 @@ import { fDateTime } from 'utils/format-time';
 import { endpoints, httpClient } from 'utils/http-client';
 
 import { Task } from 'entities/task/model';
+import { useUpdateTask } from 'entities/task/api';
 import { Attachment } from 'entities/attachments/model';
 import { useAttachments } from 'entities/attachments/api';
 import { formatFiles } from 'entities/regulation-tru/helpers';
@@ -32,14 +33,25 @@ import styles from './task-drawer.module.css';
 
 interface Props {
   hidden: boolean;
-  attachments: Task['documents'] | undefined;
+  task: Task | undefined;
   loading?: boolean;
 }
 
-export function TaskDrawerAttachments({ hidden, attachments, loading }: Props) {
-  const links = useAttachments(attachments);
+export function TaskDrawerAttachments({ hidden, task, loading }: Props) {
+  const links = useAttachments(task?.documents);
 
-  const hasAAttachments = attachments?.length !== 0;
+  const updateTask = useUpdateTask();
+
+  const hasAAttachments = task?.documents?.length !== 0;
+
+  const onSave = (data: Pick<Task, 'documents'>) => {
+    if (task) {
+      updateTask.mutate({
+        id: task.task_number,
+        body: data,
+      });
+    }
+  };
 
   if (loading) {
     return (
@@ -65,7 +77,7 @@ export function TaskDrawerAttachments({ hidden, attachments, loading }: Props) {
             Файлов нет
           </Typography>
 
-          <AttachmentsUpload />
+          <AttachmentsUpload onSave={onSave} />
         </Stack>
       </Box>
     );
@@ -84,7 +96,7 @@ export function TaskDrawerAttachments({ hidden, attachments, loading }: Props) {
           />
         ))}
 
-        <AttachmentsUpload />
+        <AttachmentsUpload onSave={onSave} />
       </Stack>
     </Box>
   );
@@ -178,7 +190,10 @@ function AttachmentView({
   );
 }
 
-function AttachmentsUpload(props: UploadProps) {
+function AttachmentsUpload({
+  onSave,
+  ...props
+}: UploadProps & { onSave?(data: Pick<Task, 'documents'>): void }) {
   const [files, setFiles] = useState(0);
 
   const ref = useRef<any>(null);
@@ -191,7 +206,7 @@ function AttachmentsUpload(props: UploadProps) {
   }, []);
 
   return (
-    <Form form={form}>
+    <Form form={form} onFinish={(values) => onSave?.(values)}>
       <Form.Item
         name="documents"
         valuePropName="fileList"
@@ -207,13 +222,9 @@ function AttachmentsUpload(props: UploadProps) {
             formData.append('file', options.file);
 
             httpClient
-              .post(endpoints.attachment.post, formData)
-              .then((res) => {
-                options.onSuccess?.(res.data);
-              })
-              .catch((err) => {
-                options.onError?.(err);
-              });
+              .post(endpoints.attachment.new, formData)
+              .then((res) => options.onSuccess?.(res.data))
+              .catch((err) => options.onError?.(err));
           }}
           itemRender={(_node, file, _list, actions) => (
             <AttachmentView

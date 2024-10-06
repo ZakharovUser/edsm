@@ -59,6 +59,9 @@ export const endpoints = {
     session: `${root.api}/session/`,
   },
   attachment: {
-    post: `${root.api}/attachments/`,
+    new: `${root.api}/attachments/`,
+  },
+  task: {
+    item: (id: number | string) => `${root.api}/task/${id}/`,
   },
 };

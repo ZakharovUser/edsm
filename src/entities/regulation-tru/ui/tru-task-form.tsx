@@ -185,7 +185,7 @@ export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
         <SelectUserGroups />
       </Form.Item>
       <Form.Item {...config.documents} valuePropName="fileList" getValueFromEvent={formatFiles}>
-        <UploadFiles action={endpoints.attachment.post} />
+        <UploadFiles action={endpoints.attachment.new} />
       </Form.Item>
     </Form>
   );
