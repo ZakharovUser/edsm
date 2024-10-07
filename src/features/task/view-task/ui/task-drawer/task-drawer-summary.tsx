@@ -13,6 +13,7 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ShareLocationIcon from '@mui/icons-material/ShareLocation';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 import { fDate } from 'utils/format-time';
@@ -56,6 +57,10 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
         <Label color={taskStatus?.color} startIcon={taskStatus?.icon}>
           {taskStatus?.label}
         </Label>
+      </TaskDrawerRow>
+
+      <TaskDrawerRow label="Этап" loading={loading} icon={<ShareLocationIcon {...iconProps} />}>
+        {currentHistoryStep?.current_stage.stage_name}
       </TaskDrawerRow>
 
       <TaskDrawerRow label="Автор" loading={loading} icon={<PersonIcon {...iconProps} />}>
