@@ -10,9 +10,8 @@ import { TimelineDot, TimelineConnector, TimelineSeparator } from '@mui/lab';
 import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
-import { taskStatusOptions } from 'features/task/view-task/helpers';
-
 import { Task } from 'entities/task/model';
+import { taskStatusMap } from 'entities/task/helpers';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -34,7 +33,7 @@ export function TaskDrawerHistory({ history, hidden }: Props) {
         }}
       >
         {history.map((step, idx, arr) => {
-          const { color, label } = taskStatusOptions[step.task_status];
+          const { color, label, icon } = taskStatusMap[step.task_status];
 
           return (
             <Fragment key={step.id}>
@@ -51,7 +50,7 @@ export function TaskDrawerHistory({ history, hidden }: Props) {
               </TimelineSeparator>
 
               <Stack sx={{ py: 0.7 }} alignItems="start" gap={1}>
-                <Label variant="soft" color={color}>
+                <Label variant="soft" color={color} startIcon={icon}>
                   {label}
                 </Label>
 
@@ -80,11 +79,7 @@ export function TaskDrawerHistory({ history, hidden }: Props) {
                         gap={1}
                       >
                         <Typography noWrap variant="caption">
-                          {formatUserName(
-                            commented_by.last_name,
-                            commented_by.first_name,
-                            commented_by.middle_name
-                          )}
+                          {formatUserName(commented_by.last_name, commented_by.first_name, commented_by.middle_name)}
                         </Typography>
                         <Typography noWrap variant="caption">
                           {fDate(comment.comment_date, 'dd.MM.yy HH:mm')}

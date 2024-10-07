@@ -24,18 +24,18 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
         component="span"
         ownerState={{ color, variant }}
         sx={{
-          ...(startIcon && { pl: 0.75 }),
-          ...(endIcon && { pr: 0.75 }),
+          ...(startIcon && { pl: 0.5 }),
+          ...(endIcon && { pr: 0.5 }),
           ...sx,
         }}
         theme={theme}
         {...other}
       >
-        {startIcon && <Box sx={{ mr: 0.75, ...iconStyles }}> {startIcon} </Box>}
+        {startIcon && <Box sx={{ mr: 0.5, ...iconStyles }}> {startIcon} </Box>}
 
         {children}
 
-        {endIcon && <Box sx={{ ml: 0.75, ...iconStyles }}> {endIcon} </Box>}
+        {endIcon && <Box sx={{ ml: 0.5, ...iconStyles }}> {endIcon} </Box>}
       </StyledLabel>
     );
   }

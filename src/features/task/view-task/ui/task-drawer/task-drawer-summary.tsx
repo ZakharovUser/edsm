@@ -1,4 +1,5 @@
 import React from 'react';
+import Label from 'components/label';
 
 import Box from '@mui/material/Box';
 import { Theme } from '@mui/material/styles';
@@ -17,8 +18,7 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
-import { taskStatusOptions } from 'features/task/view-task/helpers';
-
+import { taskStatusMap } from 'entities/task/helpers';
 import { Task, TaskReason, TaskImportance } from 'entities/task/model';
 
 import { TaskDrawerRow } from './task-drawer-row';
@@ -34,7 +34,9 @@ interface Props {
 const iconProps = { sx: { color: (theme: Theme) => theme.palette.grey['500'], fontSize: 18 } };
 
 export function TaskDrawerSummary({ loading, task, hidden }: Props) {
-  const currentHistoryStep = task?.task_history.at(-1);
+  const currentHistoryStep = task?.task_history.at(0);
+
+  const taskStatus = currentHistoryStep && taskStatusMap[currentHistoryStep.task_status];
 
   return (
     <Box hidden={hidden}>
@@ -51,7 +53,9 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
       </TaskDrawerRow>
 
       <TaskDrawerRow label="Статус" loading={loading} icon={<StreamIcon {...iconProps} />}>
-        {currentHistoryStep && taskStatusOptions[currentHistoryStep.task_status].label}
+        <Label color={taskStatus?.color} startIcon={taskStatus?.icon}>
+          {taskStatus?.label}
+        </Label>
       </TaskDrawerRow>
 
       <TaskDrawerRow label="Автор" loading={loading} icon={<PersonIcon {...iconProps} />}>
@@ -82,19 +86,11 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
         {task?.finance_source.name}
       </TaskDrawerRow>
 
-      <TaskDrawerRow
-        label="Дата создания"
-        loading={loading}
-        icon={<CalendarMonthIcon {...iconProps} />}
-      >
+      <TaskDrawerRow label="Дата создания" loading={loading} icon={<CalendarMonthIcon {...iconProps} />}>
         {task && fDate(task.creation_date)}
       </TaskDrawerRow>
 
-      <TaskDrawerRow
-        label="Дата выполнения"
-        loading={loading}
-        icon={<CalendarMonthIcon {...iconProps} />}
-      >
+      <TaskDrawerRow label="Дата выполнения" loading={loading} icon={<CalendarMonthIcon {...iconProps} />}>
         {task?.deadline_date && fDate(task.deadline_date)}
       </TaskDrawerRow>
     </Box>
