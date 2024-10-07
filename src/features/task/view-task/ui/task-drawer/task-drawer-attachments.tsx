@@ -5,9 +5,8 @@ import Typography from '@mui/material/Typography';
 import FolderIcon from '@mui/icons-material/Folder';
 
 import { Task } from 'entities/task/model';
-import { useUpdateTask } from 'entities/task/api';
+import { Attachment } from 'entities/attachments/ui';
 import { useAttachments } from 'entities/attachments/api';
-import { Attachment, AttachmentsUpload } from 'entities/attachments/ui';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -20,25 +19,7 @@ interface Props {
 export function TaskDrawerAttachments({ hidden, task, loading }: Props) {
   const links = useAttachments(task?.documents);
 
-  const updateTask = useUpdateTask();
-
-  const hasAAttachments = task?.documents?.length !== 0;
-
-  const onSave = (data: Pick<Task, 'documents'>, onSuccess?: VoidFunction) => {
-    if (task) {
-      updateTask.mutate(
-        {
-          id: task.task_number,
-          body: {
-            documents: task.documents.concat(data.documents),
-          },
-        },
-        {
-          onSuccess: () => onSuccess?.(),
-        }
-      );
-    }
-  };
+  const hasAttachments = task?.documents?.length !== 0;
 
   if (loading) {
     return (
@@ -50,7 +31,7 @@ export function TaskDrawerAttachments({ hidden, task, loading }: Props) {
     );
   }
 
-  if (!hasAAttachments) {
+  if (!hasAttachments) {
     return (
       <Box hidden={hidden}>
         <Stack
@@ -63,8 +44,6 @@ export function TaskDrawerAttachments({ hidden, task, loading }: Props) {
           <Typography variant="subtitle2" textAlign="center" sx={{ mb: 2 }}>
             Файлов нет
           </Typography>
-
-          <AttachmentsUpload onSave={onSave} />
         </Stack>
       </Box>
     );
@@ -76,8 +55,6 @@ export function TaskDrawerAttachments({ hidden, task, loading }: Props) {
         {links.map(({ data, isPending, isError }) => (
           <Attachment download data={data} key={data.uuid} error={isError} loading={isPending} />
         ))}
-
-        <AttachmentsUpload onSave={onSave} />
       </Stack>
     </Box>
   );

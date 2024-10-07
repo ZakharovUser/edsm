@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
@@ -18,10 +18,13 @@ import { View } from 'features/task/view-task/models';
 interface Props extends StackProps {
   view: View;
   onClose: VoidFunction;
+  slots?: {
+    header?: ReactNode;
+  };
   onChangeView(view: View): void;
 }
 
-export function TaskDrawerHeader({ view, onClose, onChangeView, sx, ...props }: Props) {
+export function TaskDrawerHeader({ view, onClose, onChangeView, slots, sx, ...props }: Props) {
   const theme = useTheme();
 
   const changeVieHandler = (_event: React.MouseEvent<HTMLElement>, nextView: View | null) => {
@@ -41,6 +44,7 @@ export function TaskDrawerHeader({ view, onClose, onChangeView, sx, ...props }: 
           <KeyboardDoubleArrowRightIcon />
         </IconButton>
         <Typography variant="subtitle1">{view}</Typography>
+        {slots?.header}
       </Stack>
 
       <ToggleButtonGroup

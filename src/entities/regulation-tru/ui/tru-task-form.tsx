@@ -9,11 +9,12 @@ import { AlertTitle } from '@mui/material';
 
 import { endpoints } from 'utils/http-client';
 
+import { getValueFromEvent } from 'entities/attachments/helpers';
 import { TaskReason, TaskRequest, TaskImportance } from 'entities/task/model';
 
 import { Select } from 'shared/select';
 
-import { formatFiles, formatNotifiers } from '../helpers';
+import { formatNotifiers } from '../helpers';
 
 import { SelectDeadline } from './select-deadline';
 import { SelectUserGroups } from './select-user-groups';
@@ -184,7 +185,11 @@ export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
       <Form.Item {...config.notify}>
         <SelectUserGroups />
       </Form.Item>
-      <Form.Item {...config.documents} valuePropName="fileList" getValueFromEvent={formatFiles}>
+      <Form.Item
+        {...config.documents}
+        valuePropName="fileList"
+        getValueFromEvent={getValueFromEvent}
+      >
         <UploadFiles action={endpoints.attachment.new} />
       </Form.Item>
     </Form>

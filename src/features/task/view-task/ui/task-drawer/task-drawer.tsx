@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
@@ -6,8 +6,11 @@ import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 
-import { View } from 'features/task/view-task/models';
+import { useView } from 'features/task/view-task/hooks';
 
+import { Task } from 'entities/task/model';
+import { useUpdateTask } from 'entities/task/api';
+import { AttachmentUpload } from 'entities/attachments/ui';
 import { useTask, useTaskPermissions } from 'entities/task/hooks';
 
 import { TaskRejectButton } from '../task-actions/task-reject-button';
@@ -26,7 +29,7 @@ import { TaskDrawerAttachments } from './task-drawer-attachments';
 export type Props = Omit<DrawerProps, 'onClose' | 'open'>;
 
 export function TaskDrawer(props: Props) {
-  const [view, setView] = useState<View>(View.Summary);
+  const view = useView();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -34,9 +37,27 @@ export function TaskDrawer(props: Props) {
 
   const task = useTask(taskId);
 
-  const { canAccept, canApprove, canCancel, canReject } = useTaskPermissions(task.data);
+  const updateTask = useUpdateTask();
 
-  const isActions = canAccept || canApprove || canCancel || canReject;
+  const permissions = useTaskPermissions(task.data);
+
+  const onSaveAttachments = (data: Pick<Task, 'documents'>, onSuccess?: VoidFunction) => {
+    if (task.data) {
+      updateTask.mutate(
+        {
+          id: task.data.task_number,
+          body: {
+            documents: task.data.documents.concat(data.documents),
+          },
+        },
+        {
+          onSuccess: () => onSuccess?.(),
+        }
+      );
+    }
+  };
+
+  const isActions = permissions.canAccept || permissions.canApprove || permissions.canCancel || permissions.canReject;
 
   return (
     <Drawer
@@ -60,9 +81,18 @@ export function TaskDrawer(props: Props) {
     >
       <Stack direction="column" sx={{ height: '100%', px: 1 }}>
         <TaskDrawerHeader
-          view={view}
+          view={view.value}
           sx={{ flex: 0 }}
-          onChangeView={setView}
+          slots={{
+            header: (
+              <>
+                {permissions.canAddAttachments && view.isAttachments && (
+                  <AttachmentUpload.Modal onSave={onSaveAttachments} />
+                )}
+              </>
+            ),
+          }}
+          onChangeView={view.onChange}
           onClose={() => setSearchParams()}
         />
 
@@ -73,29 +103,18 @@ export function TaskDrawer(props: Props) {
         )}
 
         <Box sx={{ overflow: 'auto', flex: 1, py: 1, pr: 2 }}>
-          <TaskDrawerSummary
-            task={task.data}
-            loading={task.isPending}
-            hidden={view !== View.Summary}
-          />
-          <TaskDrawerHistory hidden={view !== View.History} history={task.data?.task_history} />
-          <TaskDrawerComments hidden={view !== View.Comments} history={task.data?.task_history} />
-          <TaskDrawerAttachments
-            task={task.data}
-            loading={task.isPending}
-            hidden={view !== View.Attachments}
-          />
+          <TaskDrawerSummary task={task.data} loading={task.isPending} hidden={!view.isSummary} />
+          <TaskDrawerHistory hidden={!view.isHistory} history={task.data?.task_history} />
+          <TaskDrawerComments hidden={!view.isComments} history={task.data?.task_history} />
+          <TaskDrawerAttachments task={task.data} loading={task.isPending} hidden={!view.isAttachments} />
         </Box>
 
-        {isActions && (
-          <Stack
-            gap={0.5}
-            sx={{ borderTop: (theme) => `dashed 1px ${theme.palette.divider}`, flex: 0, py: 1 }}
-          >
-            {taskId && canAccept && <TaskAcceptButton taskId={taskId} canAccept={canAccept} />}
-            {taskId && canApprove && <TaskApproveButton taskId={taskId} canApprove={canApprove} />}
-            {taskId && canReject && <TaskRejectButton taskId={taskId} canReject={canReject} />}
-            {taskId && canCancel && <TaskCancelButton taskId={taskId} canCancel={canCancel} />}
+        {taskId && isActions && (
+          <Stack gap={0.5} sx={{ borderTop: (theme) => `dashed 1px ${theme.palette.divider}`, flex: 0, py: 1 }}>
+            {permissions.canAccept && <TaskAcceptButton taskId={taskId} canAccept={permissions.canAccept} />}
+            {permissions.canApprove && <TaskApproveButton taskId={taskId} canApprove={permissions.canApprove} />}
+            {permissions.canReject && <TaskRejectButton taskId={taskId} canReject={permissions.canReject} />}
+            {permissions.canCancel && <TaskCancelButton taskId={taskId} canCancel={permissions.canCancel} />}
           </Stack>
         )}
       </Stack>

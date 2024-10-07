@@ -38,6 +38,7 @@ export function useTaskPermissions(task: Task | undefined): TaskPermissions {
       canAttach: isAccess,
       canReject: isAccess,
       canApprove: isAccess,
+      canAddAttachments: isAccess,
     }),
     [canAccept, canCancel, isAccess, canAddComments]
   );
