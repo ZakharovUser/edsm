@@ -67,6 +67,13 @@ export interface TaskHistoryStep {
   comments: TaskHistoryStepComment[];
 }
 
+export interface TaskMessage {
+  id: number;
+  message_text: string;
+  message_date: string;
+  message_by: UserModel;
+}
+
 interface TaskBase {
   full_name: string;
   short_name: string;
@@ -83,6 +90,7 @@ export interface Task extends TaskBase {
   task_number: number;
   creation_date: string;
   org_name: InstituteModel;
+  messages: Array<TaskMessage>;
   documents: Array<AttachmentModel>;
   task_history: Array<TaskHistoryStep>;
 }

@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
@@ -12,23 +12,43 @@ import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
 import { View } from 'features/task/view-task/models';
+import { useViewContext } from 'features/task/view-task/hooks';
+
+import { Task } from 'entities/task/model';
+import { useUpdateTask } from 'entities/task/api';
+import { AttachmentUpload } from 'entities/attachments/ui';
+import { AttachmentModel } from 'entities/attachments/model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
 interface Props extends StackProps {
-  view: View;
+  taskId: string | null;
   onClose: VoidFunction;
-  slots?: {
-    header?: ReactNode;
-  };
-  onChangeView(view: View): void;
+  canAddAttachments: boolean;
+  onAddAttachments(attachments: AttachmentModel[]): AttachmentModel[];
 }
 
-export function TaskDrawerHeader({ view, onClose, onChangeView, slots, sx, ...props }: Props) {
+export function TaskDrawerHeader({
+  sx,
+  taskId,
+  onClose,
+  canAddAttachments,
+  onAddAttachments,
+  ...props
+}: Props) {
   const theme = useTheme();
 
-  const changeVieHandler = (_event: React.MouseEvent<HTMLElement>, nextView: View | null) => {
-    if (nextView !== null) onChangeView(nextView);
+  const view = useViewContext();
+
+  const updateTask = useUpdateTask();
+
+  const onSaveAttachments = (data: Pick<Task, 'documents'>, onSuccess?: VoidFunction) => {
+    if (taskId) {
+      updateTask.mutate(
+        { id: taskId, body: { documents: onAddAttachments(data.documents) } },
+        { onSuccess: () => onSuccess?.() }
+      );
+    }
   };
 
   return (
@@ -43,16 +63,20 @@ export function TaskDrawerHeader({ view, onClose, onChangeView, slots, sx, ...pr
         <IconButton onClick={onClose} size="small">
           <KeyboardDoubleArrowRightIcon />
         </IconButton>
-        <Typography variant="subtitle1">{view}</Typography>
-        {slots?.header}
+
+        <Typography variant="subtitle1">{view.value}</Typography>
+
+        {canAddAttachments && view.isAttachments && (
+          <AttachmentUpload.Modal onSave={onSaveAttachments} />
+        )}
       </Stack>
 
       <ToggleButtonGroup
         exclusive
         size="small"
-        value={view}
-        onChange={changeVieHandler}
+        value={view.value}
         sx={{ bgcolor: 'transparent' }}
+        onChange={(_, value) => view.onChange(value)}
       >
         <ToggleButton value={View.Summary} sx={{ p: 0.5 }}>
           <NotesIcon fontSize="small" />

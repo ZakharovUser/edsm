@@ -15,7 +15,7 @@ import { useRejectTask } from 'entities/task/api';
 // -----------------------------------------------------------------------------------------------------------------
 
 type Props = {
-  taskId: string;
+  taskId: string | null;
   canReject: boolean;
   text?: string;
 };
@@ -42,17 +42,12 @@ export function TaskRejectButton({ taskId, canReject, text = 'Отклонить
   };
 
   const onSubmit = methods.handleSubmit(({ message }) => {
-    if (canReject) mutate({ taskId, message }, { onSuccess: onClose });
+    if (taskId && canReject) mutate({ taskId, message }, { onSuccess: onClose });
   });
 
   return (
     <>
-      <LoadingButton
-        type="button"
-        loading={isPending}
-        disabled={!canReject}
-        onClick={confirm.onTrue}
-      >
+      <LoadingButton type="button" loading={isPending} disabled={!canReject} onClick={confirm.onTrue}>
         {text}
       </LoadingButton>
 
@@ -78,13 +73,7 @@ export function TaskRejectButton({ taskId, canReject, text = 'Отклонить
           </DialogContent>
 
           <DialogActions>
-            <Button
-              type="reset"
-              color="error"
-              variant="contained"
-              disabled={isPending}
-              onClick={onClose}
-            >
+            <Button type="reset" color="error" variant="contained" disabled={isPending} onClick={onClose}>
               Отмена
             </Button>
             <LoadingButton type="submit" color="inherit" variant="outlined" disabled={isPending}>

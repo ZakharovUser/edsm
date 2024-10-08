@@ -16,7 +16,7 @@ import { useCancelTask } from 'entities/task/api';
 
 type Props = {
   text?: string;
-  taskId: string;
+  taskId: string | null;
   canCancel: boolean;
 };
 
@@ -42,17 +42,12 @@ export function TaskCancelButton({ taskId, canCancel, text = 'Прекратит
   };
 
   const onSubmit = methods.handleSubmit(({ message }) => {
-    if (canCancel) mutate({ taskId, message }, { onSuccess: onClose });
+    if (taskId && canCancel) mutate({ taskId, message }, { onSuccess: onClose });
   });
 
   return (
     <>
-      <LoadingButton
-        type="button"
-        loading={isPending}
-        disabled={!canCancel}
-        onClick={confirm.onTrue}
-      >
+      <LoadingButton type="button" loading={isPending} disabled={!canCancel} onClick={confirm.onTrue}>
         {text}
       </LoadingButton>
 
@@ -78,13 +73,7 @@ export function TaskCancelButton({ taskId, canCancel, text = 'Прекратит
           </DialogContent>
 
           <DialogActions>
-            <Button
-              type="reset"
-              color="error"
-              variant="contained"
-              disabled={isPending}
-              onClick={onClose}
-            >
+            <Button type="reset" color="error" variant="contained" disabled={isPending} onClick={onClose}>
               Отмена
             </Button>
             <LoadingButton type="submit" color="inherit" variant="outlined" disabled={isPending}>

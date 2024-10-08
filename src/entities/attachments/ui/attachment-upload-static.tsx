@@ -10,21 +10,16 @@ import { endpoints, httpClient } from 'utils/http-client';
 
 import { getValueFromEvent } from 'entities/attachments/helpers';
 
-import { AttachmentModel } from '../model';
-
 import { Attachment } from './attachment';
 import styles from './attachment-upload.module.css';
+import { FormValues, AttachmentUploadProps } from './attachment-upload.props';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-type FormValues = {
-  documents: AttachmentModel[];
-};
-
-type Props = UploadProps & {
-  positionFiles?: 'before' | 'after';
-  onSave?(data: FormValues, onSuccess?: VoidFunction): void;
-};
+type Props = UploadProps &
+  AttachmentUploadProps & {
+    positionFiles?: 'before' | 'after';
+  };
 
 export function AttachmentsUploadStatic({ onSave, positionFiles = 'before', ...props }: Props) {
   const [files, setFiles] = useState(0);

@@ -19,10 +19,10 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
+import { TaskDrawerRow } from 'features/task/view-task/ui/task-drawer/task-drawer-row';
+
 import { taskStatusMap } from 'entities/task/helpers';
 import { Task, TaskReason, TaskImportance } from 'entities/task/model';
-
-import { TaskDrawerRow } from './task-drawer-row';
 
 // -----------------------------------------------------------------------------------------------------------------
 

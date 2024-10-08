@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { httpClient } from 'utils/http-client';
 
@@ -12,7 +12,12 @@ export async function createTaskComment({ taskId, message }: Params) {
 }
 
 export function useCreateTaskComment() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: createTaskComment,
+    onSuccess: (_meta, params) => {
+      queryClient.invalidateQueries({ queryKey: ['task', `${params.taskId}`] });
+    },
   });
 }

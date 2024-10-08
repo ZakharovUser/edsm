@@ -1,1 +1,1 @@
-export { useView } from './use-view';
+export { useViewContext } from 'features/task/view-task/hooks/use-view-context';

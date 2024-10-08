@@ -7,7 +7,7 @@ import { Task } from 'entities/task/model';
 // -----------------------------------------------------------------------------------------------------------------
 
 type Params = {
-  id: number;
+  id: number | string;
   body: Partial<Task>;
 };
 
@@ -21,7 +21,7 @@ export function useUpdateTask() {
   return useMutation({
     mutationFn: updateTask,
     onSuccess: (_meta, params) => {
-      queryClient.invalidateQueries({ queryKey: ['task', params.id.toString()] });
+      queryClient.invalidateQueries({ queryKey: ['task', `${params.id}`] });
     },
   });
 }

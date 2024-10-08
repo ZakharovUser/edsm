@@ -10,20 +10,13 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 
 import { endpoints } from 'utils/http-client';
 
-import { AttachmentModel } from 'entities/attachments/model';
 import { getValueFromEvent } from 'entities/attachments/helpers';
+
+import { AttachmentUploadProps } from './attachment-upload.props';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-type FormValues = {
-  documents: AttachmentModel[];
-};
-
-interface Props {
-  onSave?(data: FormValues, onSuccess?: VoidFunction): void;
-}
-
-export function AttachmentsUploadModal({ onSave }: Props) {
+export function AttachmentsUploadModal({ onSave }: AttachmentUploadProps) {
   const dialog = useBoolean();
 
   const [form] = Form.useForm();
@@ -43,11 +36,7 @@ export function AttachmentsUploadModal({ onSave }: Props) {
         <DialogTitle>Добавление файлов</DialogTitle>
         <Form form={form} onFinish={(values) => onSave?.(values, onClose)}>
           <DialogContent>
-            <Form.Item
-              name="documents"
-              valuePropName="fileList"
-              getValueFromEvent={getValueFromEvent}
-            >
+            <Form.Item name="documents" valuePropName="fileList" getValueFromEvent={getValueFromEvent}>
               <UploadFiles action={endpoints.attachment.new} />
             </Form.Item>
           </DialogContent>
