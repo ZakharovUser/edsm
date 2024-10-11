@@ -1,4 +1,4 @@
-import { GridToolbar, DataGridProps, DataGrid as MuiDataGrid } from '@mui/x-data-grid';
+import { DataGridProps, DataGrid as MuiDataGrid } from '@mui/x-data-grid';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -9,9 +9,6 @@ export function DataGrid(props: DataGridProps) {
       disableColumnMenu
       checkboxSelection
       disableRowSelectionOnClick
-      slots={{
-        toolbar: GridToolbar,
-      }}
       {...props}
     />
   );
