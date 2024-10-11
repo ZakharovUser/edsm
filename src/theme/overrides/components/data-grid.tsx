@@ -25,9 +25,6 @@ export function dataGrid(theme: Theme) {
             height: 'auto',
           },
         },
-        row: {
-          cursor: 'pointer',
-        },
         cell: {
           borderBottom: `1px dashed ${theme.palette.divider}`,
           '&:focus': {

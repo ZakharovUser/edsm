@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { grey } from 'theme/palette';
 import { useSearchParams } from 'react-router-dom';
 
 import Chip from '@mui/material/Chip';
@@ -24,6 +25,12 @@ export function TaskDataGrid(props: Omit<DataGridProps, 'columns' | 'onRowClick'
         filterable: false,
         renderCell: (params) => (
           <Link
+            underline="always"
+            sx={{
+              cursor: 'pointer',
+              color: 'text.primary',
+              textDecorationColor: grey[400],
+            }}
             onClick={(event) => {
               event.preventDefault();
               setSearchParams(new URLSearchParams({ task: params.id.toString() }));
