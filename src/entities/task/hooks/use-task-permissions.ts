@@ -28,18 +28,18 @@ export function useTaskPermissions(task: Task | undefined): TaskPermissions {
   const canCancel = isUserCreator && isAvailable;
   const canAccept = isNotStepExecutor && isInGroups && isAvailable;
 
-  const canAddComments = !isUserCreator && isAccess;
+  const canAddRemark = !isUserCreator && isAccess;
 
   return useMemo(
     () => ({
       canAccept,
       canCancel,
-      canAddComments,
+      canAddRemark,
       canAttach: isAccess,
       canReject: isAccess,
       canApprove: isAccess,
       canAddAttachments: isAccess,
     }),
-    [canAccept, canCancel, isAccess, canAddComments]
+    [canAccept, canCancel, isAccess, canAddRemark]
   );
 }

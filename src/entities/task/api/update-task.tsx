@@ -7,12 +7,12 @@ import { Task } from 'entities/task/model';
 // -----------------------------------------------------------------------------------------------------------------
 
 type Params = {
-  id: number | string;
+  taskId: number | string;
   body: Partial<Task>;
 };
 
-export async function updateTask({ id, body }: Params) {
-  return httpClient.patch(endpoints.task.item(id), body);
+export async function updateTask({ taskId, body }: Params) {
+  return httpClient.patch(endpoints.task.item(taskId), body);
 }
 
 export function useUpdateTask() {
@@ -21,7 +21,7 @@ export function useUpdateTask() {
   return useMutation({
     mutationFn: updateTask,
     onSuccess: (_meta, params) => {
-      queryClient.invalidateQueries({ queryKey: ['task', `${params.id}`] });
+      queryClient.invalidateQueries({ queryKey: ['task', `${params.taskId}`] });
     },
   });
 }

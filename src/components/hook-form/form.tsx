@@ -1,4 +1,4 @@
-import { UseFormReturn, FormProvider as Form } from 'react-hook-form';
+import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -8,10 +8,10 @@ type Props = {
   onSubmit?: VoidFunction;
 };
 
-export default function FormProvider({ children, onSubmit, methods }: Props) {
+export default function Form({ children, onSubmit, methods }: Props) {
   return (
-    <Form {...methods}>
+    <FormProvider {...methods}>
       <form onSubmit={onSubmit}>{children}</form>
-    </Form>
+    </FormProvider>
   );
 }

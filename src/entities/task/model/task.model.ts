@@ -107,6 +107,6 @@ export interface TaskPermissions {
   canCancel: boolean;
   canAttach: boolean;
   canApprove: boolean;
-  canAddComments: boolean;
+  canAddRemark: boolean;
   canAddAttachments: boolean;
 }

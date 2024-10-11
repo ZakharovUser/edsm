@@ -4,18 +4,18 @@ import { httpClient } from 'utils/http-client';
 
 export type Params = {
   taskId: number | string;
-  message: string;
+  remark: string;
 };
 
-export async function createTaskComment({ taskId, message }: Params) {
-  return httpClient.post(`/api/edm/task/${taskId}/add_message/`, { message });
+export async function createTaskRemark({ taskId, remark }: Params) {
+  return httpClient.post(`/api/edm/task/${taskId}/add_message/`, { message: remark });
 }
 
-export function useCreateTaskComment() {
+export function useCreateTaskRemark() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: createTaskComment,
+    mutationFn: createTaskRemark,
     onSuccess: (_meta, params) => {
       queryClient.invalidateQueries({ queryKey: ['task', `${params.taskId}`] });
     },

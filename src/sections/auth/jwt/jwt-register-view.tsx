@@ -6,7 +6,7 @@ import { useAuthContext } from 'auth/hooks';
 import { useBoolean } from 'hooks/use-boolean';
 import { PATH_AFTER_LOGIN } from 'config-global';
 import { yupResolver } from '@hookform/resolvers/yup';
-import FormProvider, { RHFTextField } from 'components/hook-form';
+import Form, { RHFTextField } from 'components/hook-form';
 
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
@@ -109,7 +109,7 @@ export default function JwtRegisterView() {
   );
 
   const renderForm = (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
+    <Form methods={methods} onSubmit={onSubmit}>
       <Stack spacing={2.5}>
         {!!errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 
@@ -146,7 +146,7 @@ export default function JwtRegisterView() {
           Create account
         </LoadingButton>
       </Stack>
-    </FormProvider>
+    </Form>
   );
 
   return (

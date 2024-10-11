@@ -14,26 +14,27 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import { View } from 'features/task/view-task/models';
 import { useViewContext } from 'features/task/view-task/hooks';
 
-import { Task } from 'entities/task/model';
-import { useUpdateTask } from 'entities/task/api';
+import { RemarkAdding } from 'entities/remark/ui';
 import { AttachmentUpload } from 'entities/attachments/ui';
+import { Task, TaskPermissions } from 'entities/task/model';
 import { AttachmentModel } from 'entities/attachments/model';
+import { useUpdateTask, useCreateTaskRemark } from 'entities/task/api';
 
 // -----------------------------------------------------------------------------------------------------------------
 
 interface Props extends StackProps {
   taskId: string | null;
   onClose: VoidFunction;
-  canAddAttachments: boolean;
-  onAddAttachments(attachments: AttachmentModel[]): AttachmentModel[];
+  permissions: TaskPermissions;
+  concatAttachments(attachments: AttachmentModel[]): AttachmentModel[];
 }
 
 export function TaskDrawerHeader({
   sx,
   taskId,
   onClose,
-  canAddAttachments,
-  onAddAttachments,
+  permissions,
+  concatAttachments,
   ...props
 }: Props) {
   const theme = useTheme();
@@ -42,12 +43,20 @@ export function TaskDrawerHeader({
 
   const updateTask = useUpdateTask();
 
+  const createRemark = useCreateTaskRemark();
+
   const onSaveAttachments = (data: Pick<Task, 'documents'>, onSuccess?: VoidFunction) => {
     if (taskId) {
       updateTask.mutate(
-        { id: taskId, body: { documents: onAddAttachments(data.documents) } },
+        { taskId, body: { documents: concatAttachments(data.documents) } },
         { onSuccess: () => onSuccess?.() }
       );
+    }
+  };
+
+  const onSaveRemark = ({ remark }: { remark: string }, onSuccess?: VoidFunction) => {
+    if (taskId) {
+      createRemark.mutate({ taskId, remark }, { onSuccess: () => onSuccess?.() });
     }
   };
 
@@ -66,9 +75,11 @@ export function TaskDrawerHeader({
 
         <Typography variant="subtitle1">{view.value}</Typography>
 
-        {canAddAttachments && view.isAttachments && (
+        {permissions.canAddAttachments && view.isAttachments && (
           <AttachmentUpload.Modal onSave={onSaveAttachments} />
         )}
+
+        {permissions.canAddRemark && view.isComments && <RemarkAdding onSave={onSaveRemark} />}
       </Stack>
 
       <ToggleButtonGroup

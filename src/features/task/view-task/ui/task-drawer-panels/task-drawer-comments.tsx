@@ -1,22 +1,11 @@
-import { useState } from 'react';
-import { grey } from 'theme/palette';
-import { useBoolean } from 'hooks/use-boolean';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import TextField from '@mui/material/TextField';
+import { CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
-import { DialogTitle, DialogActions, DialogContent, CircularProgress } from '@mui/material';
-
-import { fDateTime } from 'utils/format-time';
-import { formatUserName } from 'utils/format-user-name';
 
 import { Task } from 'entities/task/model';
-import { useCreateTaskComment } from 'entities/task/api';
+import { Remark } from 'entities/remark/ui';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -27,29 +16,7 @@ interface Props {
 }
 
 export function TaskDrawerComments({ hidden, task, loading }: Props) {
-  const [message, setMessage] = useState('');
-
-  const dialog = useBoolean();
-
-  const createComment = useCreateTaskComment();
-
   const hasMessages = task?.messages.length !== 0;
-
-  const onClose = () => {
-    dialog.onFalse();
-    setMessage('');
-  };
-
-  const onSave = () => {
-    if (task) {
-      createComment.mutate(
-        { taskId: task.task_number, message },
-        {
-          onSuccess: () => onClose(),
-        }
-      );
-    }
-  };
 
   if (loading) {
     return (
@@ -83,65 +50,9 @@ export function TaskDrawerComments({ hidden, task, loading }: Props) {
     <Box hidden={hidden}>
       <Stack spacing={1} sx={{ width: 1 }}>
         {task?.messages.map(({ id, message_text, message_date, message_by }) => (
-          <Stack
-            key={id}
-            component={Paper}
-            variant="outlined"
-            sx={{
-              p: 1,
-              width: 1,
-              borderRadius: 1,
-              '&:hover': {
-                bgcolor: 'background.paper',
-                boxShadow: (theme) => theme.customShadows.z4,
-              },
-            }}
-          >
-            <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-              <Typography variant="subtitle2">{formatUserName(message_by)}</Typography>
-              <Typography variant="caption" color={grey['500']}>
-                #{id}
-              </Typography>
-            </Stack>
-
-            <Typography variant="caption" color={grey['500']}>
-              {fDateTime(message_date)}
-            </Typography>
-
-            <Typography variant="body2" sx={{ mt: 1 }}>
-              {message_text}
-            </Typography>
-          </Stack>
+          <Remark key={id} id={id} author={message_by} date={message_date} text={message_text} />
         ))}
       </Stack>
-
-      <Button onClick={dialog.onTrue}>Add</Button>
-
-      <Dialog open={dialog.value} onClose={onClose}>
-        <DialogTitle>Добавить замечание</DialogTitle>
-        <DialogContent>
-          <Box
-            sx={{
-              width: 400,
-              pt: 2,
-            }}
-          >
-            <TextField
-              multiline
-              fullWidth
-              label="Замечание"
-              rows={6}
-              size="small"
-              value={message}
-              onChange={(event) => setMessage(event.target.value)}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={onSave}>Save</Button>
-        </DialogActions>
-      </Dialog>
     </Box>
   );
 }

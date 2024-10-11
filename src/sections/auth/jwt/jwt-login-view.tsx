@@ -6,7 +6,7 @@ import { useAuthContext } from 'auth/hooks';
 import { useBoolean } from 'hooks/use-boolean';
 import { PATH_AFTER_LOGIN } from 'config-global';
 import { yupResolver } from '@hookform/resolvers/yup';
-import FormProvider, { RHFTextField } from 'components/hook-form';
+import Form, { RHFTextField } from 'components/hook-form';
 
 import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
@@ -121,7 +121,7 @@ export default function JwtLoginView() {
   );
 
   return (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
+    <Form methods={methods} onSubmit={onSubmit}>
       {renderHead}
 
       <Alert severity="info" sx={{ mb: 3 }}>
@@ -129,6 +129,6 @@ export default function JwtLoginView() {
       </Alert>
 
       {renderForm}
-    </FormProvider>
+    </Form>
   );
 }

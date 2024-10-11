@@ -52,9 +52,9 @@ export function TaskDrawer(props: Props) {
           <TaskDrawerHeader
             sx={{ flex: 0 }}
             taskId={taskId}
+            permissions={permissions}
             onClose={() => setSearchParams()}
-            canAddAttachments={permissions.canAddAttachments}
-            onAddAttachments={(attachments) =>
+            concatAttachments={(attachments) =>
               task.data ? attachments.concat(task.data.documents) : attachments
             }
           />

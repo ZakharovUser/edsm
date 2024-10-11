@@ -6,7 +6,7 @@ import { useAuthContext } from 'auth/hooks';
 import { useBoolean } from 'hooks/use-boolean';
 import { PATH_AFTER_LOGIN } from 'config-global';
 import { yupResolver } from '@hookform/resolvers/yup';
-import FormProvider, { RHFTextField } from 'components/hook-form';
+import Form, { RHFTextField } from 'components/hook-form';
 
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
@@ -25,7 +25,7 @@ interface FormProps {
   loading?: boolean;
 }
 
-const Form = ({ errorMessage, password, loading }: FormProps) => (
+const FormContent = ({ errorMessage, password, loading }: FormProps) => (
   <Stack spacing={2.5}>
     {!!errorMessage && <Alert severity="error">{errorMessage}</Alert>}
 
@@ -106,11 +106,11 @@ export function SessionLoginView() {
   });
 
   return (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
+    <Form methods={methods} onSubmit={onSubmit}>
       <Stack spacing={2} sx={{ mb: 5 }}>
         <Typography variant="h4">Вход</Typography>
       </Stack>
-      <Form errorMessage={errorMsg} password={password} loading={isSubmitting} />
-    </FormProvider>
+      <FormContent errorMessage={errorMsg} password={password} loading={isSubmitting} />
+    </Form>
   );
 }
