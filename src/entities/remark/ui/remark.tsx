@@ -7,19 +7,21 @@ import Typography from '@mui/material/Typography';
 
 import { fTime } from 'utils/format-time';
 
-import { UserModel } from 'entities/user/models';
+import { TaskMessage } from 'entities/task/model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-interface Props {
-  date: string;
-  text: string;
-  author: UserModel;
-  align?: 'start' | 'end';
+export type RemarkAlign = 'start' | 'end';
+
+export interface RemarkProps {
+  remark: TaskMessage;
+  align?: RemarkAlign;
 }
 
-export function Remark({ author, text, date, align = 'start' }: Props) {
+export function Remark({ remark, align = 'start' }: RemarkProps) {
   const self = align === 'end';
+
+  const { message_by: author, message_date: date, message_text: text } = remark;
 
   return (
     <Stack
