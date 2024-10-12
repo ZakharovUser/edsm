@@ -1,51 +1,51 @@
 import { grey } from 'theme/palette';
 
-import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
+import Paper from '@mui/material/Paper';
+import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
-import { fDateTime } from 'utils/format-time';
-import { formatUserName } from 'utils/format-user-name';
+import { fTime } from 'utils/format-time';
 
 import { UserModel } from 'entities/user/models';
 
 // -----------------------------------------------------------------------------------------------------------------
 
 interface Props {
-  id: number | string;
   date: string;
   text: string;
   author: UserModel;
+  align?: 'start' | 'end';
 }
 
-export function Remark({ id, author, text, date }: Props) {
+export function Remark({ author, text, date, align = 'start' }: Props) {
+  const self = align === 'end';
+
   return (
     <Stack
-      component={Paper}
-      variant="outlined"
-      sx={{
-        p: 1,
-        width: 1,
-        borderRadius: 1,
-        '&:hover': {
-          bgcolor: 'background.paper',
-          boxShadow: (theme) => theme.customShadows.z4,
-        },
-      }}
+      spacing={1}
+      alignItems="flex-end"
+      alignSelf={self ? 'flex-ens' : 'flex-start'}
+      direction={self ? 'row-reverse' : 'row'}
+      sx={{ width: 1 }}
     >
-      <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-        <Typography variant="subtitle2">{formatUserName(author)}</Typography>
-        <Typography variant="caption" color={grey['500']}>
-          #{id}
+      <Avatar sx={{ width: 24, height: 24, fontSize: 12 }}>
+        {author.last_name[0].toUpperCase()}
+        {author.first_name[0].toUpperCase()}
+      </Avatar>
+
+      <Paper sx={{ maxWidth: '70%', p: 1 }} variant="outlined">
+        <Typography variant="subtitle2" color={self ? 'primary' : 'secondary'}>
+          {author.last_name} {author.first_name}
         </Typography>
-      </Stack>
+
+        <Typography variant="body2" sx={{ mt: 1 }}>
+          {text}
+        </Typography>
+      </Paper>
 
       <Typography variant="caption" color={grey['500']}>
-        {fDateTime(date)}
-      </Typography>
-
-      <Typography variant="body2" sx={{ mt: 1 }}>
-        {text}
+        {fTime(date)}
       </Typography>
     </Stack>
   );

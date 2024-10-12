@@ -75,11 +75,9 @@ export function TaskDrawerHeader({
 
         <Typography variant="subtitle1">{view.value}</Typography>
 
-        {permissions.canAddAttachments && view.isAttachments && (
-          <AttachmentUpload.Modal onSave={onSaveAttachments} />
-        )}
+        {view.isAttachments && <AttachmentUpload.Modal onSave={onSaveAttachments} />}
 
-        {permissions.canAddRemark && view.isComments && <RemarkAdding onSave={onSaveRemark} />}
+        {view.isComments && <RemarkAdding onSave={onSaveRemark} />}
       </Stack>
 
       <ToggleButtonGroup

@@ -1,3 +1,5 @@
+import { useAuthContext } from 'auth/hooks';
+
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import { CircularProgress } from '@mui/material';
@@ -16,6 +18,8 @@ interface Props {
 }
 
 export function TaskDrawerComments({ hidden, task, loading }: Props) {
+  const { user } = useAuthContext();
+
   const hasMessages = task?.messages.length !== 0;
 
   if (loading) {
@@ -48,9 +52,15 @@ export function TaskDrawerComments({ hidden, task, loading }: Props) {
 
   return (
     <Box hidden={hidden}>
-      <Stack spacing={1} sx={{ width: 1 }}>
+      <Stack spacing={3} sx={{ width: 1 }}>
         {task?.messages.map(({ id, message_text, message_date, message_by }) => (
-          <Remark key={id} id={id} author={message_by} date={message_date} text={message_text} />
+          <Remark
+            key={id}
+            author={message_by}
+            date={message_date}
+            text={message_text}
+            align={user?.id === message_by.id ? 'end' : 'start'}
+          />
         ))}
       </Stack>
     </Box>
