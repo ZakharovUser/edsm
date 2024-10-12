@@ -19,6 +19,12 @@ export function fDateTime(date: InputValue, newFormat?: string) {
   return date ? format(new Date(date), fm, { locale: ru }) : '-';
 }
 
+export function fTime(date: InputValue, newFormat?: string) {
+  const fm = newFormat || 'p';
+
+  return date ? format(new Date(date), fm, { locale: ru }) : '-';
+}
+
 export function fTimestamp(date: InputValue) {
   return date ? getTime(new Date(date)) : '';
 }

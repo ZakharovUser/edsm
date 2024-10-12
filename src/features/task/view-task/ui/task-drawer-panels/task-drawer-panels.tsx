@@ -24,7 +24,7 @@ export function TaskDrawerPanels({ task, loading, sx }: Props) {
   const view = useViewContext();
 
   return (
-    <Box sx={{ overflow: 'auto', py: 1, pr: 2, ...sx }}>
+    <Box sx={{ overflow: 'auto', py: 1, px: 2, ...sx }}>
       <TaskDrawerSummary task={task} loading={loading} hidden={!view.isSummary} />
       <TaskDrawerHistory history={task?.task_history} hidden={!view.isHistory} />
       <TaskDrawerComments task={task} loading={loading} hidden={!view.isComments} />
