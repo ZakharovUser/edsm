@@ -2,9 +2,13 @@ import List from '@mui/material/List';
 import Stack from '@mui/material/Stack';
 import { ListItem } from '@mui/material';
 import Typography from '@mui/material/Typography';
+import ListSubheader from '@mui/material/ListSubheader';
 import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 
+import { fDate } from 'utils/format-time';
+
 import { TaskMessage } from 'entities/task/model';
+import { sortByDate } from 'entities/remark/helpers';
 
 import { Remark, RemarkAlign } from './remark';
 
@@ -35,10 +39,25 @@ export function RemarkList({ remarks, alignRender }: Props) {
   }
 
   return (
-    <List sx={{ p: 0 }}>
-      {remarks?.map((remark) => (
-        <ListItem key={remark.id} sx={{ px: 0 }}>
-          <Remark remark={remark} align={alignRender?.(remark)} />
+    <List sx={{ p: 0, position: 'relation', width: 1 }}>
+      {sortByDate(remarks).map(([date, children]) => (
+        <ListItem key={date} sx={{ p: 0 }}>
+          <List sx={{ p: 0, width: 1 }}>
+            <ListSubheader sx={{ bgcolor: 'transparent', textAlign: 'center' }}>
+              <Typography
+                variant="caption"
+                sx={{ py: 0.5, px: 1.5, bgcolor: 'background.neutral', borderRadius: 1 }}
+              >
+                {fDate(date, 'dd MMMM yyyy г.')}
+              </Typography>
+            </ListSubheader>
+
+            {children.map((remark) => (
+              <ListItem key={remark.id} sx={{ px: 0 }}>
+                <Remark remark={remark} align={alignRender?.(remark)} />
+              </ListItem>
+            ))}
+          </List>
         </ListItem>
       ))}
     </List>
