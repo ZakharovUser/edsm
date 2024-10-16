@@ -29,14 +29,7 @@ interface Props extends StackProps {
   concatAttachments(attachments: AttachmentModel[]): AttachmentModel[];
 }
 
-export function TaskDrawerHeader({
-  sx,
-  taskId,
-  onClose,
-  permissions,
-  concatAttachments,
-  ...props
-}: Props) {
+export function TaskDrawerHeader({ sx, taskId, onClose, concatAttachments, ...props }: Props) {
   const theme = useTheme();
 
   const view = useViewContext();

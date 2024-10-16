@@ -11,20 +11,23 @@ export function formatUserName(
   if (typeof fullOrSurnameOrUser !== 'string') {
     const { first_name, middle_name, last_name } = fullOrSurnameOrUser;
 
-    return `${last_name} ${first_name[0].toUpperCase()}.${
-      middle_name ? middle_name[0].toUpperCase().concat('.') : ''
-    }`;
+    const _first_name = first_name.at(0)?.concat('.') || '';
+    const _middle_name = middle_name.at(0)?.concat('.') || '';
+
+    return `${last_name} ${_first_name.toUpperCase()} ${_middle_name.toUpperCase()}`.trim();
   }
 
   if (name) {
-    return `${fullOrSurnameOrUser} ${name[0].toUpperCase()}.${
-      lastname ? lastname[0].toUpperCase().concat('.') : ''
-    }`;
+    const _name = name.at(0)?.concat('.') || '';
+    const _lastname = lastname?.at(0)?.concat('.') || '';
+
+    return `${fullOrSurnameOrUser} ${_name.toUpperCase()} ${_lastname.toUpperCase()}`.trim();
   }
 
-  const [_surname, _name, _lastname] = fullOrSurnameOrUser.split(' ');
+  const [_surname = '', _name = '', _lastname = ''] = fullOrSurnameOrUser.split(' ');
 
-  return `${_surname} ${_name[0].toUpperCase()}.${
-    _lastname ? _lastname[0].toUpperCase().concat('.') : ''
-  }`;
+  const __name = _name.at(0)?.concat('.') || '';
+  const __lastname = _lastname.at(0)?.concat('.') || '';
+
+  return `${_surname} ${__name.toUpperCase()} ${__lastname.toUpperCase()}`.trim();
 }

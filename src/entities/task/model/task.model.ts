@@ -4,8 +4,6 @@ import { InstituteModel } from 'entities/institute/model';
 import { UserModel } from 'entities/user/models/group.model';
 import { AttachmentModel, UploadAttachmentModel } from 'entities/attachments/model';
 
-import { Nullable } from 'shared/utils/types';
-
 export interface TaskRoute {
   id: number;
   name: string;
@@ -63,7 +61,7 @@ export interface TaskHistoryStep {
   timestamp: string;
   task_status: TaskStatus;
   current_stage: TaskStage;
-  executor: Nullable<UserModel>;
+  executor: UserModel;
   comments: TaskHistoryStepComment[];
 }
 

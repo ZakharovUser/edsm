@@ -37,8 +37,11 @@ export function TaskDrawerHistory({ history, hidden }: Props) {
 
           return (
             <Fragment key={step.id}>
-              <Stack sx={{ justifySelf: 'end', pt: 0.5, pb: 2 }}>
+              <Stack sx={{ pt: 0.5, pb: 2 }} justifySelf="end" spacing={0.5}>
                 <Label>{step.current_stage.stage_name}</Label>
+                <Typography noWrap variant="caption" align="right">
+                  {formatUserName(step.executor)}
+                </Typography>
                 <Typography noWrap variant="caption" align="right">
                   {fDate(step.timestamp, 'dd.MM.yy HH:mm')}
                 </Typography>
@@ -55,7 +58,7 @@ export function TaskDrawerHistory({ history, hidden }: Props) {
                 </Label>
 
                 <Box sx={{ width: 1 }}>
-                  {step.comments.map(({ commented_by, ...comment }) => (
+                  {step.comments.map((comment) => (
                     <Box
                       key={comment.id}
                       sx={{
@@ -79,7 +82,7 @@ export function TaskDrawerHistory({ history, hidden }: Props) {
                         gap={1}
                       >
                         <Typography noWrap variant="caption">
-                          {formatUserName(commented_by.last_name, commented_by.first_name, commented_by.middle_name)}
+                          {formatUserName(comment.commented_by)}
                         </Typography>
                         <Typography noWrap variant="caption">
                           {fDate(comment.comment_date, 'dd.MM.yy HH:mm')}
