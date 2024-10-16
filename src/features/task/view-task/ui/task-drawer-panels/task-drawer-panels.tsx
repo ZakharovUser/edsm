@@ -7,10 +7,10 @@ import { useViewContext } from 'features/task/view-task/hooks';
 
 import { Task } from 'entities/task/model';
 
-import { TaskDrawerSummary } from './task-drawer-summary';
 import { TaskDrawerHistory } from './task-drawer-history';
 import { TaskDrawerComments } from './task-drawer-comments';
 import { TaskDrawerAttachments } from './task-drawer-attachments';
+import { TaskDrawerSummary } from './task-drawer-summary/task-drawer-summary';
 
 // -----------------------------------------------------------------------------------------------------------------
 

@@ -1,4 +1,3 @@
-import React from 'react';
 import Label from 'components/label';
 
 import Box from '@mui/material/Box';
@@ -18,10 +17,11 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
-import { TaskDrawerRow } from 'features/task/view-task/ui/task-drawer/task-drawer-row';
-
 import { taskStatusMap } from 'entities/task/helpers';
 import { Task, TaskReason, TaskImportance } from 'entities/task/model';
+
+import { TaskDueDateExtend } from './task-due-date-extend';
+import { TaskDrawerSummaryRow } from './task-drawer-summary-row';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -46,55 +46,55 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
         {loading ? <Skeleton /> : task?.full_name}
       </Typography>
 
-      <TaskDrawerRow label="ID" loading={loading} icon={<NumbersIcon />}>
+      <TaskDrawerSummaryRow label="ID" loading={loading} icon={<NumbersIcon />}>
         {task?.task_number}
-      </TaskDrawerRow>
+      </TaskDrawerSummaryRow>
 
-      <TaskDrawerRow label="Статус" loading={loading} icon={<StreamIcon />}>
+      <TaskDrawerSummaryRow label="Статус" loading={loading} icon={<StreamIcon />}>
         <Label color={taskStatus?.color} startIcon={taskStatus?.icon}>
           {taskStatus?.label}
         </Label>
-      </TaskDrawerRow>
+      </TaskDrawerSummaryRow>
 
-      <TaskDrawerRow label="Этап" loading={loading} icon={<ShareLocationIcon />}>
+      <TaskDrawerSummaryRow label="Этап" loading={loading} icon={<ShareLocationIcon />}>
         {currentHistoryStep?.current_stage.stage_name}
-      </TaskDrawerRow>
+      </TaskDrawerSummaryRow>
 
-      <TaskDrawerRow label="Автор" loading={loading} icon={<PersonIcon />}>
+      <TaskDrawerSummaryRow label="Автор" loading={loading} icon={<PersonIcon />}>
         {task && formatUserName(task.created_by)}
-      </TaskDrawerRow>
+      </TaskDrawerSummaryRow>
 
-      <TaskDrawerRow label="Учреждение" loading={loading} icon={<ApartmentIcon />}>
+      <TaskDrawerSummaryRow label="Учреждение" loading={loading} icon={<ApartmentIcon />}>
         {task?.org_name.name_short}
-      </TaskDrawerRow>
+      </TaskDrawerSummaryRow>
 
-      <TaskDrawerRow label="Регламент" loading={loading} icon={<ContentPasteIcon />}>
+      <TaskDrawerSummaryRow label="Регламент" loading={loading} icon={<ContentPasteIcon />}>
         {task?.route.name}
-      </TaskDrawerRow>
+      </TaskDrawerSummaryRow>
 
-      <TaskDrawerRow label="Важность" loading={loading} icon={<StarHalfIcon />}>
+      <TaskDrawerSummaryRow label="Важность" loading={loading} icon={<StarHalfIcon />}>
         {task && TaskImportance[task.importance]}
-      </TaskDrawerRow>
+      </TaskDrawerSummaryRow>
 
-      <TaskDrawerRow label="Причина" loading={loading} icon={<ErrorOutlineIcon />}>
+      <TaskDrawerSummaryRow label="Причина" loading={loading} icon={<ErrorOutlineIcon />}>
         {task && TaskReason[task.reason]}
-      </TaskDrawerRow>
+      </TaskDrawerSummaryRow>
 
-      <TaskDrawerRow
+      <TaskDrawerSummaryRow
         loading={loading}
         label="Источник финансирования"
         icon={<AccountBalanceWalletIcon />}
       >
         {task?.finance_source.name}
-      </TaskDrawerRow>
+      </TaskDrawerSummaryRow>
 
-      <TaskDrawerRow label="Дата создания" loading={loading} icon={<CalendarMonthIcon />}>
+      <TaskDrawerSummaryRow label="Дата создания" loading={loading} icon={<CalendarMonthIcon />}>
         {task && fDate(task.creation_date)}
-      </TaskDrawerRow>
+      </TaskDrawerSummaryRow>
 
-      <TaskDrawerRow label="Дата выполнения" loading={loading} icon={<CalendarMonthIcon />}>
-        {task?.deadline_date && fDate(task.deadline_date)}
-      </TaskDrawerRow>
+      <TaskDrawerSummaryRow label="Дата выполнения" loading={loading} icon={<CalendarMonthIcon />}>
+        <TaskDueDateExtend date={task?.deadline_date} />
+      </TaskDrawerSummaryRow>
     </Box>
   );
 }

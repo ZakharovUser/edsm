@@ -2,28 +2,22 @@ import React, { ReactElement, cloneElement, PropsWithChildren } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { Theme } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import { SvgIconProps } from '@mui/material/SvgIcon';
+import { Theme, SxProps } from '@mui/material/styles';
 
 // -----------------------------------------------------------------------------------------------------------------
 
 export interface RowProps extends PropsWithChildren {
   label: string;
   loading?: boolean;
+  sx?: SxProps<Theme>;
   icon?: ReactElement<SvgIconProps>;
 }
 
-export function TaskDrawerRow({ label, loading, children, icon }: RowProps) {
+export function TaskDrawerSummaryRow({ label, loading, children, icon, sx }: RowProps) {
   if (!children && !loading) return null;
-
-  const Content =
-    typeof children === 'string' ? (
-      <Typography sx={{ flex: 1, fontSize: 14 }}>{loading ? <Skeleton /> : children}</Typography>
-    ) : (
-      <Box sx={{ flex: 1, fontSize: 14 }}>{loading ? <Skeleton /> : children}</Box>
-    );
 
   const Icon = icon
     ? cloneElement(icon, {
@@ -38,7 +32,7 @@ export function TaskDrawerRow({ label, loading, children, icon }: RowProps) {
       alignItems="center"
       sx={{ [`&:not(:first-of-type)`]: { mt: 1 } }}
     >
-      <Stack direction="row" alignItems="center" gap={0.5} sx={{ width: 250 }}>
+      <Stack direction="row" alignItems="center" gap={0.5} sx={{ width: 230 }}>
         {Icon}
         <Typography
           noWrap
@@ -47,7 +41,8 @@ export function TaskDrawerRow({ label, loading, children, icon }: RowProps) {
           {label}
         </Typography>
       </Stack>
-      {Content}
+
+      <Box sx={{ flex: 1, fontSize: 14, ...sx }}>{loading ? <Skeleton /> : children}</Box>
     </Stack>
   );
 }
