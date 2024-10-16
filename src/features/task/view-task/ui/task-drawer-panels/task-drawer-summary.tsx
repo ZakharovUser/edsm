@@ -2,7 +2,6 @@ import React from 'react';
 import Label from 'components/label';
 
 import Box from '@mui/material/Box';
-import { Theme } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import StreamIcon from '@mui/icons-material/Stream';
@@ -32,8 +31,6 @@ interface Props {
   loading?: boolean;
 }
 
-const iconProps = { sx: { color: (theme: Theme) => theme.palette.grey['500'], fontSize: 18 } };
-
 export function TaskDrawerSummary({ loading, task, hidden }: Props) {
   const currentHistoryStep = task?.task_history.at(0);
 
@@ -49,53 +46,53 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
         {loading ? <Skeleton /> : task?.full_name}
       </Typography>
 
-      <TaskDrawerRow label="ID" loading={loading} icon={<NumbersIcon {...iconProps} />}>
+      <TaskDrawerRow label="ID" loading={loading} icon={<NumbersIcon />}>
         {task?.task_number}
       </TaskDrawerRow>
 
-      <TaskDrawerRow label="Статус" loading={loading} icon={<StreamIcon {...iconProps} />}>
+      <TaskDrawerRow label="Статус" loading={loading} icon={<StreamIcon />}>
         <Label color={taskStatus?.color} startIcon={taskStatus?.icon}>
           {taskStatus?.label}
         </Label>
       </TaskDrawerRow>
 
-      <TaskDrawerRow label="Этап" loading={loading} icon={<ShareLocationIcon {...iconProps} />}>
+      <TaskDrawerRow label="Этап" loading={loading} icon={<ShareLocationIcon />}>
         {currentHistoryStep?.current_stage.stage_name}
       </TaskDrawerRow>
 
-      <TaskDrawerRow label="Автор" loading={loading} icon={<PersonIcon {...iconProps} />}>
+      <TaskDrawerRow label="Автор" loading={loading} icon={<PersonIcon />}>
         {task && formatUserName(task.created_by)}
       </TaskDrawerRow>
 
-      <TaskDrawerRow label="Учреждение" loading={loading} icon={<ApartmentIcon {...iconProps} />}>
+      <TaskDrawerRow label="Учреждение" loading={loading} icon={<ApartmentIcon />}>
         {task?.org_name.name_short}
       </TaskDrawerRow>
 
-      <TaskDrawerRow label="Регламент" loading={loading} icon={<ContentPasteIcon {...iconProps} />}>
+      <TaskDrawerRow label="Регламент" loading={loading} icon={<ContentPasteIcon />}>
         {task?.route.name}
       </TaskDrawerRow>
 
-      <TaskDrawerRow label="Важность" loading={loading} icon={<StarHalfIcon {...iconProps} />}>
+      <TaskDrawerRow label="Важность" loading={loading} icon={<StarHalfIcon />}>
         {task && TaskImportance[task.importance]}
       </TaskDrawerRow>
 
-      <TaskDrawerRow label="Причина" loading={loading} icon={<ErrorOutlineIcon {...iconProps} />}>
+      <TaskDrawerRow label="Причина" loading={loading} icon={<ErrorOutlineIcon />}>
         {task && TaskReason[task.reason]}
       </TaskDrawerRow>
 
       <TaskDrawerRow
         loading={loading}
         label="Источник финансирования"
-        icon={<AccountBalanceWalletIcon {...iconProps} />}
+        icon={<AccountBalanceWalletIcon />}
       >
         {task?.finance_source.name}
       </TaskDrawerRow>
 
-      <TaskDrawerRow label="Дата создания" loading={loading} icon={<CalendarMonthIcon {...iconProps} />}>
+      <TaskDrawerRow label="Дата создания" loading={loading} icon={<CalendarMonthIcon />}>
         {task && fDate(task.creation_date)}
       </TaskDrawerRow>
 
-      <TaskDrawerRow label="Дата выполнения" loading={loading} icon={<CalendarMonthIcon {...iconProps} />}>
+      <TaskDrawerRow label="Дата выполнения" loading={loading} icon={<CalendarMonthIcon />}>
         {task?.deadline_date && fDate(task.deadline_date)}
       </TaskDrawerRow>
     </Box>
