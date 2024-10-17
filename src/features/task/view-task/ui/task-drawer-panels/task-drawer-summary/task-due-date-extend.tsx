@@ -7,11 +7,13 @@ import Form, { Field } from 'components/hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
@@ -19,11 +21,10 @@ import { DialogTitle, DialogActions, DialogContent } from '@mui/material';
 
 import { fDate } from 'utils/format-time';
 
-// -----------------------------------------------------------------------------------------------------------------
+import { Task } from 'entities/task/model';
+import { useTaskDeadlineExtend } from 'entities/task/api';
 
-interface Props {
-  date: string | undefined;
-}
+// -----------------------------------------------------------------------------------------------------------------
 
 const Schema = (minDate?: Date) =>
   Yup.object().shape({
@@ -33,16 +34,23 @@ const Schema = (minDate?: Date) =>
         originalValue instanceof Date ? originalValue : originalValue?.toDate()
       )
       .nullable()
-      .min(minDate, 'Дата раньше текущей')
+      .min(minDate || new Date(), 'Дата раньше текущей')
       .required('Выберите новую дату'),
     message: Yup.string().required('Введите причину'),
   });
 
-export function TaskDueDateExtend({ date }: Props) {
+interface Props {
+  taskId: Task['task_number'] | undefined;
+  date: Task['deadline_date'] | undefined;
+}
+
+export function TaskDueDateExtend({ taskId, date }: Props) {
+  const deadlineExtend = useTaskDeadlineExtend();
+
   const dialog = useBoolean();
 
-  const due = dayjs(date);
-  const dueDate = due.toDate();
+  const due = date ? dayjs(date) : undefined;
+  const dueDate = due ? due.toDate() : new Date();
 
   const methods = useForm({
     mode: 'all',
@@ -55,25 +63,34 @@ export function TaskDueDateExtend({ date }: Props) {
 
   const onClose = () => {
     methods.reset();
+    deadlineExtend.reset();
     dialog.onFalse();
   };
 
-  const onSubmit = methods.handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = methods.handleSubmit((body) => {
+    deadlineExtend.mutate({ taskId, body }, { onSuccess: () => onClose() });
   });
 
   return (
     <Stack spacing={0.5} direction="row" alignItems="center">
       <Typography sx={{ fontSize: 'inherit' }}>{fDate(date)}</Typography>
-      <Tooltip title="Запросить продление">
-        <IconButton size="small" onClick={dialog.onTrue}>
-          <EditCalendarIcon fontSize="inherit" />
-        </IconButton>
-      </Tooltip>
+
+      {date && (
+        <Tooltip title="Запросить продление">
+          <IconButton size="small" onClick={dialog.onTrue}>
+            <EditCalendarIcon fontSize="inherit" />
+          </IconButton>
+        </Tooltip>
+      )}
+
       <Dialog open={dialog.value} onClose={onClose}>
         <Form methods={methods} onSubmit={onSubmit}>
           <DialogTitle>Запрос на продление</DialogTitle>
           <DialogContent>
+            {deadlineExtend.isError && (
+              <Alert severity="error">{deadlineExtend.error.message}</Alert>
+            )}
+
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ru">
               <Stack sx={{ py: 2, minWidth: 400 }} spacing={2}>
                 <Field.Date
@@ -88,7 +105,9 @@ export function TaskDueDateExtend({ date }: Props) {
           </DialogContent>
           <DialogActions>
             <Button onClick={onClose}>Отмена</Button>
-            <Button type="submit">Отправить</Button>
+            <LoadingButton type="submit" loading={deadlineExtend.isPending}>
+              Отправить
+            </LoadingButton>
           </DialogActions>
         </Form>
       </Dialog>

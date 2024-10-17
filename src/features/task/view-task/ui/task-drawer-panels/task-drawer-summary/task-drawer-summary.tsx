@@ -93,7 +93,7 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
       </TaskDrawerSummaryRow>
 
       <TaskDrawerSummaryRow label="Дата выполнения" loading={loading} icon={<CalendarMonthIcon />}>
-        <TaskDueDateExtend date={task?.deadline_date} />
+        <TaskDueDateExtend date={task?.deadline_date} taskId={task?.task_number} />
       </TaskDrawerSummaryRow>
     </Box>
   );

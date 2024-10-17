@@ -63,5 +63,6 @@ export const endpoints = {
   },
   task: {
     item: (id: number | string) => `${root.api}/task/${id}/`,
+    extendDeadline: (id: number | string) => `${root.api}/task/${id}/request_extension/ `,
   },
 };

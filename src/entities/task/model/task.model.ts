@@ -75,7 +75,7 @@ export interface TaskMessage {
 interface TaskBase {
   full_name: string;
   short_name: string;
-  deadline_date: string;
+  deadline_date: string | null;
   finance_source: FinancingSource;
   reason: keyof typeof TaskReason;
   importance: keyof typeof TaskImportance;
