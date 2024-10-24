@@ -11,7 +11,9 @@ type Props = {
 export default function Form({ children, onSubmit, methods }: Props) {
   return (
     <FormProvider {...methods}>
-      <form onSubmit={onSubmit}>{children}</form>
+      <form onSubmit={onSubmit} noValidate>
+        {children}
+      </form>
     </FormProvider>
   );
 }

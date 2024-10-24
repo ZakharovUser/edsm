@@ -1,8 +1,8 @@
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { useBoolean } from 'hooks/use-boolean';
+import Form, { Field } from 'components/hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Form, { RHFTextField } from 'components/hook-form';
 
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -21,16 +21,22 @@ type Props = {
 };
 
 const schema = Yup.object().shape({
-  message: Yup.string(),
+  message: Yup.string().required('Введите причину'),
 });
+
+type SchemaType = Yup.InferType<typeof schema>;
 
 export function TaskRejectButton({ taskId, canReject, text = 'Отклонить' }: Props) {
   const confirm = useBoolean(false);
 
   const { mutate, isPending, reset } = useRejectTask();
 
-  const methods = useForm({
+  const methods = useForm<SchemaType>({
     resolver: yupResolver(schema),
+    mode: 'onSubmit',
+    defaultValues: {
+      message: '',
+    },
   });
 
   const onClose = () => {
@@ -61,15 +67,15 @@ export function TaskRejectButton({ taskId, canReject, text = 'Отклонить
 
         <Form methods={methods} onSubmit={onSubmit}>
           <DialogContent>
-            <Typography variant="body2" sx={{ mb: 2 }}>
+            <Typography variant="body2" sx={{ mb: 3 }}>
               Вы действительно хотите отклонить задачу ?
             </Typography>
 
-            <RHFTextField
+            <Field.Text
+              required
               multiline
               autoFocus
               fullWidth
-              size="small"
               type="text"
               name="message"
               label="Причина"
