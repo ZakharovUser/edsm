@@ -1,8 +1,8 @@
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { useBoolean } from 'hooks/use-boolean';
+import Form, { Field } from 'components/hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Form, { RHFTextField } from 'components/hook-form';
 
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
@@ -61,15 +61,15 @@ export function TaskCancelButton({ taskId, canCancel, text = 'Прекратит
 
         <Form methods={methods} onSubmit={onSubmit}>
           <DialogContent>
-            <Typography variant="body2" sx={{ mb: 2 }}>
+            <Typography variant="body2" sx={{ mb: 3 }}>
               Вы действительно хотите прекратить задачу ?
             </Typography>
 
-            <RHFTextField
+            <Field.Text
+              required
               multiline
               autoFocus
               fullWidth
-              size="small"
               type="text"
               name="message"
               label="Причина"
