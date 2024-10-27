@@ -67,7 +67,10 @@ export function TaskDueDateExtend({ taskId, date }: Props) {
     dialog.onFalse();
   };
 
-  const onSubmit = methods.handleSubmit((body) => {
+  const onSubmit = methods.handleSubmit(({ message, new_deadline_date: deadline }) => {
+    const new_deadline_date = dayjs(deadline).format('YYYY-MM-DD');
+    const body = { message, new_deadline_date };
+
     deadlineExtend.mutate({ taskId, body }, { onSuccess: () => onClose() });
   });
 
@@ -86,6 +89,7 @@ export function TaskDueDateExtend({ taskId, date }: Props) {
       <Dialog open={dialog.value} onClose={onClose}>
         <Form methods={methods} onSubmit={onSubmit}>
           <DialogTitle>Запрос на продление</DialogTitle>
+
           <DialogContent>
             {deadlineExtend.isError && (
               <Alert severity="error">{deadlineExtend.error.message}</Alert>
