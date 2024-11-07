@@ -1,5 +1,5 @@
 import { grey } from 'theme/palette';
-import { useState, MouseEvent, useCallback } from 'react';
+import { useMenu } from 'hooks/use-menu';
 
 import { Menu } from '@mui/material';
 import Stack from '@mui/material/Stack';
@@ -19,46 +19,21 @@ import { TaskMessage } from 'entities/task/model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export type RemarkAlign = 'start' | 'end';
-
 export interface RemarkProps {
   remark: TaskMessage;
-  align?: RemarkAlign;
-  permissions?: {
-    canResolve?: boolean;
-    canRemove?: boolean;
-  };
+  align?: 'start' | 'end';
+  canResolve?: boolean;
+  canRemove?: boolean;
 }
 
-function useMenu() {
-  const [anchor, setAnchor] = useState<null | HTMLElement>(null);
-
-  const onOpen = useCallback(
-    ({ currentTarget }: MouseEvent<HTMLElement>) => setAnchor(currentTarget),
-    []
-  );
-
-  const onClose = useCallback(() => setAnchor(null), []);
-
-  const open = Boolean(anchor);
-
-  return {
-    open,
-    anchor,
-    onOpen,
-    onClose,
-    setAnchor,
-  };
-}
-
-export function Remark({ remark, align = 'start', permissions }: RemarkProps) {
+export function Remark({ remark, align = 'start', canRemove, canResolve }: RemarkProps) {
   const menu = useMenu();
 
   const self = align === 'end';
 
   const { message_by: author, message_date: date, message_text: text } = remark;
 
-  const canActions = permissions?.canRemove || permissions?.canResolve;
+  const canActions = canRemove || canResolve;
 
   return (
     <Stack
@@ -84,19 +59,19 @@ export function Remark({ remark, align = 'start', permissions }: RemarkProps) {
             </IconButton>
           )}
           <Menu open={menu.open} anchorEl={menu.anchor} onClose={menu.onClose}>
-            {permissions?.canResolve && (
+            {canResolve && (
               <MenuItem>
                 <ThumbUpAltIcon sx={{ mr: 1, width: 16, height: 16 }} />
                 Принять
               </MenuItem>
             )}
-            {permissions?.canResolve && (
+            {canResolve && (
               <MenuItem>
                 <ThumbDownAltIcon sx={{ mr: 1, width: 16, height: 16 }} />
                 Отклонить
               </MenuItem>
             )}
-            {permissions?.canRemove && (
+            {canRemove && (
               <MenuItem sx={{ color: 'error.main' }}>
                 <DeleteIcon sx={{ mr: 1, width: 16, height: 16 }} />
                 Удалить

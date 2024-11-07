@@ -1,12 +1,15 @@
-import { useCallback } from 'react';
 import { useAuthContext } from 'auth/hooks';
 
-import Box from '@mui/material/Box';
-import { CircularProgress } from '@mui/material';
+import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
 
-import { RemarkList } from 'entities/remark/ui';
-import { Task, TaskMessage } from 'entities/task/model';
+import { fDate } from 'utils/format-time';
+
+import { Task } from 'entities/task/model';
+import { sortByDate } from 'entities/remark/helpers';
 import { useTaskPermissions } from 'entities/task/hooks';
+import { Remark, RemarkList, RemarkListItem } from 'entities/remark/ui';
+
+import { TaskDrawerPanel } from './task-drawer-panel';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -19,26 +22,37 @@ interface Props {
 export function TaskDrawerComments({ hidden, task, loading }: Props) {
   const { user } = useAuthContext();
 
-  const { canResolveRemark: canResolve } = useTaskPermissions(task);
+  const { canResolveRemark } = useTaskPermissions(task);
 
-  const canRemove = useCallback(
-    (remark: TaskMessage) => remark.message_by.id === user?.id,
-    [user?.id]
-  );
+  const noRemarks = task?.messages.length === 0;
 
   return (
-    <Box hidden={hidden}>
-      {loading ? (
-        <Box sx={{ mx: 'auto', width: 'max-content', p: 3 }}>
-          <CircularProgress />
-        </Box>
-      ) : (
-        <RemarkList
-          remarks={task?.messages}
-          permissions={{ canResolve, canRemove }}
-          alignRender={({ message_by }) => (user?.id === message_by.id ? 'end' : 'start')}
-        />
-      )}
-    </Box>
+    <TaskDrawerPanel
+      hidden={hidden}
+      loading={loading}
+      empty={noRemarks}
+      emptyText="Замечаний нет"
+      emptyIcon={MarkUnreadChatAltIcon}
+    >
+      {sortByDate(task?.messages).map(([date, children]) => (
+        <RemarkList key={date} subheader={fDate(date, 'dd MMMM yyyy г.')}>
+          {children.map((remark) => {
+            const canRemoveRemark = remark.message_by.id === user?.id;
+            const align = canRemoveRemark ? 'end' : 'start';
+
+            return (
+              <RemarkListItem key={remark.id}>
+                <Remark
+                  align={align}
+                  remark={remark}
+                  canRemove={canRemoveRemark}
+                  canResolve={canResolveRemark}
+                />
+              </RemarkListItem>
+            );
+          })}
+        </RemarkList>
+      ))}
+    </TaskDrawerPanel>
   );
 }
