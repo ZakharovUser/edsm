@@ -11,9 +11,7 @@ export type RemarkDeleteQueryParams = {
 };
 
 export async function remarkDeleteQuery({ task, remark }: RemarkDeleteQueryParams) {
-  return httpClient.post(urlcat(root.api, endpoints.remark.delete, { task }), {
-    message_id: remark,
-  });
+  return httpClient.delete(urlcat(root.api, endpoints.remark.delete, { task, message_id: remark }));
 }
 
 export function useRemarkDeleteQuery() {

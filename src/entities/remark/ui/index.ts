@@ -1,4 +1,5 @@
 export { RemarkAdding } from './remark-adding';
 export { Remark, type RemarkProps } from './remark';
 export { RemarkList, type RemarkListProps } from './remark-list';
+export { RemarkStatus, type RemarkStatusProps } from './remark-status';
 export { RemarkListItem, type RemarkListItemProps } from './remark-list-item';

@@ -16,7 +16,7 @@ export type RemarkListProps = {
 
 export function RemarkList({ children, subheader }: RemarkListProps) {
   return (
-    <Stack component={List} spacing={1} sx={{ p: 0, width: 1 }}>
+    <Stack component={List} spacing={2} sx={{ p: 0, width: 1 }}>
       {subheader && (
         <ListSubheader sx={{ bgcolor: 'transparent', textAlign: 'center' }}>
           <Typography

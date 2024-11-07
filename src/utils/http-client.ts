@@ -58,8 +58,8 @@ export const endpoints = {
   },
   remark: {
     create: '/task/:task/add_message/',
-    delete: '/task/:task/delete_message/',
     reject: '/task/:task/reject_message/',
+    delete: '/task/:task/delete_message/',
     approve: '/task/:task/approve_message/',
   },
 };

@@ -17,6 +17,7 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import { fTime } from 'utils/format-time';
 
 import { TaskMessage } from 'entities/task/model';
+import { RemarkStatus } from 'entities/remark/ui/remark-status';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -57,7 +58,7 @@ export function Remark({
 
   return (
     <Stack
-      spacing={1}
+      spacing={0.5}
       alignItems="flex-end"
       alignSelf={self ? 'flex-end' : 'flex-start'}
       direction={self ? 'row-reverse' : 'row'}
@@ -69,15 +70,25 @@ export function Remark({
       </Avatar>
 
       <Paper sx={{ maxWidth: '70%', p: 1 }} variant="outlined">
-        <Stack direction="row" alignItems="center" spacing={1} justifyContent="space-between">
-          <Typography variant="subtitle2" color={self ? 'primary' : 'secondary'}>
-            {author.last_name} {author.first_name}
-          </Typography>
+        <Stack
+          spacing={1}
+          alignItems="center"
+          justifyContent="space-between"
+          direction={self ? 'row-reverse' : 'row'}
+        >
+          <Stack alignItems={self ? 'flex-end' : 'flex-start'}>
+            <RemarkStatus status={remark.status} />
+            <Typography variant="subtitle2" color={self ? 'primary' : 'secondary'}>
+              {author.last_name} {author.first_name}
+            </Typography>
+          </Stack>
+
           {canActions && (
             <IconButton size="small" onClick={menu.onOpen}>
               <MoreVertIcon fontSize="inherit" />
             </IconButton>
           )}
+
           <Menu open={menu.open} anchorEl={menu.anchor} onClose={menu.onClose}>
             {canResolve && (
               <MenuItem onClick={actionWithClose(onResolve)}>
@@ -105,7 +116,7 @@ export function Remark({
         </Typography>
       </Paper>
 
-      <Typography variant="caption" color={grey['500']} sx={{ mt: 'auto' }}>
+      <Typography variant="caption" color={grey['500']} sx={{ mt: 'auto', fontSize: 12 }}>
         {fTime(date)}
       </Typography>
     </Stack>
