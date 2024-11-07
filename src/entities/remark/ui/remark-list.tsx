@@ -17,9 +17,13 @@ import { Remark, RemarkAlign } from './remark';
 interface Props {
   remarks: Array<TaskMessage> | undefined;
   alignRender?(remark: TaskMessage): RemarkAlign;
+  permissions?: {
+    canRemove?: boolean | ((remark: TaskMessage) => boolean);
+    canResolve?: boolean | ((remark: TaskMessage) => boolean);
+  };
 }
 
-export function RemarkList({ remarks, alignRender }: Props) {
+export function RemarkList({ remarks, alignRender, permissions }: Props) {
   const hasRemarks = remarks && remarks.length !== 0;
 
   if (!hasRemarks) {
@@ -52,11 +56,27 @@ export function RemarkList({ remarks, alignRender }: Props) {
               </Typography>
             </ListSubheader>
 
-            {children.map((remark) => (
-              <ListItem key={remark.id} sx={{ px: 0 }}>
-                <Remark remark={remark} align={alignRender?.(remark)} />
-              </ListItem>
-            ))}
+            {children.map((remark) => {
+              const canResolve =
+                typeof permissions?.canResolve === 'function'
+                  ? permissions.canResolve(remark)
+                  : permissions?.canResolve;
+
+              const canRemove =
+                typeof permissions?.canRemove === 'function'
+                  ? permissions.canRemove(remark)
+                  : permissions?.canRemove;
+
+              return (
+                <ListItem key={remark.id} sx={{ px: 0 }}>
+                  <Remark
+                    remark={remark}
+                    align={alignRender?.(remark)}
+                    permissions={{ canResolve, canRemove }}
+                  />
+                </ListItem>
+              );
+            })}
           </List>
         </ListItem>
       ))}

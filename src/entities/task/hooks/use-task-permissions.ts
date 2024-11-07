@@ -9,14 +9,14 @@ export function useTaskPermissions(task: Task | undefined): TaskPermissions {
   const { user } = useAuthContext();
 
   const currentHistoryStep = task?.task_history.at(0);
-  const firstHistoryStep = task?.task_history.at(-1);
 
   const isInGroups = !!user?.groups
     .map(({ id }) => !!currentHistoryStep?.current_stage.group.includes(id))
     .some(Boolean);
 
+  const isUserCreator = task?.created_by.id === user?.id;
+
   const isNotStepExecutor = !currentHistoryStep?.executor?.id;
-  const isUserCreator = firstHistoryStep?.executor?.id === user?.id;
   const isUserStepExecutor = currentHistoryStep?.executor?.id === user?.id;
 
   const isCanceled = currentHistoryStep?.task_status === TaskStatus.Canceled;
@@ -29,17 +29,19 @@ export function useTaskPermissions(task: Task | undefined): TaskPermissions {
   const canAccept = isNotStepExecutor && isInGroups && isAvailable;
 
   const canAddRemark = !isUserCreator && isAccess;
+  const canResolveRemark = isUserCreator && isAvailable;
 
   return useMemo(
     () => ({
       canAccept,
       canCancel,
       canAddRemark,
+      canResolveRemark,
       canAttach: isAccess,
       canReject: isAccess,
       canApprove: isAccess,
       canAddAttachments: isAccess,
     }),
-    [canAccept, canCancel, isAccess, canAddRemark]
+    [canAccept, canCancel, isAccess, canAddRemark, canResolveRemark]
   );
 }

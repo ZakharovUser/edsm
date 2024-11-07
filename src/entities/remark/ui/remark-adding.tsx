@@ -54,7 +54,7 @@ export function RemarkAdding({ onSave }: Props) {
                 pt: 2,
               }}
             >
-              <Field.Text multiline fullWidth name="remark" label="Замечание" rows={6} />
+              <Field.Text required multiline fullWidth name="remark" label="Замечание" rows={6} />
             </Box>
           </DialogContent>
           <DialogActions>

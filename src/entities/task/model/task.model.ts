@@ -84,7 +84,7 @@ interface TaskBase {
 
 export interface Task extends TaskBase {
   route: TaskRoute;
-  created_by: string;
+  created_by: UserModel;
   task_number: number;
   creation_date: string;
   org_name: InstituteModel;
@@ -106,5 +106,6 @@ export interface TaskPermissions {
   canAttach: boolean;
   canApprove: boolean;
   canAddRemark: boolean;
+  canResolveRemark: boolean;
   canAddAttachments: boolean;
 }

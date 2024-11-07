@@ -1,9 +1,17 @@
 import { grey } from 'theme/palette';
+import { useState, MouseEvent, useCallback } from 'react';
 
+import { Menu } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import Paper from '@mui/material/Paper';
 import Avatar from '@mui/material/Avatar';
+import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 
 import { fTime } from 'utils/format-time';
 
@@ -16,18 +24,47 @@ export type RemarkAlign = 'start' | 'end';
 export interface RemarkProps {
   remark: TaskMessage;
   align?: RemarkAlign;
+  permissions?: {
+    canResolve?: boolean;
+    canRemove?: boolean;
+  };
 }
 
-export function Remark({ remark, align = 'start' }: RemarkProps) {
+function useMenu() {
+  const [anchor, setAnchor] = useState<null | HTMLElement>(null);
+
+  const onOpen = useCallback(
+    ({ currentTarget }: MouseEvent<HTMLElement>) => setAnchor(currentTarget),
+    []
+  );
+
+  const onClose = useCallback(() => setAnchor(null), []);
+
+  const open = Boolean(anchor);
+
+  return {
+    open,
+    anchor,
+    onOpen,
+    onClose,
+    setAnchor,
+  };
+}
+
+export function Remark({ remark, align = 'start', permissions }: RemarkProps) {
+  const menu = useMenu();
+
   const self = align === 'end';
 
   const { message_by: author, message_date: date, message_text: text } = remark;
+
+  const canActions = permissions?.canRemove || permissions?.canResolve;
 
   return (
     <Stack
       spacing={1}
       alignItems="flex-end"
-      alignSelf={self ? 'flex-ens' : 'flex-start'}
+      alignSelf={self ? 'flex-end' : 'flex-start'}
       direction={self ? 'row-reverse' : 'row'}
       sx={{ width: 1 }}
     >
@@ -37,16 +74,43 @@ export function Remark({ remark, align = 'start' }: RemarkProps) {
       </Avatar>
 
       <Paper sx={{ maxWidth: '70%', p: 1 }} variant="outlined">
-        <Typography variant="subtitle2" color={self ? 'primary' : 'secondary'}>
-          {author.last_name} {author.first_name}
-        </Typography>
+        <Stack direction="row" alignItems="center" spacing={1} justifyContent="space-between">
+          <Typography variant="subtitle2" color={self ? 'primary' : 'secondary'}>
+            {author.last_name} {author.first_name}
+          </Typography>
+          {canActions && (
+            <IconButton size="small" onClick={menu.onOpen}>
+              <MoreVertIcon fontSize="inherit" />
+            </IconButton>
+          )}
+          <Menu open={menu.open} anchorEl={menu.anchor} onClose={menu.onClose}>
+            {permissions?.canResolve && (
+              <MenuItem>
+                <ThumbUpAltIcon sx={{ mr: 1, width: 16, height: 16 }} />
+                Принять
+              </MenuItem>
+            )}
+            {permissions?.canResolve && (
+              <MenuItem>
+                <ThumbDownAltIcon sx={{ mr: 1, width: 16, height: 16 }} />
+                Отклонить
+              </MenuItem>
+            )}
+            {permissions?.canRemove && (
+              <MenuItem sx={{ color: 'error.main' }}>
+                <DeleteIcon sx={{ mr: 1, width: 16, height: 16 }} />
+                Удалить
+              </MenuItem>
+            )}
+          </Menu>
+        </Stack>
 
         <Typography variant="body2" sx={{ mt: 1 }}>
           {text}
         </Typography>
       </Paper>
 
-      <Typography variant="caption" color={grey['500']}>
+      <Typography variant="caption" color={grey['500']} sx={{ mt: 'auto' }}>
         {fTime(date)}
       </Typography>
     </Stack>

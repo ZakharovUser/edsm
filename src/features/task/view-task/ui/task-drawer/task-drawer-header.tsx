@@ -29,7 +29,14 @@ interface Props extends StackProps {
   concatAttachments(attachments: AttachmentModel[]): AttachmentModel[];
 }
 
-export function TaskDrawerHeader({ sx, taskId, onClose, concatAttachments, ...props }: Props) {
+export function TaskDrawerHeader({
+  sx,
+  taskId,
+  permissions,
+  onClose,
+  concatAttachments,
+  ...props
+}: Props) {
   const theme = useTheme();
 
   const view = useViewContext();
@@ -68,9 +75,11 @@ export function TaskDrawerHeader({ sx, taskId, onClose, concatAttachments, ...pr
 
         <Typography variant="subtitle1">{view.value}</Typography>
 
-        {view.isAttachments && <AttachmentUpload.Modal onSave={onSaveAttachments} />}
+        {view.isAttachments && permissions.canAddAttachments && (
+          <AttachmentUpload.Modal onSave={onSaveAttachments} />
+        )}
 
-        {view.isComments && <RemarkAdding onSave={onSaveRemark} />}
+        {view.isComments && permissions.canAddRemark && <RemarkAdding onSave={onSaveRemark} />}
       </Stack>
 
       <ToggleButtonGroup
