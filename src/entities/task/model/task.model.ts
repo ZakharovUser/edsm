@@ -70,6 +70,7 @@ export interface TaskMessage {
   message_text: string;
   message_date: string;
   message_by: UserModel;
+  status: 'approved' | 'rejected' | null;
 }
 
 interface TaskBase {

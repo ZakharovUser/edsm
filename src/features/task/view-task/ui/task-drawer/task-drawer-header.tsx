@@ -15,10 +15,11 @@ import { View } from 'features/task/view-task/models';
 import { useViewContext } from 'features/task/view-task/hooks';
 
 import { RemarkAdding } from 'entities/remark/ui';
+import { useUpdateTask } from 'entities/task/api';
 import { AttachmentUpload } from 'entities/attachments/ui';
+import { useRemarkCreateQuery } from 'entities/remark/api';
 import { Task, TaskPermissions } from 'entities/task/model';
 import { AttachmentModel } from 'entities/attachments/model';
-import { useUpdateTask, useCreateTaskRemark } from 'entities/task/api';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -43,7 +44,7 @@ export function TaskDrawerHeader({
 
   const updateTask = useUpdateTask();
 
-  const createRemark = useCreateTaskRemark();
+  const createRemark = useRemarkCreateQuery();
 
   const onSaveAttachments = (data: Pick<Task, 'documents'>, onSuccess?: VoidFunction) => {
     if (taskId) {
@@ -56,7 +57,7 @@ export function TaskDrawerHeader({
 
   const onSaveRemark = ({ remark }: { remark: string }, onSuccess?: VoidFunction) => {
     if (taskId) {
-      createRemark.mutate({ taskId, remark }, { onSuccess: () => onSuccess?.() });
+      createRemark.mutate({ task: taskId, remark }, { onSuccess: () => onSuccess?.() });
     }
   };
 

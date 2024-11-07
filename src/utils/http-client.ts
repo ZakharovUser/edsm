@@ -1,5 +1,6 @@
+import urlcat from 'urlcat';
 import { HOST_API } from 'config-global';
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError } from 'axios';
 
 // ----------------------------------------------------------------------
 
@@ -31,16 +32,6 @@ httpClient.interceptors.response.use(
 
 // ----------------------------------------------------------------------
 
-export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
-  const [url, config] = Array.isArray(args) ? args : [args];
-
-  const res = await axiosInstance.get(url, { ...config });
-
-  return res.data;
-};
-
-// ----------------------------------------------------------------------
-
 export const root = {
   api: '/api/edm',
 };
@@ -62,7 +53,13 @@ export const endpoints = {
     new: `${root.api}/attachments/`,
   },
   task: {
-    item: (id: number | string) => `${root.api}/task/${id}/`,
+    item: (id: number | string) => urlcat(root.api, '/task/:id', { id }),
     extendDeadline: (id: number | string) => `${root.api}/task/${id}/request_extension/ `,
+  },
+  remark: {
+    create: '/task/:task/add_message/',
+    delete: '/task/:task/delete_message/',
+    reject: '/task/:task/reject_message/',
+    approve: '/task/:task/approve_message/',
   },
 };

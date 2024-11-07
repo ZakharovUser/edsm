@@ -6,5 +6,4 @@ export * from './approve-task';
 export * from './create-task.api';
 export * from './get-task-item.api';
 export * from './get-task-routes.api';
-export * from './create-task-remark.api';
 export * from './task-deadline-extend.api';

@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { grey } from 'theme/palette';
 import { useMenu } from 'hooks/use-menu';
 
@@ -24,16 +25,35 @@ export interface RemarkProps {
   align?: 'start' | 'end';
   canResolve?: boolean;
   canRemove?: boolean;
+  onReject?: VoidFunction;
+  onDelete?: VoidFunction;
+  onResolve?: VoidFunction;
 }
 
-export function Remark({ remark, align = 'start', canRemove, canResolve }: RemarkProps) {
+export function Remark({
+  remark,
+  align = 'start',
+  canRemove,
+  canResolve,
+  onDelete,
+  onReject,
+  onResolve,
+}: RemarkProps) {
   const menu = useMenu();
+
+  const actionWithClose = useCallback(
+    (action?: VoidFunction) => () => {
+      menu.onClose();
+      action?.();
+    },
+    [menu]
+  );
 
   const self = align === 'end';
 
   const { message_by: author, message_date: date, message_text: text } = remark;
 
-  const canActions = canRemove || canResolve;
+  const canActions = !remark.status && (canRemove || canResolve);
 
   return (
     <Stack
@@ -60,19 +80,19 @@ export function Remark({ remark, align = 'start', canRemove, canResolve }: Remar
           )}
           <Menu open={menu.open} anchorEl={menu.anchor} onClose={menu.onClose}>
             {canResolve && (
-              <MenuItem>
+              <MenuItem onClick={actionWithClose(onResolve)}>
                 <ThumbUpAltIcon sx={{ mr: 1, width: 16, height: 16 }} />
                 Принять
               </MenuItem>
             )}
             {canResolve && (
-              <MenuItem>
+              <MenuItem onClick={actionWithClose(onReject)}>
                 <ThumbDownAltIcon sx={{ mr: 1, width: 16, height: 16 }} />
                 Отклонить
               </MenuItem>
             )}
             {canRemove && (
-              <MenuItem sx={{ color: 'error.main' }}>
+              <MenuItem sx={{ color: 'error.main' }} onClick={actionWithClose(onDelete)}>
                 <DeleteIcon sx={{ mr: 1, width: 16, height: 16 }} />
                 Удалить
               </MenuItem>
