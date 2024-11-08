@@ -70,12 +70,7 @@ export function Remark({
       </Avatar>
 
       <Paper sx={{ maxWidth: '70%', p: 1 }} variant="outlined">
-        <Stack
-          spacing={1}
-          alignItems="center"
-          justifyContent="space-between"
-          direction={self ? 'row-reverse' : 'row'}
-        >
+        <Stack spacing={1} alignItems="center" justifyContent="space-between" direction="row">
           <Stack alignItems={self ? 'flex-end' : 'flex-start'}>
             <RemarkStatus status={remark.status} />
             <Typography variant="subtitle2" color={self ? 'primary' : 'secondary'}>
