@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
-import { CreateTaskModal } from 'features/task/create-task/ui/create-task-modal/create-task-modal';
-import { CreateTaskButton } from 'features/task/create-task/ui/create-task-button/create-task-button';
+import { CreateTaskModal } from './create-task-modal';
+import { CreateTaskButton } from './create-task-button';
+
+// -----------------------------------------------------------------------------------------------------------------
 
 export function CreateTask() {
   const [open, setOpen] = useState(false);

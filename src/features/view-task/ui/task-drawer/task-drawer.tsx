@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 import Drawer, { DrawerProps } from '@mui/material/Drawer';
 
-import { ViewProvider } from 'features/task/view-task/context';
+import { ViewProvider } from 'features/view-task/context';
 
 import { useTask, useTaskPermissions } from 'entities/task/hooks';
 

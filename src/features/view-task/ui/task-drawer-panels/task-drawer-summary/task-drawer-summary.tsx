@@ -19,8 +19,8 @@ import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
 import { taskStatusMap } from 'entities/task/helpers';
+import { TaskDeadlineExtend } from 'entities/task/ui';
 import { useTaskDeadlineExtend } from 'entities/task/api';
-import { TaskDeadlineExtend } from 'entities/task/ui/task-deadline-extend/task-deadline-extend';
 import { Task, TaskReason, TaskImportance, TaskDeadlineExtendValues } from 'entities/task/model';
 
 import { TaskDrawerSummaryRow } from './task-drawer-summary-row';

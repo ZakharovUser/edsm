@@ -11,8 +11,8 @@ import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 import AnnouncementOutlinedIcon from '@mui/icons-material/AnnouncementOutlined';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
-import { View } from 'features/task/view-task/models';
-import { useViewContext } from 'features/task/view-task/hooks';
+import { View } from 'features/view-task/models';
+import { useViewContext } from 'features/view-task/hooks';
 
 import { RemarkAdding } from 'entities/remark/ui';
 import { useUpdateTask } from 'entities/task/api';

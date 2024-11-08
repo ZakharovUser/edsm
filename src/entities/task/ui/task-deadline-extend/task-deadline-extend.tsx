@@ -7,7 +7,7 @@ import { TaskDeadlineExtendForm, TaskDeadlineExtendFormProps } from './task-dead
 
 // -----------------------------------------------------------------------------------------------------------------
 
-type TaskDeadlineExtendProps = Omit<TaskDeadlineExtendFormProps, 'open' | 'onClose'> & {
+export type TaskDeadlineExtendProps = Omit<TaskDeadlineExtendFormProps, 'open' | 'onClose'> & {
   onReset: Callback;
 };
 

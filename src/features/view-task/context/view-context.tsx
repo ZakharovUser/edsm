@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import { View } from 'features/task/view-task/models';
+import { View } from 'features/view-task/models';
 
 export type ViewContextType = {
   value: View;

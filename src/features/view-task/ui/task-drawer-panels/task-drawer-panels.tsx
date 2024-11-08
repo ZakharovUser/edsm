@@ -3,7 +3,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import { Theme, SxProps } from '@mui/material/styles';
 
-import { useViewContext } from 'features/task/view-task/hooks';
+import { useViewContext } from 'features/view-task/hooks';
 
 import { Task } from 'entities/task/model';
 
