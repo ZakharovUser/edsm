@@ -26,11 +26,13 @@ export function TaskDrawerPanel({
   emptyIcon,
 }: TaskDrawerPanelProps) {
   if (loading) {
-    <Box hidden={hidden}>
-      <Box sx={{ mx: 'auto', width: 'max-content', p: 3 }}>
-        <CircularProgress />
+    return (
+      <Box hidden={hidden}>
+        <Box sx={{ mx: 'auto', width: 'max-content', p: 3 }}>
+          <CircularProgress />
+        </Box>
       </Box>
-    </Box>;
+    );
   }
 
   if (!children || empty) {
