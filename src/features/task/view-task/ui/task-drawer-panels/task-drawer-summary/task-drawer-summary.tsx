@@ -1,6 +1,7 @@
 import Label from 'components/label';
 
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Skeleton from '@mui/material/Skeleton';
 import Typography from '@mui/material/Typography';
 import StreamIcon from '@mui/icons-material/Stream';
@@ -18,9 +19,10 @@ import { fDate } from 'utils/format-time';
 import { formatUserName } from 'utils/format-user-name';
 
 import { taskStatusMap } from 'entities/task/helpers';
-import { Task, TaskReason, TaskImportance } from 'entities/task/model';
+import { useTaskDeadlineExtend } from 'entities/task/api';
+import { TaskDeadlineExtend } from 'entities/task/ui/task-deadline-extend/task-deadline-extend';
+import { Task, TaskReason, TaskImportance, TaskDeadlineExtendValues } from 'entities/task/model';
 
-import { TaskDueDateExtend } from './task-due-date-extend';
 import { TaskDrawerSummaryRow } from './task-drawer-summary-row';
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -32,6 +34,12 @@ interface Props {
 }
 
 export function TaskDrawerSummary({ loading, task, hidden }: Props) {
+  const deadlineExtend = useTaskDeadlineExtend();
+
+  const onSubmit = async (values: TaskDeadlineExtendValues) => {
+    await deadlineExtend.mutateAsync({ taskId: task?.task_number, values });
+  };
+
   const currentHistoryStep = task?.task_history.at(0);
 
   const taskStatus = currentHistoryStep && taskStatusMap[currentHistoryStep.task_status];
@@ -93,7 +101,18 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
       </TaskDrawerSummaryRow>
 
       <TaskDrawerSummaryRow label="Дата выполнения" loading={loading} icon={<CalendarMonthIcon />}>
-        <TaskDueDateExtend date={task?.deadline_date} taskId={task?.task_number} />
+        {task?.deadline_date && (
+          <Stack spacing={0.5} direction="row" alignItems="center">
+            <Typography fontSize="inherit">{fDate(task.deadline_date)}</Typography>
+            <TaskDeadlineExtend
+              value={task.deadline_date}
+              error={deadlineExtend.error}
+              loading={deadlineExtend.isPending}
+              onSubmit={onSubmit}
+              onReset={deadlineExtend.reset}
+            />
+          </Stack>
+        )}
       </TaskDrawerSummaryRow>
     </Box>
   );
