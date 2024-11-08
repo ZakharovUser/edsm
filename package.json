@@ -57,7 +57,8 @@
     "stylis": "^4.3.0",
     "stylis-plugin-rtl": "^2.1.1",
     "urlcat": "^3.1.0",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.35.6",
