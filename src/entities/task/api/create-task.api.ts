@@ -1,5 +1,29 @@
-import { httpClient } from 'utils/http-client';
+import { UploadFile } from 'antd';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export async function createTask(values: unknown) {
+import { InstituteModel } from 'entities/institute/model';
+import { TaskBase, TaskRoute } from 'entities/task/model';
+import { UploadAttachmentModel } from 'entities/attachments/model';
+
+import httpClient from 'shared/api/http-client';
+
+// -----------------------------------------------------------------------------------------------------------------
+
+export interface CreateTaskRequest extends TaskBase {
+  route: TaskRoute['id'];
+  org_name: InstituteModel['id'];
+  documents: UploadFile<UploadAttachmentModel>[];
+}
+
+export async function createTask(values: CreateTaskRequest) {
   return httpClient.post('/api/edm/task/', values);
+}
+
+export function useCreateTaskQuery() {
+  const client = useQueryClient();
+
+  return useMutation({
+    mutationFn: createTask,
+    onSuccess: () => client.invalidateQueries({ queryKey: ['outbox'] }),
+  });
 }

@@ -1,8 +1,6 @@
-import { UploadFile } from 'antd';
-
 import { InstituteModel } from 'entities/institute/model';
 import { UserModel } from 'entities/user/models/group.model';
-import { AttachmentModel, UploadAttachmentModel } from 'entities/attachments/model';
+import { AttachmentModel } from 'entities/attachments/model';
 
 export interface TaskRoute {
   id: number;
@@ -73,7 +71,7 @@ export interface TaskMessage {
   status: 'approved' | 'rejected' | null;
 }
 
-interface TaskBase {
+export interface TaskBase {
   full_name: string;
   short_name: string;
   deadline_date: string | null;
@@ -92,12 +90,6 @@ export interface Task extends TaskBase {
   messages: Array<TaskMessage>;
   documents: Array<AttachmentModel>;
   task_history: Array<TaskHistoryStep>;
-}
-
-export interface TaskRequest extends TaskBase {
-  route: TaskRoute['id'];
-  org_name: InstituteModel['id'];
-  documents: UploadFile<UploadAttachmentModel>[];
 }
 
 export interface TaskPermissions {

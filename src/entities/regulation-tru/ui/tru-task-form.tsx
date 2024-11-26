@@ -9,8 +9,9 @@ import { AlertTitle } from '@mui/material';
 
 import { endpoints } from 'utils/http-client';
 
+import { CreateTaskRequest } from 'entities/task/api';
 import { getValueFromEvent } from 'entities/attachments/helpers';
-import { TaskReason, TaskRequest, TaskImportance } from 'entities/task/model';
+import { TaskReason, TaskImportance } from 'entities/task/model';
 
 import { Select } from 'shared/select';
 
@@ -26,7 +27,7 @@ interface Props {
   route: string;
   error?: Error | null;
   getFormId(id: string): void;
-  onSubmit(values: Partial<TaskRequest>, onSuccess?: VoidFunction): unknown;
+  onSubmit(values: CreateTaskRequest): Promise<void>;
 }
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -47,12 +48,10 @@ const importance_cause_options: Options<keyof typeof TaskReason> = [
   { label: 'Позднее доведение лимитов', value: 'lost_time' },
 ];
 
-type FormValues = Partial<
-  Omit<TaskRequest, 'deadline_date' | 'notified_user_and_group'> & {
-    deadline: Dayjs;
-    notify: string[];
-  }
->;
+type FormValues = Omit<CreateTaskRequest, 'deadline_date' | 'notified_user_and_group'> & {
+  deadline: Dayjs;
+  notify: string[];
+};
 
 const config: Record<
   keyof FormValues,
@@ -126,14 +125,11 @@ export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
   const submit = () => {
     const { notify, deadline, ...values } = form.getFieldsValue();
 
-    onSubmit(
-      {
-        ...values,
-        deadline_date: deadline?.format('YYYY-MM-DD'),
-        notified_user_and_group: notify && formatNotifiers(notify),
-      },
-      form.resetFields
-    );
+    onSubmit({
+      ...values,
+      deadline_date: deadline?.format('YYYY-MM-DD'),
+      notified_user_and_group: notify && formatNotifiers(notify),
+    }).then(() => form.resetFields());
   };
 
   const importanceValue = Form.useWatch('importance', form);

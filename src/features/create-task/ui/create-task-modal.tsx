@@ -7,8 +7,9 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import { DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
+import { useCreateTaskQuery } from 'entities/task/api';
 import { TruTaskForm } from 'entities/regulation-tru/ui';
-import { useTaskMutation, useTaskRoutesQuery } from 'entities/task/hooks';
+import { useTaskRoutesQuery } from 'entities/task/hooks';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -19,30 +20,23 @@ interface Props {
 
 export function CreateTaskModal({ open, onClose }: Props) {
   const { palette } = useTheme();
-  const ref = useRef<HTMLDivElement>();
 
-  const { data, isPending: isPendingRoutes, error: errorRoutes } = useTaskRoutesQuery();
-  const { mutate, isPending: isPendingMutate, error: errorMutate, reset } = useTaskMutation();
+  const ref = useRef<HTMLDivElement>();
 
   const [formId, setFormId] = useState<string | undefined>();
 
+  const { data, error: errorRoutes } = useTaskRoutesQuery();
+
+  const createTaskQuery = useCreateTaskQuery();
+
   useEffect(() => {
-    if (errorMutate || errorRoutes) {
+    if (createTaskQuery.error || errorRoutes) {
       ref.current?.scrollTo(0, 0);
     }
-  }, [errorRoutes, errorMutate, ref]);
-
-  const onSubmit = (values: unknown, onSuccess?: VoidFunction) => {
-    mutate(values, {
-      onSuccess: () => {
-        onSuccess?.();
-        onClose();
-      },
-    });
-  };
+  }, [errorRoutes, createTaskQuery.error, ref]);
 
   const handleClose = () => {
-    reset();
+    createTaskQuery.reset();
     onClose();
   };
 
@@ -54,9 +48,9 @@ export function CreateTaskModal({ open, onClose }: Props) {
       children: (
         <TruTaskForm
           route={id}
-          onSubmit={onSubmit}
+          onSubmit={(values) => createTaskQuery.mutateAsync(values).then(onClose)}
           getFormId={setFormId}
-          error={errorMutate || errorRoutes}
+          error={createTaskQuery.error || errorRoutes}
         />
       ),
     }));
@@ -80,7 +74,7 @@ export function CreateTaskModal({ open, onClose }: Props) {
           type="reset"
           form={formId}
           onClick={handleClose}
-          disabled={isPendingMutate || isPendingRoutes}
+          disabled={createTaskQuery.isPending}
         >
           Отменить
         </Button>
@@ -89,7 +83,7 @@ export function CreateTaskModal({ open, onClose }: Props) {
           form={formId}
           color="primary"
           variant="contained"
-          disabled={isPendingMutate || isPendingRoutes}
+          disabled={createTaskQuery.isPending}
         >
           Создать
         </Button>
