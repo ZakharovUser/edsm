@@ -1,6 +1,5 @@
 import { Form } from 'antd';
 import { useBoolean } from 'hooks/use-boolean';
-import UploadFiles from 'components/upload-files';
 
 import Dialog from '@mui/material/Dialog';
 import Button from '@mui/material/Button';
@@ -11,6 +10,8 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import { endpoints } from 'utils/http-client';
 
 import { getValueFromEvent } from 'entities/attachments/helpers';
+
+import UploadFiles from 'shared/ui/upload-files';
 
 import { AttachmentUploadProps } from './attachment-upload.props';
 
@@ -36,7 +37,11 @@ export function AttachmentsUploadModal({ onSave }: AttachmentUploadProps) {
         <DialogTitle>Добавление файлов</DialogTitle>
         <Form form={form} onFinish={(values) => onSave?.(values, onClose)}>
           <DialogContent>
-            <Form.Item name="documents" valuePropName="fileList" getValueFromEvent={getValueFromEvent}>
+            <Form.Item
+              name="documents"
+              valuePropName="fileList"
+              getValueFromEvent={getValueFromEvent}
+            >
               <UploadFiles action={endpoints.attachment.new} />
             </Form.Item>
           </DialogContent>

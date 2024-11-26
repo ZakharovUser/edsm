@@ -1,19 +1,15 @@
 import { Dayjs } from 'dayjs';
-import { useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useAuthContext } from 'auth/hooks';
 import { Form, Input, FormItemProps } from 'antd';
-import UploadFiles from 'components/upload-files';
-
-import Alert from '@mui/material/Alert';
-import { AlertTitle } from '@mui/material';
-
-import { endpoints } from 'utils/http-client';
 
 import { CreateTaskRequest } from 'entities/task/api';
 import { getValueFromEvent } from 'entities/attachments/helpers';
 import { TaskReason, TaskImportance } from 'entities/task/model';
 
-import { Select } from 'shared/select';
+import Select from 'shared/ui/select';
+import endpoints from 'shared/api/endpoints';
+import UploadFiles from 'shared/ui/upload-files';
 
 import { formatNotifiers } from '../helpers';
 
@@ -24,9 +20,8 @@ import { SelectFinancingSources } from './select-financing-sources';
 // -----------------------------------------------------------------------------------------------------------------
 
 interface Props {
+  name: string;
   route: string;
-  error?: Error | null;
-  getFormId(id: string): void;
   onSubmit(values: CreateTaskRequest): Promise<void>;
 }
 
@@ -99,11 +94,10 @@ const config: Record<
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
+export function CreateTaskForm({ name, onSubmit, route }: Props) {
   const { user } = useAuthContext();
-  const [form] = Form.useForm<FormValues>();
 
-  useEffect(() => getFormId(route), [getFormId, route]);
+  const [form] = Form.useForm<FormValues>();
 
   const initial = useMemo(
     () => ({
@@ -139,21 +133,15 @@ export function TruTaskForm({ getFormId, onSubmit, route, error }: Props) {
   return (
     <Form
       form={form}
-      id={route}
-      name={route}
+      id={name}
+      name={name}
       layout="vertical"
       autoComplete="off"
       initialValues={initial}
       onFinish={submit}
     >
-      {error && (
-        <Alert sx={{ mb: 1 }} severity="error">
-          <AlertTitle>Ошибка</AlertTitle>
-          {error.message}
-        </Alert>
-      )}
       <Form.Item {...config.route} hidden>
-        <Input readOnly value={route} />
+        <Input readOnly />
       </Form.Item>
       <Form.Item {...config.org_name}>
         <Select options={institutes} />

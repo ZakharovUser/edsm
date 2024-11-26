@@ -25,7 +25,7 @@ const endpoints = {
     extendDeadline: (id: number | string) => `${root.api}/task/${id}/request_extension/ `,
   },
   route: {
-    list: '/document_route/',
+    list: `${root.api}/document_route/`,
   },
   remark: {
     create: '/task/:task/add_message/',

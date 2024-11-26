@@ -3,7 +3,7 @@ import { Typography } from 'antd';
 import { useFinancingSources } from 'entities/financing-source/hooks';
 import { FinancingSourceModel } from 'entities/financing-source/models';
 
-import { Select, SelectProps } from 'shared/select';
+import Select, { SelectProps } from 'shared/ui/select';
 
 // -----------------------------------------------------------------------------------------------------------------
 
