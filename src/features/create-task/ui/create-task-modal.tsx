@@ -25,15 +25,15 @@ export function CreateTaskModal({ open, onClose }: Props) {
 
   const [formId, setFormId] = useState<string | undefined>();
 
-  const { data, error: errorRoutes } = useTaskRoutesQuery();
+  const { data: routes } = useTaskRoutesQuery();
 
   const createTaskQuery = useCreateTaskQuery();
 
   useEffect(() => {
-    if (createTaskQuery.error || errorRoutes) {
+    if (createTaskQuery.error) {
       ref.current?.scrollTo(0, 0);
     }
-  }, [errorRoutes, createTaskQuery.error, ref]);
+  }, [createTaskQuery.error, ref]);
 
   const handleClose = () => {
     createTaskQuery.reset();
@@ -41,16 +41,16 @@ export function CreateTaskModal({ open, onClose }: Props) {
   };
 
   const tabs: TabsProps['items'] =
-    data &&
-    Object.entries(data).map(([id, name]) => ({
+    routes &&
+    Object.entries(routes).map(([id, name]) => ({
       key: id,
       label: name,
       children: (
         <TruTaskForm
           route={id}
-          onSubmit={(values) => createTaskQuery.mutateAsync(values).then(onClose)}
+          onSubmit={(values) => createTaskQuery.mutateAsync(values).then(handleClose)}
           getFormId={setFormId}
-          error={createTaskQuery.error || errorRoutes}
+          error={createTaskQuery.error}
         />
       ),
     }));
