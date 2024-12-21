@@ -8,9 +8,10 @@ import { useViewContext } from 'features/view-task/hooks';
 import { Task } from 'entities/task/model';
 
 import { TaskDrawerHistory } from './task-drawer-history';
+import { TaskDrawerSummary } from './task-drawer-summary';
 import { TaskDrawerComments } from './task-drawer-comments';
+import { TaskDrawerRequests } from './task-drawer-requests';
 import { TaskDrawerAttachments } from './task-drawer-attachments';
-import { TaskDrawerSummary } from './task-drawer-summary/task-drawer-summary';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -24,10 +25,11 @@ export function TaskDrawerPanels({ task, loading, sx }: Props) {
   const view = useViewContext();
 
   return (
-    <Box sx={{ overflow: 'auto', py: 1, px: 2, ...sx }}>
+    <Box sx={{ overflow: 'auto', py: 2.5, px: 1.5, ...sx }}>
       <TaskDrawerSummary task={task} loading={loading} hidden={!view.isSummary} />
       <TaskDrawerHistory history={task?.task_history} hidden={!view.isHistory} />
       <TaskDrawerComments task={task} loading={loading} hidden={!view.isComments} />
+      <TaskDrawerRequests task={task} loading={loading} hidden={!view.isRequests} />
       <TaskDrawerAttachments task={task} loading={loading} hidden={!view.isAttachments} />
     </Box>
   );

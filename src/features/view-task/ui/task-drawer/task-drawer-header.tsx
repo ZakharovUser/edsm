@@ -1,4 +1,5 @@
 import React from 'react';
+import { IconGitPullRequest } from '@tabler/icons-react';
 
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
@@ -14,11 +15,11 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import { View } from 'features/view-task/models';
 import { useViewContext } from 'features/view-task/hooks';
 
+import { Task } from 'entities/task/model';
 import { RemarkAdding } from 'entities/remark/ui';
 import { useUpdateTask } from 'entities/task/api';
 import { AttachmentUpload } from 'entities/attachments/ui';
 import { useRemarkCreateQuery } from 'entities/remark/api';
-import { Task, TaskPermissions } from 'entities/task/model';
 import { AttachmentModel } from 'entities/attachments/model';
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -26,7 +27,10 @@ import { AttachmentModel } from 'entities/attachments/model';
 interface Props extends StackProps {
   taskId: string | null;
   onClose: VoidFunction;
-  permissions: TaskPermissions;
+  permissions: {
+    canAddRemark: boolean;
+    canAddAttachments: boolean;
+  };
   concatAttachments(attachments: AttachmentModel[]): AttachmentModel[];
 }
 
@@ -98,6 +102,9 @@ export function TaskDrawerHeader({
         </ToggleButton>
         <ToggleButton value={View.Comments} sx={{ p: 0.5 }}>
           <AnnouncementOutlinedIcon fontSize="small" />
+        </ToggleButton>
+        <ToggleButton value={View.Requests} sx={{ p: 0.5 }}>
+          <IconGitPullRequest width={20} height={20} />
         </ToggleButton>
         <ToggleButton value={View.Attachments} sx={{ p: 0.5 }}>
           <AttachFileOutlinedIcon fontSize="small" />

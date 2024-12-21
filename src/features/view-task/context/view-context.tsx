@@ -6,6 +6,7 @@ export type ViewContextType = {
   value: View;
   isSummary: boolean;
   isHistory: boolean;
+  isRequests: boolean;
   isComments: boolean;
   isAttachments: boolean;
   onChange(view: View | null): void;

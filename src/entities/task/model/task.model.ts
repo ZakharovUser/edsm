@@ -71,10 +71,20 @@ export interface TaskMessage {
   status: 'approved' | 'rejected' | null;
 }
 
+export interface TaskRequest {
+  id: number;
+  reason: string;
+  created_at: string;
+  updated_at: string;
+  new_deadline: string;
+  requested_by: UserModel;
+  status: 'approved' | 'pending' | 'rejected';
+}
+
 export interface TaskBase {
   full_name: string;
   short_name: string;
-  deadline_date: string | null;
+  deadline_date: string;
   finance_source: FinancingSource;
   reason: keyof typeof TaskReason;
   importance: keyof typeof TaskImportance;
@@ -90,15 +100,5 @@ export interface Task extends TaskBase {
   messages: Array<TaskMessage>;
   documents: Array<AttachmentModel>;
   task_history: Array<TaskHistoryStep>;
-}
-
-export interface TaskPermissions {
-  canReject: boolean;
-  canAccept: boolean;
-  canCancel: boolean;
-  canAttach: boolean;
-  canApprove: boolean;
-  canAddRemark: boolean;
-  canResolveRemark: boolean;
-  canAddAttachments: boolean;
+  extension_requests: Array<TaskRequest>;
 }

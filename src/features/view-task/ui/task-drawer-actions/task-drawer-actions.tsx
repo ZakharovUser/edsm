@@ -3,8 +3,6 @@ import React from 'react';
 import Stack from '@mui/material/Stack';
 import { Theme, SxProps } from '@mui/material/styles';
 
-import { TaskPermissions } from 'entities/task/model';
-
 import { TaskAcceptButton } from './task-accept-button';
 import { TaskRejectButton } from './task-reject-button';
 import { TaskCancelButton } from './task-cancel-button';
@@ -14,7 +12,12 @@ import { TaskApproveButton } from './task-approve-button';
 
 interface Props {
   taskId: string | null;
-  permissions: TaskPermissions;
+  permissions: {
+    canAccept: boolean;
+    canCancel: boolean;
+    canReject: boolean;
+    canApprove: boolean;
+  };
   sx?: SxProps<Theme>;
 }
 

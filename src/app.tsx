@@ -16,6 +16,7 @@ import { SettingsDrawer, SettingsProvider } from 'components/settings';
 
 import { AuthProvider } from 'auth/context/session';
 import { WebsocketProvider } from 'socket/context';
+import { Snackbar } from 'shared/ui/snackbar';
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,7 @@ export default function App() {
             <ThemeProviderMui>
               <ThemeProviderAntd>
                 <MotionLazy>
+                  <Snackbar />
                   <SettingsDrawer />
                   <ProgressBar />
                   <Router />

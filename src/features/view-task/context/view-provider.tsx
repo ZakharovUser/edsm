@@ -24,6 +24,7 @@ export function ViewProvider({ children }: ViewProviderProps) {
       isSummary: view === View.Summary,
       isHistory: view === View.History,
       isComments: view === View.Comments,
+      isRequests: view === View.Requests,
       isAttachments: view === View.Attachments,
     }),
     [view, onChangeView]

@@ -1,18 +1,12 @@
-import urlcat from 'urlcat';
-
 export const root = {
   api: '/api/edm',
-};
+  task: '/api/edm/task',
+} as const;
 
 const endpoints = {
   auth: {
-    me: '/api/auth/me',
-    login: '/api/auth/login',
-    register: '/api/auth/register',
-  },
-  crossAuth: {
+    me: `${root.api}/whoami/`,
     token: `${root.api}/csrf/`,
-    user: `${root.api}/whoami/`,
     login: `${root.api}/login/`,
     logout: `${root.api}/logout/`,
     session: `${root.api}/session/`,
@@ -21,18 +15,23 @@ const endpoints = {
     new: `${root.api}/attachments/`,
   },
   task: {
-    item: (id: number | string) => urlcat(root.api, '/task/:id', { id }),
-    extendDeadline: (id: number | string) => `${root.api}/task/${id}/request_extension/ `,
+    item: `${root.task}/:task/`,
+    deadline: {
+      extend: `${root.task}/:task/request_extension/`,
+      reject: `${root.task}/:task/reject_extension/`,
+      delete: `${root.task}/:task/delete_extension/`,
+      approve: `${root.task}/:task/approve_extension/`,
+    },
+    remark: {
+      create: `${root.task}/:task/add_message/`,
+      reject: `${root.task}/:task/reject_message/`,
+      delete: `${root.task}/:task/delete_message/`,
+      approve: `${root.task}/:task/approve_message/`,
+    },
   },
   route: {
     list: `${root.api}/document_route/`,
   },
-  remark: {
-    create: '/task/:task/add_message/',
-    reject: '/task/:task/reject_message/',
-    delete: '/task/:task/delete_message/',
-    approve: '/task/:task/approve_message/',
-  },
-};
+} as const;
 
 export default endpoints;

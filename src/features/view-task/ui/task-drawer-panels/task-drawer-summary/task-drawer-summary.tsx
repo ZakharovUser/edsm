@@ -20,6 +20,7 @@ import { formatUserName } from 'utils/format-user-name';
 
 import { taskStatusMap } from 'entities/task/helpers';
 import { TaskDeadlineExtend } from 'entities/task/ui';
+import { useTaskPermissions } from 'entities/task/hooks';
 import { useTaskDeadlineExtend } from 'entities/task/api';
 import { Task, TaskReason, TaskImportance, TaskDeadlineExtendValues } from 'entities/task/model';
 
@@ -34,6 +35,8 @@ interface Props {
 }
 
 export function TaskDrawerSummary({ loading, task, hidden }: Props) {
+  const { canAddRequest } = useTaskPermissions(task);
+
   const deadlineExtend = useTaskDeadlineExtend();
 
   const onSubmit = async (values: TaskDeadlineExtendValues) => {
@@ -101,7 +104,7 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
       </TaskDrawerSummaryRow>
 
       <TaskDrawerSummaryRow label="Дата выполнения" loading={loading} icon={<CalendarMonthIcon />}>
-        {task?.deadline_date && (
+        {task?.deadline_date && canAddRequest && (
           <Stack spacing={0.5} direction="row" alignItems="center">
             <Typography fontSize="inherit">{fDate(task.deadline_date)}</Typography>
             <TaskDeadlineExtend

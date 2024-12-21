@@ -1,14 +1,23 @@
+import urlcat from 'urlcat';
 import { AxiosError } from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
-import { Task } from 'entities/task/model';
-import { getTaskItem } from 'entities/task/api';
+import endpoints from 'shared/api/endpoints';
+import httpClient from 'shared/api/http-client';
+
+import { Task } from '../model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
 type Error = {
   detail: string;
 };
+
+export async function getTaskItem(id: string) {
+  const url = urlcat(endpoints.task.item, { task: id });
+
+  return httpClient.get<Task>(url).then((res) => res.data);
+}
 
 export function useTask(taskId: string | number | null) {
   return useQuery<Task, AxiosError<Error>>({

@@ -1,6 +1,7 @@
 export enum View {
-  Summary = 'Основное',
   History = 'История',
+  Summary = 'Основное',
+  Requests = 'Запросы',
   Comments = 'Замечания',
   Attachments = 'Вложения',
 }

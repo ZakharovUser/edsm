@@ -7,7 +7,8 @@ import Drawer, { DrawerProps } from '@mui/material/Drawer';
 
 import { ViewProvider } from 'features/view-task/context';
 
-import { useTask, useTaskPermissions } from 'entities/task/hooks';
+import { useTask } from 'entities/task/api';
+import { useTaskPermissions } from 'entities/task/hooks';
 
 import { TaskDrawerPanels } from '../task-drawer-panels';
 import { TaskDrawerActions } from '../task-drawer-actions';

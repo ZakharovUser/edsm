@@ -1,6 +1,8 @@
+import urlcat from 'urlcat';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { endpoints, httpClient } from 'utils/http-client';
+import endpoints from 'shared/api/endpoints';
+import httpClient from 'shared/api/http-client';
 
 import { TaskDeadlineExtendValues } from '../model';
 
@@ -16,7 +18,9 @@ export async function taskDeadlineExtend({ taskId, values }: TaskDeadlineExtendP
     throw new Error('taskId is not defined');
   }
 
-  return httpClient.post(endpoints.task.extendDeadline(taskId), values);
+  const url = urlcat(endpoints.task.deadline.extend, { task: taskId });
+
+  return httpClient.post(url, values);
 }
 
 export function useTaskDeadlineExtend() {
@@ -25,7 +29,7 @@ export function useTaskDeadlineExtend() {
   return useMutation({
     mutationFn: taskDeadlineExtend,
     onSuccess: (_meta, params) => {
-      queryClient.invalidateQueries({ queryKey: ['task', params.taskId] });
+      queryClient.invalidateQueries({ queryKey: ['task', params.taskId?.toString()] });
     },
   });
 }

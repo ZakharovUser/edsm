@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { useAuthContext } from 'auth/hooks';
 
-import { Task, TaskStatus, TaskPermissions } from 'entities/task/model';
+import { Task, TaskStatus } from 'entities/task/model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export function useTaskPermissions(task: Task | undefined): TaskPermissions {
+export function useTaskPermissions(task: Task | undefined) {
   const { user } = useAuthContext();
 
   const currentHistoryStep = task?.task_history.at(0);
@@ -31,17 +31,30 @@ export function useTaskPermissions(task: Task | undefined): TaskPermissions {
   const canAddRemark = !isUserCreator && isAccess;
   const canResolveRemark = isUserCreator && isAvailable;
 
+  const canAddRequest = !isUserCreator && isAccess;
+  const canResolveRequest = isUserCreator && isAvailable;
+
   return useMemo(
     () => ({
       canAccept,
       canCancel,
       canAddRemark,
       canResolveRemark,
+      canAddRequest,
+      canResolveRequest,
       canAttach: isAccess,
       canReject: isAccess,
       canApprove: isAccess,
       canAddAttachments: isAccess,
     }),
-    [canAccept, canCancel, isAccess, canAddRemark, canResolveRemark]
+    [
+      isAccess,
+      canAccept,
+      canCancel,
+      canAddRemark,
+      canResolveRemark,
+      canAddRequest,
+      canResolveRequest,
+    ]
   );
 }
