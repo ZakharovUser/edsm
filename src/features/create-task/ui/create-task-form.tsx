@@ -2,10 +2,12 @@ import { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
 import { useAuthContext } from 'auth/hooks';
 import { Form, Input, FormItemProps } from 'antd';
+import { UploadFile } from 'antd/es/upload/interface';
 
 import { CreateTaskRequest } from 'entities/task/api';
-import { getValueFromEvent } from 'entities/attachments/helpers';
+import { deleteAttachment } from 'entities/attachments/api';
 import { TaskReason, TaskImportance } from 'entities/task/model';
+import { UploadAttachmentModel } from 'entities/attachments/model';
 
 import Select from 'shared/ui/select';
 import endpoints from 'shared/api/endpoints';
@@ -117,10 +119,11 @@ export function CreateTaskForm({ name, onSubmit, route }: Props) {
   );
 
   const submit = () => {
-    const { notify, deadline, ...values } = form.getFieldsValue();
+    const { notify, deadline, documents, ...values } = form.getFieldsValue();
 
     onSubmit({
       ...values,
+      documents: documents.map((doc) => ({ ...doc, ...doc.response })),
       deadline_date: deadline?.format('YYYY-MM-DD'),
       notified_user_and_group: notify && formatNotifiers(notify),
     }).then(() => form.resetFields());
@@ -172,9 +175,14 @@ export function CreateTaskForm({ name, onSubmit, route }: Props) {
       <Form.Item
         {...config.documents}
         valuePropName="fileList"
-        getValueFromEvent={getValueFromEvent}
+        getValueFromEvent={(event) => event.fileList}
       >
-        <UploadFiles action={endpoints.attachment.new} />
+        <UploadFiles
+          action={endpoints.attachment.root}
+          onRemove={({ response }: UploadFile<UploadAttachmentModel>) =>
+            response?.uuid ? deleteAttachment(response.uuid) : false
+          }
+        />
       </Form.Item>
     </Form>
   );

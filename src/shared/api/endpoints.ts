@@ -12,7 +12,8 @@ const endpoints = {
     session: `${root.api}/session/`,
   },
   attachment: {
-    new: `${root.api}/attachments/`,
+    root: `${root.api}/attachments/`,
+    action: `${root.api}/attachments/:uuid`,
   },
   task: {
     item: `${root.task}/:task/`,
