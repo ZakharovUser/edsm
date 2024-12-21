@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import Label from 'components/label';
+import Label, { LabelColor } from 'components/label';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -28,6 +28,12 @@ export interface TaskDrawerRequestItemProps {
   onDelete?(request: string): void;
   onApprove?(request: string): void;
 }
+
+const mapRequestStatus: Record<TaskRequest['status'], { color: LabelColor; text: string }> = {
+  pending: { color: 'default', text: 'Ожидание' },
+  rejected: { color: 'error', text: 'Отклонен' },
+  approved: { color: 'success', text: 'Подтвержден' },
+};
 
 export function TaskDrawerRequestItem({
   request,
@@ -60,6 +66,8 @@ export function TaskDrawerRequestItem({
 
   const isViewActions = (canResolve || canDelete) && request.status === 'pending';
 
+  const label = mapRequestStatus[request.status];
+
   return (
     <ListItem sx={{ flexDirection: 'column', alignItems: 'flex-start', p: 0 }}>
       <Card sx={{ width: 1 }}>
@@ -72,7 +80,9 @@ export function TaskDrawerRequestItem({
             secondary={createdAt}
             secondaryTypographyProps={{ variant: 'caption' }}
           />
-          <Label sx={{ alignSelf: 'flex-start', ml: 'auto' }}>{request.status}</Label>
+          <Label sx={{ alignSelf: 'flex-start', ml: 'auto' }} color={label.color}>
+            {label.text}
+          </Label>
         </Stack>
 
         <Box sx={{ p: 2 }}>
