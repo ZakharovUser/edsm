@@ -65,9 +65,7 @@ export function TaskDeadlineExtendForm({
   };
 
   const submitHandler = methods.handleSubmit(async ({ message, deadline }) => {
-    onSubmit({ message, new_deadline_date: deadline.format('YYYY-MM-DD') })
-      .then(closeHandler)
-      .catch(console.error);
+    onSubmit({ message, new_deadline_date: deadline.format('YYYY-MM-DD') }).then(closeHandler);
   });
 
   return (

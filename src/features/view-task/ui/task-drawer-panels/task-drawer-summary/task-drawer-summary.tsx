@@ -1,3 +1,4 @@
+import { toast } from 'sonner';
 import Label from 'components/label';
 
 import Box from '@mui/material/Box';
@@ -24,6 +25,8 @@ import { useTaskPermissions } from 'entities/task/hooks';
 import { useTaskDeadlineExtend } from 'entities/task/api';
 import { Task, TaskReason, TaskImportance, TaskDeadlineExtendValues } from 'entities/task/model';
 
+import { HttpClientError } from 'shared/api/types';
+
 import { TaskDrawerSummaryRow } from './task-drawer-summary-row';
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -39,8 +42,14 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
 
   const deadlineExtend = useTaskDeadlineExtend();
 
-  const onSubmit = async (values: TaskDeadlineExtendValues) => {
-    await deadlineExtend.mutateAsync({ taskId: task?.task_number, values });
+  const deadlineExtendSubmit = async (values: TaskDeadlineExtendValues) => {
+    const promise = deadlineExtend.mutateAsync({ taskId: task?.task_number, values });
+
+    toast.promise(promise, {
+      loading: 'Создание запроса',
+      success: 'Запрос создан',
+      error: (error: HttpClientError) => error.response?.data.detail || 'Ошибка создания запроса',
+    });
   };
 
   const currentHistoryStep = task?.task_history.at(0);
@@ -111,7 +120,7 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
               value={task.deadline_date}
               error={deadlineExtend.error}
               loading={deadlineExtend.isPending}
-              onSubmit={onSubmit}
+              onSubmit={deadlineExtendSubmit}
               onReset={deadlineExtend.reset}
             />
           </Stack>

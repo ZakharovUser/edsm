@@ -12,6 +12,7 @@ import {
 } from 'entities/task/api';
 
 import { toast } from 'shared/ui/snackbar';
+import { HttpClientError } from 'shared/api/types';
 
 import { TaskDrawerPanel } from '../task-drawer-panel';
 
@@ -45,7 +46,7 @@ export function TaskDrawerRequests({ hidden, loading, task }: TaskDrawerRequests
         toast.promise(promise, {
           loading: 'Отправка',
           success: 'Запрос принят',
-          error: 'Ошибка',
+          error: (error: HttpClientError) => error.response?.data.detail || 'Ошибка',
         });
       }
     },
@@ -63,7 +64,7 @@ export function TaskDrawerRequests({ hidden, loading, task }: TaskDrawerRequests
         toast.promise(promise, {
           loading: 'Отправка',
           success: 'Запрос отклонен',
-          error: 'Ошибка',
+          error: (error: HttpClientError) => error.response?.data.detail || 'Ошибка',
         });
       }
     },
@@ -81,7 +82,7 @@ export function TaskDrawerRequests({ hidden, loading, task }: TaskDrawerRequests
         toast.promise(promise, {
           loading: 'Отправка',
           success: 'Запрос удален',
-          error: 'Ошибка',
+          error: (error: HttpClientError) => error.response?.data.detail || 'Ошибка',
         });
       }
     },

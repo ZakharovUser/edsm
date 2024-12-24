@@ -1,8 +1,10 @@
 import urlcat from 'urlcat';
+import { AxiosResponse } from 'axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import endpoints from 'shared/api/endpoints';
 import httpClient from 'shared/api/http-client';
+import { HttpClientError } from 'shared/api/types';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +22,7 @@ export async function taskDeadlineApprove({ taskId, requestId }: TaskDeadlineApp
 export function useTaskDeadlineApprove() {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation<AxiosResponse<any>, HttpClientError, TaskDeadlineApproveParams>({
     mutationFn: taskDeadlineApprove,
     onSuccess: (_, params) => {
       queryClient.invalidateQueries({ queryKey: ['task', params.taskId] });
