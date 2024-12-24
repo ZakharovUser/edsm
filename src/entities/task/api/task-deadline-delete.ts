@@ -12,9 +12,9 @@ export interface TaskDeadlineDeleteParams {
 }
 
 export async function taskDeadlineDelete({ taskId, requestId }: TaskDeadlineDeleteParams) {
-  const url = urlcat(endpoints.task.deadline.delete, { task: taskId });
+  const url = urlcat(endpoints.task.deadline.delete, { task: taskId, deadline: requestId });
 
-  return httpClient.post(url, { extension_request_id: requestId });
+  return httpClient.delete(url);
 }
 
 export function useTaskDeadlineDelete() {

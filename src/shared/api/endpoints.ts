@@ -20,8 +20,8 @@ const endpoints = {
     deadline: {
       extend: `${root.task}/:task/request_extension/`,
       reject: `${root.task}/:task/reject_extension/`,
-      delete: `${root.task}/:task/delete_extension/`,
       approve: `${root.task}/:task/approve_extension/`,
+      delete: `${root.task}/:task/delete_extension/:deadline`,
     },
     remark: {
       create: `${root.task}/:task/add_message/`,
