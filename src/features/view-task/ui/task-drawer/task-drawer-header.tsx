@@ -1,5 +1,5 @@
 import React from 'react';
-import { IconGitPullRequest } from '@tabler/icons-react';
+import PullRequestIcon from 'assets/icons/pull-request-icon';
 
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
@@ -104,7 +104,7 @@ export function TaskDrawerHeader({
           <AnnouncementOutlinedIcon fontSize="small" />
         </ToggleButton>
         <ToggleButton value={View.Requests} sx={{ p: 0.5 }}>
-          <IconGitPullRequest width={20} height={20} />
+          <PullRequestIcon width={20} height={20} />
         </ToggleButton>
         <ToggleButton value={View.Attachments} sx={{ p: 0.5 }}>
           <AttachFileOutlinedIcon fontSize="small" />
