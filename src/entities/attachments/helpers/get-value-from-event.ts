@@ -1,8 +1,8 @@
 import { UploadFile, UploadChangeParam } from 'antd/es/upload/interface';
 
-import { UploadAttachmentModel } from '../model';
+import { AttachmentUUID } from '../model';
 
-export function getValueFromEvent(event: UploadChangeParam<UploadFile<UploadAttachmentModel>>) {
+export function getValueFromEvent(event: UploadChangeParam<UploadFile<AttachmentUUID>>) {
   return event.fileList.map(({ response, ...file }) => ({
     ...file,
     ...response,

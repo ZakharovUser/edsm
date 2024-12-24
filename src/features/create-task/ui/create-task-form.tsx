@@ -2,12 +2,11 @@ import { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
 import { useAuthContext } from 'auth/hooks';
 import { Form, Input, FormItemProps } from 'antd';
-import { UploadFile } from 'antd/es/upload/interface';
 
 import { CreateTaskRequest } from 'entities/task/api';
 import { deleteAttachment } from 'entities/attachments/api';
 import { TaskReason, TaskImportance } from 'entities/task/model';
-import { UploadAttachmentModel } from 'entities/attachments/model';
+import { UploadedAttachmentModel } from 'entities/attachments/model';
 
 import Select from 'shared/ui/select';
 import endpoints from 'shared/api/endpoints';
@@ -179,7 +178,7 @@ export function CreateTaskForm({ name, onSubmit, route }: Props) {
       >
         <UploadFiles
           action={endpoints.attachment.root}
-          onRemove={({ response }: UploadFile<UploadAttachmentModel>) =>
+          onRemove={({ response }: UploadedAttachmentModel) =>
             response?.uuid ? deleteAttachment(response.uuid) : false
           }
         />

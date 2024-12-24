@@ -15,12 +15,12 @@ import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import { fData } from 'utils/format-number';
 import { fDateTime } from 'utils/format-time';
 
-import { AttachmentModel } from '../model';
+import { DetailedAttachmentModel } from '../model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
 type Props = {
-  data: AttachmentModel & { url: string | undefined };
+  data: DetailedAttachmentModel;
   error?: boolean;
   loading?: boolean;
   deleted?: boolean;
@@ -68,7 +68,7 @@ export function Attachment({ sx, data, error, loading, deleted, download, onDele
         }}
       />
 
-      <Typography variant="caption">{fData(data.size)}</Typography>
+      {data.size && <Typography variant="caption">{fData(data.size)}</Typography>}
 
       {download && (
         <LoadingButton

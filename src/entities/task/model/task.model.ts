@@ -1,6 +1,6 @@
 import { InstituteModel } from 'entities/institute/model';
 import { UserModel } from 'entities/user/models/group.model';
-import { AttachmentModel } from 'entities/attachments/model';
+import { UploadedAttachmentModel } from 'entities/attachments/model';
 
 export interface TaskRoute {
   id: number;
@@ -98,7 +98,7 @@ export interface Task extends TaskBase {
   creation_date: string;
   org_name: InstituteModel;
   messages: Array<TaskMessage>;
-  documents: Array<AttachmentModel>;
+  documents: Array<UploadedAttachmentModel>;
   task_history: Array<TaskHistoryStep>;
   extension_requests: Array<TaskRequest>;
 }

@@ -1,9 +1,8 @@
-import { UploadFile } from 'antd';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { InstituteModel } from 'entities/institute/model';
 import { TaskBase, TaskRoute } from 'entities/task/model';
-import { UploadAttachmentModel } from 'entities/attachments/model';
+import { UploadedAttachmentModel } from 'entities/attachments/model';
 
 import httpClient from 'shared/api/http-client';
 
@@ -11,8 +10,8 @@ import httpClient from 'shared/api/http-client';
 
 export interface CreateTaskRequest extends TaskBase {
   route: TaskRoute['id'];
+  documents: UploadedAttachmentModel[];
   org_name: InstituteModel['id'];
-  documents: UploadFile<UploadAttachmentModel>[];
 }
 
 export async function createTask(values: CreateTaskRequest) {

@@ -1,1 +1,5 @@
-export type { AttachmentModel, UploadAttachmentModel } from './attachment.type';
+export type {
+  AttachmentUUID,
+  UploadedAttachmentModel,
+  DetailedAttachmentModel,
+} from './attachment.type';

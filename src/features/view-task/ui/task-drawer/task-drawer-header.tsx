@@ -20,7 +20,7 @@ import { RemarkAdding } from 'entities/remark/ui';
 import { useUpdateTask } from 'entities/task/api';
 import { AttachmentUpload } from 'entities/attachments/ui';
 import { useRemarkCreateQuery } from 'entities/remark/api';
-import { AttachmentModel } from 'entities/attachments/model';
+import { UploadedAttachmentModel } from 'entities/attachments/model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ interface Props extends StackProps {
     canAddRemark: boolean;
     canAddAttachments: boolean;
   };
-  concatAttachments(attachments: AttachmentModel[]): AttachmentModel[];
+  concatAttachments(attachments: UploadedAttachmentModel[]): UploadedAttachmentModel[];
 }
 
 export function TaskDrawerHeader({

@@ -1,28 +1,31 @@
+import urlcat from 'urlcat';
 import { useQueries, UseQueryResult } from '@tanstack/react-query';
 
 import { httpClient } from 'utils/http-client';
 
-import { AttachmentModel } from 'entities/attachments/model';
+import { DetailedAttachmentModel, UploadedAttachmentModel } from 'entities/attachments/model';
+
+import endpoints from 'shared/api/endpoints';
 
 // -----------------------------------------------------------------------------------------------------------------;
 
 export type AttachmentResponse = {
-  data: AttachmentModel & {
-    url: string | undefined;
-  };
+  data: DetailedAttachmentModel;
   isPending: boolean;
   isError: boolean;
 };
 
 export async function getAttachmentLink(uuid: string) {
-  return httpClient.get(`/api/edm/attachments/${uuid}`).then((res) => res.data);
+  const url = urlcat(endpoints.attachment.action, { uuid });
+
+  return httpClient.get(url).then((res) => res.data);
 }
 
-export function useAttachments(attachments: AttachmentModel[] = []) {
+export function useAttachments(attachments: UploadedAttachmentModel[] = []) {
   return useQueries({
     queries: attachments.map((attachment) => ({
-      queryKey: ['attachment', attachment.uuid],
-      queryFn: () => getAttachmentLink(attachment.uuid),
+      queryKey: ['attachment', attachment.response?.uuid],
+      queryFn: () => attachment.response && getAttachmentLink(attachment.response.uuid),
     })),
     combine: (result: UseQueryResult<string>[]) =>
       result.map((res, idx): AttachmentResponse => {
@@ -33,7 +36,7 @@ export function useAttachments(attachments: AttachmentModel[] = []) {
             url: res.data,
             name: attachment.name,
             size: attachment.size,
-            uuid: attachment.uuid,
+            uuid: attachment.response?.uuid,
             lastModified: attachment.lastModified,
           },
           isPending: res.isPending,

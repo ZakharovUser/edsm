@@ -1,10 +1,14 @@
-export interface AttachmentModel {
-  name: string;
-  size: number;
+import { UploadFile } from 'antd';
+
+export interface AttachmentUUID {
   uuid: string;
-  lastModified: number;
 }
 
-export interface UploadAttachmentModel {
-  uuid: string;
-}
+export type UploadedAttachmentModel = UploadFile<AttachmentUUID>;
+
+export type DetailedAttachmentModel = Partial<AttachmentUUID> & {
+  url?: string;
+  name?: string;
+  size?: number;
+  lastModified?: number;
+};
