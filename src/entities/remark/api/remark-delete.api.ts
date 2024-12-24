@@ -1,7 +1,9 @@
 import urlcat from 'urlcat';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { root, endpoints, httpClient } from 'utils/http-client';
+import { httpClient } from 'utils/http-client';
+
+import endpoints from 'shared/api/endpoints';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -11,7 +13,7 @@ export type RemarkDeleteQueryParams = {
 };
 
 export async function remarkDeleteQuery({ task, remark }: RemarkDeleteQueryParams) {
-  return httpClient.delete(urlcat(root.api, endpoints.remark.delete, { task, message_id: remark }));
+  return httpClient.delete(urlcat(endpoints.task.remark.delete, { task, remark }));
 }
 
 export function useRemarkDeleteQuery() {

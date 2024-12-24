@@ -26,7 +26,7 @@ const endpoints = {
     remark: {
       create: `${root.task}/:task/add_message/`,
       reject: `${root.task}/:task/reject_message/`,
-      delete: `${root.task}/:task/delete_message/`,
+      delete: `${root.task}/:task/delete_message/:remark`,
       approve: `${root.task}/:task/approve_message/`,
     },
   },
