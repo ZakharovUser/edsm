@@ -24,9 +24,9 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
-      '/media': {
-        target: 'http://91.226.234.195:1337',
-      },
+      // '/media': {
+      //   target: 'http://91.226.234.195:1337',
+      // },
       '/ws': {
         target: 'ws://91.226.234.195:1337',
         ws: true,
@@ -35,5 +35,19 @@ export default defineConfig({
   },
   preview: {
     port: 8082,
+    proxy: {
+      '/api': {
+        target: 'http://91.226.234.195:1337',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/ws': {
+        target: 'ws://91.226.234.195:1337',
+        ws: true,
+      },
+    },
+  },
+  build: {
+    assetsDir: 'static/edm',
   },
 });
