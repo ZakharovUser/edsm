@@ -18,7 +18,7 @@ import { AttachmentUploadProps } from './attachment-upload.props';
 
 // -----------------------------------------------------------------------------------------------------------------
 
-export function AttachmentsUploadModal({ onSave }: AttachmentUploadProps) {
+export default function AttachmentsUploadModal({ onSave }: AttachmentUploadProps) {
   const dialog = useBoolean();
 
   const [form] = Form.useForm();

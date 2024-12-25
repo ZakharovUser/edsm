@@ -18,8 +18,8 @@ import { useViewContext } from 'features/view-task/hooks';
 import { Task } from 'entities/task/model';
 import { RemarkAdding } from 'entities/remark/ui';
 import { useUpdateTask } from 'entities/task/api';
-import { AttachmentUpload } from 'entities/attachments/ui';
 import { useRemarkCreateQuery } from 'entities/remark/api';
+import AttachmentUploadModal from 'entities/attachments/ui';
 import { UploadedAttachmentModel } from 'entities/attachments/model';
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ export function TaskDrawerHeader({
         <Typography variant="subtitle1">{view.value}</Typography>
 
         {view.isAttachments && permissions.canAddAttachments && (
-          <AttachmentUpload.Modal onSave={onSaveAttachments} />
+          <AttachmentUploadModal onSave={onSaveAttachments} />
         )}
 
         {view.isComments && permissions.canAddRemark && <RemarkAdding onSave={onSaveRemark} />}
