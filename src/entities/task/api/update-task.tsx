@@ -1,8 +1,11 @@
+import urlcat from 'urlcat';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { endpoints, httpClient } from 'utils/http-client';
+import { httpClient } from 'utils/http-client';
 
 import { Task } from 'entities/task/model';
+
+import endpoints from 'shared/api/endpoints';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -12,7 +15,9 @@ type Params = {
 };
 
 export async function updateTask({ taskId, body }: Params) {
-  return httpClient.patch(endpoints.task.item(taskId), body);
+  const url = urlcat(endpoints.task.item, { task: taskId });
+
+  return httpClient.patch(url, body);
 }
 
 export function useUpdateTask() {
