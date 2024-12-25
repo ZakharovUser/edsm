@@ -10,8 +10,8 @@ import httpClient from 'shared/api/http-client';
 
 export interface CreateTaskRequest extends TaskBase {
   route: TaskRoute['id'];
-  documents: UploadAttachmentModel[];
   org_name: InstituteModel['id'];
+  documents?: UploadAttachmentModel[];
 }
 
 export async function createTask(values: CreateTaskRequest) {

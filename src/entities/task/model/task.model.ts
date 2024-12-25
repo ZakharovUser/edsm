@@ -88,7 +88,7 @@ export interface TaskBase {
   finance_source: FinancingSource;
   reason: keyof typeof TaskReason;
   importance: keyof typeof TaskImportance;
-  notified_user_and_group: Array<TaskNotified>;
+  notified_user_and_group?: Array<TaskNotified>;
 }
 
 export interface Task extends TaskBase {

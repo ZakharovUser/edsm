@@ -46,7 +46,7 @@ const importance_cause_options: Options<keyof typeof TaskReason> = [
 
 type FormValues = Omit<CreateTaskRequest, 'deadline_date' | 'notified_user_and_group'> & {
   deadline: Dayjs;
-  notify: string[];
+  notify?: string[];
 };
 
 const config: Record<
@@ -122,8 +122,8 @@ export function CreateTaskForm({ name, onSubmit, route }: Props) {
 
     onSubmit({
       ...values,
-      documents: documents.map((doc) => ({ ...doc, ...doc.response })),
-      deadline_date: deadline?.format('YYYY-MM-DD'),
+      documents: documents?.map((doc) => ({ ...doc, ...doc.response })),
+      deadline_date: deadline.format('YYYY-MM-DD'),
       notified_user_and_group: notify && formatNotifiers(notify),
     }).then(() => form.resetFields());
   };
@@ -174,7 +174,10 @@ export function CreateTaskForm({ name, onSubmit, route }: Props) {
       <Form.Item
         {...config.documents}
         valuePropName="fileList"
-        getValueFromEvent={(event) => event.fileList}
+        getValueFromEvent={(event) => {
+          console.log(event.fileList);
+          return event.fileList;
+        }}
       >
         <UploadFiles
           action={endpoints.attachment.root}
