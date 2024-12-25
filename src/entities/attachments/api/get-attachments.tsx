@@ -3,14 +3,14 @@ import { useQueries, UseQueryResult } from '@tanstack/react-query';
 
 import { httpClient } from 'utils/http-client';
 
-import { DetailedAttachmentModel, UploadedAttachmentModel } from 'entities/attachments/model';
+import { AttachmentModel, UploadAttachmentModel } from 'entities/attachments/model';
 
 import endpoints from 'shared/api/endpoints';
 
 // -----------------------------------------------------------------------------------------------------------------;
 
 export type AttachmentResponse = {
-  data: DetailedAttachmentModel;
+  data: AttachmentModel;
   isPending: boolean;
   isError: boolean;
 };
@@ -21,7 +21,7 @@ export async function getAttachmentLink(uuid: string) {
   return httpClient.get(url).then((res) => res.data);
 }
 
-export function useAttachments(attachments: UploadedAttachmentModel[] = []) {
+export function useAttachments(attachments: UploadAttachmentModel[] = []) {
   return useQueries({
     queries: attachments.map((attachment) => ({
       queryKey: ['attachment', attachment.response?.uuid],
@@ -36,7 +36,8 @@ export function useAttachments(attachments: UploadedAttachmentModel[] = []) {
             url: res.data,
             name: attachment.name,
             size: attachment.size,
-            uuid: attachment.response?.uuid,
+            uid: attachment.uid,
+            uuid: attachment.response?.uuid || attachment.uid,
             lastModified: attachment.lastModified,
           },
           isPending: res.isPending,

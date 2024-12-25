@@ -1,7 +1,7 @@
-import { UploadedAttachmentModel } from 'entities/attachments/model';
+import { UploadAttachmentModel } from 'entities/attachments/model';
 
 export type FormValues = {
-  documents: UploadedAttachmentModel[];
+  documents: UploadAttachmentModel[];
 };
 
 export interface AttachmentUploadProps {

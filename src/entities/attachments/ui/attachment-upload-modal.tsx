@@ -10,7 +10,7 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 import { endpoints } from 'utils/http-client';
 
 import { deleteAttachment } from 'entities/attachments/api';
-import { UploadedAttachmentModel } from 'entities/attachments/model';
+import { UploadAttachmentModel } from 'entities/attachments/model';
 
 import UploadFiles from 'shared/ui/upload-files';
 
@@ -45,7 +45,7 @@ export default function AttachmentsUploadModal({ onSave }: AttachmentUploadProps
             >
               <UploadFiles
                 action={endpoints.attachment.new}
-                onRemove={({ response }: UploadedAttachmentModel) =>
+                onRemove={({ response }: UploadAttachmentModel) =>
                   response?.uuid ? deleteAttachment(response.uuid) : false
                 }
               />

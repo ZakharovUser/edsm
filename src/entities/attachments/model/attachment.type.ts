@@ -4,11 +4,13 @@ export interface AttachmentUUID {
   uuid: string;
 }
 
-export type UploadedAttachmentModel = UploadFile<AttachmentUUID>;
+export type UploadAttachmentModel = UploadFile<AttachmentUUID>;
 
-export type DetailedAttachmentModel = Partial<AttachmentUUID> & {
+export type AttachmentModel = {
+  uid: string;
+  uuid: string;
+  name: string;
   url?: string;
-  name?: string;
   size?: number;
   lastModified?: number;
 };

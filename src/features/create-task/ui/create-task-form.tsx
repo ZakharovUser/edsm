@@ -6,7 +6,7 @@ import { Form, Input, FormItemProps } from 'antd';
 import { CreateTaskRequest } from 'entities/task/api';
 import { deleteAttachment } from 'entities/attachments/api';
 import { TaskReason, TaskImportance } from 'entities/task/model';
-import { UploadedAttachmentModel } from 'entities/attachments/model';
+import { UploadAttachmentModel } from 'entities/attachments/model';
 
 import Select from 'shared/ui/select';
 import endpoints from 'shared/api/endpoints';
@@ -178,7 +178,7 @@ export function CreateTaskForm({ name, onSubmit, route }: Props) {
       >
         <UploadFiles
           action={endpoints.attachment.root}
-          onRemove={({ response }: UploadedAttachmentModel) =>
+          onRemove={({ response }: UploadAttachmentModel) =>
             response?.uuid ? deleteAttachment(response.uuid) : false
           }
         />

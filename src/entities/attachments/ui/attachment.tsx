@@ -15,12 +15,12 @@ import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import { fData } from 'utils/format-number';
 import { fDateTime } from 'utils/format-time';
 
-import { DetailedAttachmentModel } from '../model';
+import { AttachmentModel } from '../model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
 type Props = {
-  data: DetailedAttachmentModel;
+  data: AttachmentModel;
   error?: boolean;
   loading?: boolean;
   deleted?: boolean;
