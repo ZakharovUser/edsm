@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import DashboardLayout from 'layouts/dashboard';
 import { LoadingScreen } from 'components/loading-screen';
 
-import { NAVIGATION_CONFIG } from 'shared/navigation/config';
+import { paths } from 'routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -17,14 +17,14 @@ const PageFour = lazy(() => import('pages/dashboard/four'));
 
 export const outboxRoutes = [
   {
-    path: NAVIGATION_CONFIG.OUTBOX.path,
+    path: paths.dashboard.outbox,
     element: <OutboxPage />,
   },
 ];
 
 export const inboxRoutes = [
   {
-    path: NAVIGATION_CONFIG.INBOX.path,
+    path: paths.dashboard.inbox,
     element: <InboxPage />,
   },
 ];
@@ -44,8 +44,8 @@ export const dashboardRoutes = [
       ...inboxRoutes,
       ...outboxRoutes,
 
-      { path: NAVIGATION_CONFIG.DRAFTS.path, element: <PageThree /> },
-      { path: NAVIGATION_CONFIG.REPLACEMENT.path, element: <PageFour /> },
+      { path: paths.dashboard.drafts, element: <PageThree /> },
+      { path: paths.dashboard.replacement, element: <PageFour /> },
     ],
   },
 ];

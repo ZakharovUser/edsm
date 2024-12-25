@@ -6,7 +6,7 @@ import { NavSectionMini } from 'components/nav-section';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
-import { useNavData } from 'shared/navigation/hooks';
+import { useNavData } from 'routes/hooks';
 
 import { NAV } from '../config-layout';
 import NavToggleButton from '../common/nav-toggle-button';

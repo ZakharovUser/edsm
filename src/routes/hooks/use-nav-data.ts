@@ -3,7 +3,8 @@ import { useMemo } from 'react';
 import { paths } from 'routes/paths';
 
 import { ICONS } from 'shared/icons/config';
-import { NAVIGATION_CONFIG } from 'shared/navigation/config';
+
+import { navigation } from '../navigation';
 
 export function useNavData() {
   return useMemo(
@@ -14,22 +15,22 @@ export function useNavData() {
         subheader: 'Меню',
         items: [
           {
-            title: NAVIGATION_CONFIG.INBOX.title,
+            title: navigation.inbox.title,
             path: paths.dashboard.inbox,
             icon: ICONS.dashboard,
           },
           {
-            title: NAVIGATION_CONFIG.OUTBOX.title,
+            title: navigation.outbox.title,
             path: paths.dashboard.outbox,
             icon: ICONS.ecommerce,
           },
           {
-            title: NAVIGATION_CONFIG.DRAFTS.title,
+            title: navigation.drafts.title,
             path: paths.dashboard.drafts,
             icon: ICONS.analytics,
           },
           {
-            title: NAVIGATION_CONFIG.REPLACEMENT.title,
+            title: navigation.replacement.title,
             path: paths.dashboard.replacement,
             icon: ICONS.dashboard,
           },

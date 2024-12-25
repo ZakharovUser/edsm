@@ -1,16 +1,18 @@
 import { Helmet } from 'react-helmet-async';
 
-import { OutboxView } from 'sections/outbox';
+import { useTitle } from 'routes/hooks';
 
-import { NAVIGATION_CONFIG } from 'shared/navigation/config';
+import { OutboxView } from 'sections/outbox';
 
 // ----------------------------------------------------------------------
 
 export default function OutboxPage() {
+  const title = useTitle();
+
   return (
     <>
       <Helmet>
-        <title> {NAVIGATION_CONFIG.OUTBOX.title} </title>
+        <title> {title} </title>
       </Helmet>
 
       <OutboxView />

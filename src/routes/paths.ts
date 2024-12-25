@@ -1,10 +1,7 @@
-import { NAVIGATION_CONFIG } from 'shared/navigation/config';
-
-// ----------------------------------------------------------------------
-
 const ROOTS = {
   AUTH: '/auth',
-};
+  PATH: '/edm',
+} as const;
 
 // ----------------------------------------------------------------------
 
@@ -21,9 +18,9 @@ export const paths = {
   },
   // DASHBOARD
   dashboard: {
-    inbox: `/${NAVIGATION_CONFIG.INBOX.path}`,
-    outbox: `/${NAVIGATION_CONFIG.OUTBOX.path}`,
-    drafts: `/${NAVIGATION_CONFIG.DRAFTS.path}`,
-    replacement: `/${NAVIGATION_CONFIG.REPLACEMENT.path}`,
+    inbox: `${ROOTS.PATH}/inbox`,
+    outbox: `${ROOTS.PATH}/outbox`,
+    drafts: `${ROOTS.PATH}/drafts`,
+    replacement: `${ROOTS.PATH}/replacement`,
   },
-};
+} as const;

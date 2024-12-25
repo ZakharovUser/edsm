@@ -10,9 +10,7 @@ import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
 import Typography from '@mui/material/Typography';
 
-import { usePathname } from 'routes/hooks';
-
-import { useNavData } from 'shared/navigation/hooks';
+import { useNavData, usePathname } from 'routes/hooks';
 
 import { NAV } from '../config-layout';
 import NavToggleButton from '../common/nav-toggle-button';

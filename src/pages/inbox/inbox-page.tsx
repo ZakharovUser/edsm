@@ -1,16 +1,18 @@
 import { Helmet } from 'react-helmet-async';
 
-import InboxView from 'sections/inbox';
+import { useTitle } from 'routes/hooks';
 
-import { NAVIGATION_CONFIG } from 'shared/navigation/config';
+import InboxView from 'sections/inbox';
 
 // ----------------------------------------------------------------------
 
 export default function InboxPage() {
+  const title = useTitle();
+
   return (
     <>
       <Helmet>
-        <title>{NAVIGATION_CONFIG.INBOX.title}</title>
+        <title>{title}</title>
       </Helmet>
 
       <InboxView />

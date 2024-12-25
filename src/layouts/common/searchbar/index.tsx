@@ -18,9 +18,7 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Dialog, { dialogClasses } from '@mui/material/Dialog';
 
-import { useRouter } from 'routes/hooks';
-
-import { useNavData } from 'shared/navigation/hooks';
+import { useRouter, useNavData } from 'routes/hooks';
 
 import ResultItem from './result-item';
 import { applyFilter, getAllItems, groupedData } from './utils';

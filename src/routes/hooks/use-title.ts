@@ -2,12 +2,12 @@ import { useMemo } from 'react';
 
 import { usePathname } from 'routes/hooks/use-pathname';
 
-import { NAVIGATION_CONFIG } from 'shared/navigation/config';
+import { navigation } from '../navigation';
 
 // -----------------------------------------------------------------------------------------------------------------
 
 function find(pathname: string) {
-  return Object.values(NAVIGATION_CONFIG).find((config) => pathname.includes(config.path));
+  return Object.values(navigation).find((config) => pathname.includes(config.path));
 }
 
 export function useTitle() {

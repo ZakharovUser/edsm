@@ -8,7 +8,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 
-import { useNavData } from 'shared/navigation/hooks';
+import { useNavData } from 'routes/hooks';
 
 import { HEADER } from '../config-layout';
 import HeaderShadow from '../common/header-shadow';
