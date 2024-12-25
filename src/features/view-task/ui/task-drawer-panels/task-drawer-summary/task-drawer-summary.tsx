@@ -113,16 +113,19 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
       </TaskDrawerSummaryRow>
 
       <TaskDrawerSummaryRow label="Дата выполнения" loading={loading} icon={<CalendarMonthIcon />}>
-        {task?.deadline_date && canAddRequest && (
+        {task?.deadline_date && (
           <Stack spacing={0.5} direction="row" alignItems="center">
             <Typography fontSize="inherit">{fDate(task.deadline_date)}</Typography>
-            <TaskDeadlineExtend
-              value={task.deadline_date}
-              error={deadlineExtend.error}
-              loading={deadlineExtend.isPending}
-              onSubmit={deadlineExtendSubmit}
-              onReset={deadlineExtend.reset}
-            />
+
+            {canAddRequest && (
+              <TaskDeadlineExtend
+                value={task.deadline_date}
+                error={deadlineExtend.error}
+                loading={deadlineExtend.isPending}
+                onSubmit={deadlineExtendSubmit}
+                onReset={deadlineExtend.reset}
+              />
+            )}
           </Stack>
         )}
       </TaskDrawerSummaryRow>
