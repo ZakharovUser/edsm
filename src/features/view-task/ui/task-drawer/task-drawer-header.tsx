@@ -15,12 +15,11 @@ import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArro
 import { View } from 'features/view-task/models';
 import { useViewContext } from 'features/view-task/hooks';
 
-import { Task } from 'entities/task/model';
 import { RemarkAdding } from 'entities/remark/ui';
 import { useUpdateTask } from 'entities/task/api';
 import { useRemarkCreateQuery } from 'entities/remark/api';
 import AttachmentUploadModal from 'entities/attachments/ui';
-import { UploadAttachmentModel } from 'entities/attachments/model';
+import { AttachmentModel, UploadAttachmentModel } from 'entities/attachments/model';
 
 // -----------------------------------------------------------------------------------------------------------------
 
@@ -31,7 +30,7 @@ interface Props extends StackProps {
     canAddRemark: boolean;
     canAddAttachments: boolean;
   };
-  concatAttachments(attachments: UploadAttachmentModel[]): UploadAttachmentModel[];
+  concatAttachments(attachments: AttachmentModel[]): AttachmentModel[];
 }
 
 export function TaskDrawerHeader({
@@ -50,10 +49,26 @@ export function TaskDrawerHeader({
 
   const createRemark = useRemarkCreateQuery();
 
-  const onSaveAttachments = (data: Pick<Task, 'documents'>, onSuccess?: VoidFunction) => {
-    if (taskId) {
+  const onSaveAttachments = (
+    data: { documents?: UploadAttachmentModel[] },
+    onSuccess?: VoidFunction
+  ) => {
+    if (taskId && data.documents) {
       updateTask.mutate(
-        { taskId, body: { documents: concatAttachments(data.documents) } },
+        {
+          taskId,
+          body: {
+            documents: concatAttachments(
+              data.documents.map((doc) => ({
+                uuid: doc.response?.uuid || doc.uid,
+                name: doc.name,
+                uid: doc.uid,
+                size: doc.size,
+                lastModified: doc.lastModified,
+              }))
+            ),
+          },
+        },
         { onSuccess: () => onSuccess?.() }
       );
     }

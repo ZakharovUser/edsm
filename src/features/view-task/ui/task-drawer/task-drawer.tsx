@@ -56,7 +56,7 @@ export function TaskDrawer(props: Props) {
             permissions={permissions}
             onClose={() => setSearchParams()}
             concatAttachments={(attachments) =>
-              task.data ? attachments.concat(task.data.documents) : attachments
+              task.data?.documents ? attachments.concat(task.data.documents) : attachments
             }
           />
 

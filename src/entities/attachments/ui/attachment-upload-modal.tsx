@@ -14,14 +14,20 @@ import { UploadAttachmentModel } from 'entities/attachments/model';
 
 import UploadFiles from 'shared/ui/upload-files';
 
-import { AttachmentUploadProps } from './attachment-upload.props';
-
 // -----------------------------------------------------------------------------------------------------------------
+
+type FormValues = {
+  documents?: UploadAttachmentModel[];
+};
+
+export interface AttachmentUploadProps {
+  onSave?(data: FormValues, onSuccess?: VoidFunction): void;
+}
 
 export default function AttachmentsUploadModal({ onSave }: AttachmentUploadProps) {
   const dialog = useBoolean();
 
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<FormValues>();
 
   const onClose = () => {
     form.resetFields();

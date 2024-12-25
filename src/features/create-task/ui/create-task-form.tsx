@@ -5,8 +5,8 @@ import { Form, Input, FormItemProps } from 'antd';
 
 import { CreateTaskRequest } from 'entities/task/api';
 import { deleteAttachment } from 'entities/attachments/api';
-import { TaskReason, TaskImportance } from 'entities/task/model';
 import { UploadAttachmentModel } from 'entities/attachments/model';
+import { TaskReason, TaskImportance, FinancingSource } from 'entities/task/model';
 
 import Select from 'shared/ui/select';
 import endpoints from 'shared/api/endpoints';
@@ -44,9 +44,17 @@ const importance_cause_options: Options<keyof typeof TaskReason> = [
   { label: 'Позднее доведение лимитов', value: 'lost_time' },
 ];
 
-type FormValues = Omit<CreateTaskRequest, 'deadline_date' | 'notified_user_and_group'> & {
+type FormValues = {
+  route: number;
   deadline: Dayjs;
+  org_name: number;
+  full_name: string;
+  short_name: string;
+  reason: keyof typeof TaskReason;
+  importance: keyof typeof TaskImportance;
+  finance_source: FinancingSource;
   notify?: string[];
+  documents?: UploadAttachmentModel[];
 };
 
 const config: Record<
@@ -122,7 +130,13 @@ export function CreateTaskForm({ name, onSubmit, route }: Props) {
 
     onSubmit({
       ...values,
-      documents: documents?.map((doc) => ({ ...doc, ...doc.response })),
+      documents: documents?.map((doc) => ({
+        uuid: doc.response?.uuid || doc.uid,
+        uid: doc.uid,
+        name: doc.name,
+        size: doc.size,
+        lastModified: doc.lastModified,
+      })),
       deadline_date: deadline.format('YYYY-MM-DD'),
       notified_user_and_group: notify && formatNotifiers(notify),
     }).then(() => form.resetFields());
@@ -174,10 +188,7 @@ export function CreateTaskForm({ name, onSubmit, route }: Props) {
       <Form.Item
         {...config.documents}
         valuePropName="fileList"
-        getValueFromEvent={(event) => {
-          console.log(event.fileList);
-          return event.fileList;
-        }}
+        getValueFromEvent={(event) => event.fileList}
       >
         <UploadFiles
           action={endpoints.attachment.root}
