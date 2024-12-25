@@ -13,7 +13,7 @@ const endpoints = {
   },
   attachment: {
     root: `${root.api}/attachments/`,
-    action: `${root.api}/attachments/:uuid`,
+    action: `${root.api}/attachments/:uuid/`,
   },
   task: {
     item: `${root.task}/:task/`,
@@ -21,12 +21,12 @@ const endpoints = {
       extend: `${root.task}/:task/request_extension/`,
       reject: `${root.task}/:task/reject_extension/`,
       approve: `${root.task}/:task/approve_extension/`,
-      delete: `${root.task}/:task/delete_extension/:deadline`,
+      delete: `${root.task}/:task/delete_extension/:deadline/`,
     },
     remark: {
       create: `${root.task}/:task/add_message/`,
       reject: `${root.task}/:task/reject_message/`,
-      delete: `${root.task}/:task/delete_message/:remark`,
+      delete: `${root.task}/:task/delete_message/:remark/`,
       approve: `${root.task}/:task/approve_message/`,
     },
   },
