@@ -84,6 +84,10 @@ export function TaskDrawerSummary({ loading, task, hidden }: Props) {
         {task && formatUserName(task.created_by)}
       </TaskDrawerSummaryRow>
 
+      <TaskDrawerSummaryRow label="Исполнитель" loading={loading} icon={<PersonIcon />}>
+        {task && currentHistoryStep && formatUserName(currentHistoryStep.executor)}
+      </TaskDrawerSummaryRow>
+
       <TaskDrawerSummaryRow label="Учреждение" loading={loading} icon={<ApartmentIcon />}>
         {task?.org_name.name_short}
       </TaskDrawerSummaryRow>
