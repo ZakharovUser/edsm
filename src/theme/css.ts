@@ -1,3 +1,5 @@
+import CONFIG_GLOBAL from 'config-global';
+
 import { alpha, Theme } from '@mui/material/styles';
 import { dividerClasses } from '@mui/material/Divider';
 import { checkboxClasses } from '@mui/material/Checkbox';
@@ -23,7 +25,7 @@ export const paper = ({
       color: bgcolor,
     }),
   }),
-  backgroundImage: 'url(/assets/cyan-blur.png), url(/assets/red-blur.png)',
+  backgroundImage: `url(${CONFIG_GLOBAL.assetsDir}/assets/cyan-blur.png), url(${CONFIG_GLOBAL.assetsDir}/assets/red-blur.png)`,
   backgroundRepeat: 'no-repeat, no-repeat',
   backgroundPosition: 'top right, left bottom',
   backgroundSize: '50%, 50%',

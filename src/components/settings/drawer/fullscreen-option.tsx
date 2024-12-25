@@ -1,3 +1,4 @@
+import CONFIG_GLOBAL from 'config-global';
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -46,7 +47,9 @@ export default function FullScreenOption() {
         }}
       >
         <SvgColor
-          src={`/assets/icons/setting/${fullscreen ? 'ic_exit_full_screen' : 'ic_full_screen'}.svg`}
+          src={`${CONFIG_GLOBAL.assetsDir}/assets/icons/setting/${
+            fullscreen ? 'ic_exit_full_screen' : 'ic_full_screen'
+          }.svg`}
           sx={{ width: 16, height: 16, mr: 1 }}
         />
 

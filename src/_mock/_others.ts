@@ -1,3 +1,5 @@
+import CONFIG_GLOBAL from 'config-global';
+
 import { _mock } from './_mock';
 
 // ----------------------------------------------------------------------
@@ -161,9 +163,9 @@ export const _homePlans = [...Array(3)].map((_, index) => ({
     'Commercial applications',
   ],
   icons: [
-    '/assets/icons/platforms/ic_js.svg',
-    '/assets/icons/platforms/ic_ts.svg',
-    '/assets/icons/platforms/ic_figma.svg',
+    `${CONFIG_GLOBAL.assetsDir}/assets/icons/platforms/ic_js.svg`,
+    `${CONFIG_GLOBAL.assetsDir}/assets/icons/platforms/ic_ts.svg`,
+    `${CONFIG_GLOBAL.assetsDir}/assets/icons/platforms/ic_figma.svg`,
   ],
 }));
 

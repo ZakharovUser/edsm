@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import CONFIG_GLOBAL from 'config-global';
 
 import { useTheme } from '@mui/material/styles';
 import Box, { BoxProps } from '@mui/material/Box';
@@ -31,7 +32,12 @@ function SeverErrorIllustration({ ...other }: BoxProps) {
     >
       <BackgroundShape />
 
-      <image href="/assets/illustrations/characters/character_8.png" height="300" x="340" y="30" />
+      <image
+        href={`${CONFIG_GLOBAL.assetsDir}/assets/illustrations/characters/character_8.png`}
+        height="300"
+        x="340"
+        y="30"
+      />
 
       <path
         fill={PRIMARY_MAIN}

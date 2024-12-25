@@ -1,3 +1,5 @@
+import CONFIG_GLOBAL from 'config-global';
+
 import Stack from '@mui/material/Stack';
 import { alpha } from '@mui/material/styles';
 import ButtonBase from '@mui/material/ButtonBase';
@@ -48,7 +50,11 @@ export default function BaseOptions({ icons, options, value, onChange }: Props) 
               },
             }}
           >
-            <SvgColor src={`/assets/icons/setting/ic_${index === 0 ? icons[0] : icons[1]}.svg`} />
+            <SvgColor
+              src={`${CONFIG_GLOBAL.assetsDir}/assets/icons/setting/ic_${
+                index === 0 ? icons[0] : icons[1]
+              }.svg`}
+            />
           </ButtonBase>
         );
       })}

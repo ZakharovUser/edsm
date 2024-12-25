@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import CONFIG_GLOBAL from 'config-global';
 
 import { useTheme } from '@mui/material/styles';
 import Box, { BoxProps } from '@mui/material/Box';
@@ -226,7 +227,12 @@ function SeoIllustration({ ...other }: BoxProps) {
         </linearGradient>
       </defs>
 
-      <image href="/assets/illustrations/characters/character_3.png" height="300" x="312" y="30" />
+      <image
+        href={`${CONFIG_GLOBAL.assetsDir}/assets/illustrations/characters/character_3.png`}
+        height="300"
+        x="312"
+        y="30"
+      />
     </Box>
   );
 }

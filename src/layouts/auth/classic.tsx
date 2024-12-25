@@ -1,6 +1,7 @@
 import Logo from 'components/logo';
 import { bgGradient } from 'theme/css';
 import { PropsWithChildren } from 'react';
+import CONFIG_GLOBAL from 'config-global';
 import { useResponsive } from 'hooks/use-responsive';
 
 import Box from '@mui/material/Box';
@@ -36,7 +37,7 @@ const Section = ({ image, title }: SectionProps) => {
             theme.palette.background.default,
             theme.palette.mode === 'light' ? 0.88 : 0.94
           ),
-          imgUrl: '/assets/background/overlay_2.jpg',
+          imgUrl: `${CONFIG_GLOBAL.assetsDir}/assets/background/overlay_2.jpg`,
         }),
       }}
     >
@@ -47,7 +48,7 @@ const Section = ({ image, title }: SectionProps) => {
       <Box
         component="img"
         alt="auth"
-        src={image || '/assets/illustrations/illustration_dashboard.png'}
+        src={image || `${CONFIG_GLOBAL.assetsDir}/assets/illustrations/illustration_dashboard.png`}
         sx={{
           maxWidth: {
             xs: 480,

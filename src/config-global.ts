@@ -32,3 +32,13 @@ export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API;
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
 export const PATH_AFTER_LOGIN = paths.dashboard.inbox; // as '/dashboard/inbox'
+
+// CONFIG
+// ----------------------------------------------------------------------
+
+const CONFIG_GLOBAL = {
+  rootPath: PATH_AFTER_LOGIN,
+  assetsDir: import.meta.env.VITE_ASSETS_DIR,
+};
+
+export default CONFIG_GLOBAL;

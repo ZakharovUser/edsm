@@ -1,4 +1,5 @@
 import Label from 'components/label';
+import CONFIG_GLOBAL from 'config-global';
 import FileThumbnail from 'components/file-thumbnail';
 
 import Box from '@mui/material/Box';
@@ -44,7 +45,7 @@ export default function NotificationItem({ notification }: NotificationItemProps
         >
           <Box
             component="img"
-            src={`/assets/icons/notification/${
+            src={`${CONFIG_GLOBAL.assetsDir}/assets/icons/notification/${
               (notification.type === 'order' && 'ic_order') ||
               (notification.type === 'chat' && 'ic_chat') ||
               (notification.type === 'mail' && 'ic_mail') ||

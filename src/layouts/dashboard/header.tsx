@@ -1,5 +1,6 @@
 import { bgBlur } from 'theme/css';
 import Logo from 'components/logo';
+import CONFIG_GLOBAL from 'config-global';
 import SvgColor from 'components/svg-color';
 import { useOffSetTop } from 'hooks/use-off-set-top';
 import { useResponsive } from 'hooks/use-responsive';
@@ -84,7 +85,7 @@ export default function Header({ onOpenNav }: Props) {
 
         {!lgUp && (
           <IconButton onClick={onOpenNav} sx={{ mr: 2 }}>
-            <SvgColor src="/assets/icons/navbar/ic_menu_item.svg" />
+            <SvgColor src={`${CONFIG_GLOBAL.assetsDir}/assets/icons/navbar/ic_menu_item.svg`} />
           </IconButton>
         )}
 
