@@ -9,7 +9,8 @@ import AddCircleOutlineRoundedIcon from '@mui/icons-material/AddCircleOutlineRou
 
 import { endpoints } from 'utils/http-client';
 
-import { getValueFromEvent } from 'entities/attachments/helpers';
+import { deleteAttachment } from 'entities/attachments/api';
+import { UploadedAttachmentModel } from 'entities/attachments/model';
 
 import UploadFiles from 'shared/ui/upload-files';
 
@@ -40,9 +41,14 @@ export function AttachmentsUploadModal({ onSave }: AttachmentUploadProps) {
             <Form.Item
               name="documents"
               valuePropName="fileList"
-              getValueFromEvent={getValueFromEvent}
+              getValueFromEvent={(event) => event.fileList}
             >
-              <UploadFiles action={endpoints.attachment.new} />
+              <UploadFiles
+                action={endpoints.attachment.new}
+                onRemove={({ response }: UploadedAttachmentModel) =>
+                  response?.uuid ? deleteAttachment(response.uuid) : false
+                }
+              />
             </Form.Item>
           </DialogContent>
           <DialogActions>
