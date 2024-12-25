@@ -66,9 +66,12 @@ export function TaskDrawer(props: Props) {
             </Alert>
           )}
 
-          <TaskDrawerPanels task={task.data} loading={task.isPending} sx={{ flex: 1 }} />
-
-          <TaskDrawerActions taskId={taskId} permissions={permissions} sx={{ flex: 0 }} />
+          {!task.error && (
+            <>
+              <TaskDrawerPanels task={task.data} loading={task.isPending} sx={{ flex: 1 }} />
+              <TaskDrawerActions taskId={taskId} permissions={permissions} sx={{ flex: 0 }} />
+            </>
+          )}
         </Stack>
       </ViewProvider>
     </Drawer>
