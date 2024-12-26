@@ -1,6 +1,8 @@
+import urlcat from 'urlcat';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { httpClient } from 'utils/http-client';
+import endpoints from 'shared/api/endpoints';
+import httpClient from 'shared/api/http-client';
 
 interface Params {
   taskId: number | string;
@@ -8,7 +10,9 @@ interface Params {
 }
 
 export async function rejectTask({ taskId, message }: Params) {
-  return httpClient.post(`/api/edm/task/${taskId}/back_previous_stage/ `, message && { message });
+  const url = urlcat(endpoints.task.actions.reject, { task: taskId });
+
+  return httpClient.post(url, message && { message });
 }
 
 export function useRejectTask() {

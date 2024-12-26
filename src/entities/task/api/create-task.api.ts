@@ -4,6 +4,7 @@ import { InstituteModel } from 'entities/institute/model';
 import { TaskBase, TaskRoute } from 'entities/task/model';
 import { AttachmentModel } from 'entities/attachments/model';
 
+import endpoints from 'shared/api/endpoints';
 import httpClient from 'shared/api/http-client';
 
 // -----------------------------------------------------------------------------------------------------------------
@@ -15,7 +16,7 @@ export interface CreateTaskRequest extends TaskBase {
 }
 
 export async function createTask(values: CreateTaskRequest) {
-  return httpClient.post('/api/edm/task/', values);
+  return httpClient.post(endpoints.task.list, values);
 }
 
 export function useCreateTaskQuery() {

@@ -1,11 +1,10 @@
 import urlcat from 'urlcat';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { httpClient } from 'utils/http-client';
-
 import { Task } from 'entities/task/model';
 
 import endpoints from 'shared/api/endpoints';
+import httpClient from 'shared/api/http-client';
 
 // -----------------------------------------------------------------------------------------------------------------
 

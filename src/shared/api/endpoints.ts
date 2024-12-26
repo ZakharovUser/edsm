@@ -16,7 +16,14 @@ const endpoints = {
     action: `${root.api}/attachments/:uuid/`,
   },
   task: {
+    list: `${root.task}/`,
     item: `${root.task}/:task/`,
+    actions: {
+      approve: `${root.task}/:task/accept/`,
+      cancel: `${root.task}/:task/cancel/`,
+      accept: `${root.task}/:task/set_executor/`,
+      reject: `${root.task}/:task/back_previous_stage/`,
+    },
     deadline: {
       extend: `${root.task}/:task/request_extension/`,
       reject: `${root.task}/:task/reject_extension/`,

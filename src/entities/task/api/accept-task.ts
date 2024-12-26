@@ -1,6 +1,8 @@
+import urlcat from 'urlcat';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { httpClient } from 'utils/http-client';
+import endpoints from 'shared/api/endpoints';
+import httpClient from 'shared/api/http-client';
 
 interface Params {
   taskId: number | string;
@@ -9,7 +11,9 @@ interface Params {
 }
 
 export async function acceptTask({ taskId, executor_id, supervisor_id }: Params) {
-  return httpClient.post(`/api/edm/task/${taskId}/set_executor/`, { executor_id, supervisor_id });
+  const url = urlcat(endpoints.task.actions.accept, { task: taskId });
+
+  return httpClient.post(url, { executor_id, supervisor_id });
 }
 
 export function useAcceptTask() {
