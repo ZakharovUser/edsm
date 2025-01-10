@@ -12,6 +12,9 @@ import { DialogTitle, DialogActions, DialogContent } from '@mui/material';
 
 import { useCancelTask } from 'entities/task/api';
 
+import { toast } from 'shared/ui/snackbar';
+import { HttpClientError } from 'shared/api/types';
+
 // -----------------------------------------------------------------------------------------------------------------
 
 type Props = {
@@ -27,7 +30,7 @@ const schema = Yup.object().shape({
 export function TaskCancelButton({ taskId, canCancel, text = 'Прекратить' }: Props) {
   const confirm = useBoolean(false);
 
-  const { mutate, isPending, reset } = useCancelTask();
+  const { mutateAsync, isPending, reset } = useCancelTask();
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -42,7 +45,15 @@ export function TaskCancelButton({ taskId, canCancel, text = 'Прекратит
   };
 
   const onSubmit = methods.handleSubmit(({ message }) => {
-    if (taskId && canCancel) mutate({ taskId, message }, { onSuccess: onClose });
+    if (taskId && canCancel) {
+      const promise = mutateAsync({ taskId, message }, { onSuccess: onClose });
+
+      toast.promise(promise, {
+        loading: 'Прекращение задачи',
+        success: 'Задача прекращена',
+        error: (error: HttpClientError) => error.message,
+      });
+    }
   });
 
   return (

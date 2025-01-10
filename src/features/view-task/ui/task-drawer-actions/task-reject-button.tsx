@@ -12,6 +12,9 @@ import { DialogTitle, DialogActions, DialogContent } from '@mui/material';
 
 import { useRejectTask } from 'entities/task/api';
 
+import { toast } from 'shared/ui/snackbar';
+import { HttpClientError } from 'shared/api/types';
+
 // -----------------------------------------------------------------------------------------------------------------
 
 type Props = {
@@ -29,7 +32,7 @@ type SchemaType = Yup.InferType<typeof schema>;
 export function TaskRejectButton({ taskId, canReject, text = 'Отклонить' }: Props) {
   const confirm = useBoolean(false);
 
-  const { mutate, isPending, reset } = useRejectTask();
+  const { mutateAsync, isPending, reset } = useRejectTask();
 
   const methods = useForm<SchemaType>({
     resolver: yupResolver(schema),
@@ -48,7 +51,15 @@ export function TaskRejectButton({ taskId, canReject, text = 'Отклонить
   };
 
   const onSubmit = methods.handleSubmit(({ message }) => {
-    if (taskId && canReject) mutate({ taskId, message }, { onSuccess: onClose });
+    if (taskId && canReject) {
+      const promise = mutateAsync({ taskId, message }, { onSuccess: onClose });
+
+      toast.promise(promise, {
+        loading: 'Отклонение',
+        success: 'Отклонено',
+        error: (error: HttpClientError) => error.message,
+      });
+    }
   });
 
   return (
