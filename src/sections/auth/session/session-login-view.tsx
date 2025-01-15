@@ -64,11 +64,6 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-const defaultValues = {
-  username: 'admin',
-  password: 'P@ssw0rd',
-};
-
 export function SessionLoginView() {
   const { login } = useAuthContext();
 
@@ -84,7 +79,6 @@ export function SessionLoginView() {
 
   const methods = useForm({
     resolver: yupResolver(LoginSchema),
-    defaultValues,
   });
 
   const {
