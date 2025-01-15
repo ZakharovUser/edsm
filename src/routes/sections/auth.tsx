@@ -22,7 +22,7 @@ const authSession = {
 
 export const authRoutes = [
   {
-    path: 'auth',
+    path: 'edm/auth',
     element: (
       <GuestGuard>
         <Suspense fallback={<SplashScreen />}>

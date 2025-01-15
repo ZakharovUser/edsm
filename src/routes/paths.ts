@@ -1,5 +1,5 @@
 const ROOTS = {
-  AUTH: '/auth',
+  AUTH: '/edm/auth',
   PATH: '/edm',
 } as const;
 
