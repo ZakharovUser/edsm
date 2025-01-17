@@ -62,7 +62,7 @@ export function TaskDrawer(props: Props) {
 
           {task.error?.response && (
             <Alert severity="error" sx={{ mb: 2 }}>
-              {task.error.response?.data.detail}
+              {task.error.response?.data.detail || task.error.message}
             </Alert>
           )}
 
